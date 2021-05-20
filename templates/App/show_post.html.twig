@@ -1,0 +1,7 @@
+{% extends 'layout_post.html.twig' %}
+{% block title %}Liste des posts - {{ parent() }}{% endblock %}
+{% block body %}
+    {% for post in posts %}
+        {{ post.title }}
+    {% endfor %}
+{% endblock %}
