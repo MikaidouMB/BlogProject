@@ -19,5 +19,20 @@ class PostController extends Controller
     {
         $posts = $this->postManager->findAll();
         return $this->render('Post/index.html.twig', ['posts' =>$posts]);
+
+    }
+
+    public function list(): string
+    {
+        $posts = $this->postManager->findAll();
+
+        return $this->render('Post/list.html.twig',['posts'=> $posts]);
+    }
+
+    public function show()
+    {
+        $post = $this->postManager->find($_GET['id']);
+
+        return $this->render('Post/show.html.twig',['post'=> $post]);
     }
 }

@@ -18,7 +18,7 @@ abstract class Controller
         $this->twig = $twig;
     }
 
-    public function render(string $path, array $params=[]): string
+    protected function render(string $path, array $params=[]): string
     {
         try {
             return $this->twig->render($path, $params);

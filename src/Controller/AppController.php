@@ -19,14 +19,14 @@ class AppController extends Controller
 
     public function index(): string
     {
+   /*     $post = new Post();
+        $post
+            ->setTitle('Ma maison')
+            ->setContent('Bienvenue dans mon salon');
+
+        (new PostManager())->create($post);
+*/
         return $this->render('App/index.html.twig');
-    }
-
-    public function postsView(): string
-    {
-        $posts =$this->postManager->findAll();
-
-        return $this->render('App/posts.html.twig',['posts'=> $posts]);
     }
 
 }

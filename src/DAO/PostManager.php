@@ -10,19 +10,59 @@ class PostManager extends DAO
 
     public function findAll(): array
     {
-        return $this->createQuery('SELECT * FROM post')->fetchAll();
+        $result = $this->createQuery('SELECT * FROM post');
+
+        $posts =[];
+        foreach ($result->fetchAll() as $post){
+            $posts[]= $this->buildObject($post);
+        }
+        return $posts;
     }
+
+    public function find($postId): ? Post
+    {
+        $result = $this->createQuery('SELECT * FROM post WHERE id = ?', [$postId]);
+        if (false === $object = $result->fetchObject()){
+            return null;
+        }
+        return $this->buildObject($object);
+    }
+
+    public function update(Post $post): bool
+    {
+        $result = $this->createQuery(
+            'UPDATE post SET title = ?, content = ?, date = ? WHERE id = ?',
+        array_merge($this->buildValues($post), [$post->getId()])
+        );
+
+        return 1<= $result->rowCount();
+    }
+
     public function create(Post $post): bool
     {
-        $sql = 'INSERT INTO post(title, content, seen_at)VALUES (?,?,?)';
         $this->createQuery(
-            $sql,
-            [
-                $post->getTitle(),
-                $post->getContent(),
-                $post->getSeenAt()->format('Y-m-d H-i-s'),
-            ]
-        );
+            'INSERT INTO post(title, content, date )VALUES (?,?,?)',
+        $this->buildValues($post)
+    );
         return true;
+    }
+
+    private function buildValues(Post $post): array
+    {
+        return[
+            $post->getTitle(),
+            $post->getContent(),
+            $post->getDateTime()->format('Y-m-d H:i:s'),
+        ];
+    }
+
+    private function buildObject(object $post):Post
+    {
+        return (new Post())
+            ->setId($post->id)
+            ->setTitle($post->title)
+            ->setContent($post->content)
+            ->setDateTime(new \DateTimeImmutable($post->date));
+
     }
 }

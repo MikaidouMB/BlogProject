@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Framework\Router;
+namespace App\Router;
 
 
 /**

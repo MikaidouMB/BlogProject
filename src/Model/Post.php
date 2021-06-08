@@ -9,11 +9,11 @@ class Post
     private int $id;
     private string $title;
     private string $content;
-    private \DateTimeImmutable $seenAt;
+    private \DateTimeImmutable  $date;
 
     public function __construct()
     {
-        $this->seenAt = new \DateTimeImmutable();
+        $this->date = new \DateTimeImmutable();
     }
 
     /**
@@ -73,18 +73,18 @@ class Post
     /**
      * @return \DateTimeImmutable
      */
-    public function getSeenAt(): \DateTimeImmutable
+    public function getDateTime(): \DateTimeImmutable
     {
-        return $this->seenAt;
+        return $this->date;
     }
 
     /**
-     * @param \DateTimeImmutable $seenAt
+     * @param \DateTimeImmutable $date
      * @return Post
      */
-    public function setSeenAt(\DateTimeImmutable $seenAt): Post
+    public function setDateTime(\DateTimeImmutable $date): Post
     {
-        $this->seenAt = $seenAt;
+        $this->date = $date;
         return $this;
     }
 
