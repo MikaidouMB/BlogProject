@@ -19,15 +19,24 @@ class AppController extends Controller
 
     public function index(): string
     {
-   /*     $post = new Post();
+   /*
         $post
             ->setTitle('Ma maison')
             ->setContent('Bienvenue dans mon salon');
 
-        (new PostManager())->create($post);
 */
         return $this->render('App/index.html.twig');
     }
+   /* public function addPost(array $t)
+    {
+        foreach ()
+        if (isset($post['submit'])) {
+            $post = new Post();
+            (new PostManager())->create($post);
+        }
+        return $this->render('App/add.html.twig');
+    }*/
+
 
 }
 

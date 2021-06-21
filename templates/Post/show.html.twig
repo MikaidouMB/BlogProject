@@ -1,5 +1,12 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-    {{ dump() }}
-
+<div class="container">
+    <a href="index.php?route=post&id={{ post.id }}updatePost" class="btn btn-warning btn-lg active" role="button" aria-pressed="true">Modifier</a>
+<div class="item-box-blog-heading">
+            {{ post.title }}
+    </div>
+    <div class="item-box-blog-text">
+        {{ post.content }}
+    </div>
+</div>
 {% endblock %}

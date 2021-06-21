@@ -31,7 +31,7 @@ class PostManager extends DAO
     public function update(Post $post): bool
     {
         $result = $this->createQuery(
-            'UPDATE post SET title = ?, content = ?, date = ? WHERE id = ?',
+            'UPDATE post SET title = ?, content = ?, createdAt = ? WHERE id = ?',
         array_merge($this->buildValues($post), [$post->getId()])
         );
 
@@ -41,7 +41,7 @@ class PostManager extends DAO
     public function create(Post $post): bool
     {
         $this->createQuery(
-            'INSERT INTO post(title, content, date )VALUES (?,?,?)',
+            'INSERT INTO post(title, content)VALUES(?,?)',
         $this->buildValues($post)
     );
         return true;
@@ -52,7 +52,6 @@ class PostManager extends DAO
         return[
             $post->getTitle(),
             $post->getContent(),
-            $post->getDateTime()->format('Y-m-d H:i:s'),
         ];
     }
 
@@ -62,7 +61,7 @@ class PostManager extends DAO
             ->setId($post->id)
             ->setTitle($post->title)
             ->setContent($post->content)
-            ->setDateTime(new \DateTimeImmutable($post->date));
-
+            ->setCreatedAt(new \DateTimeImmutable($post->createdAt));
+            return $post;
     }
 }
