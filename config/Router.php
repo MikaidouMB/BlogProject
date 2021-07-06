@@ -24,15 +24,16 @@ class Router
             if ('posts'=== $_GET['route']) {
                 return $postController->list();
             }
+            if ($_GET['route']== 'editPost' && (isset($_GET['id']) && $_GET['id'] > 0 )){
+            return $postController->update($_GET['id']);
+            }
             if (isset($_GET['id']) && $_GET['id'] > 0 ) {
                 return $postController->show();
             }
-           if ('addPost'=== $_GET['route']) {
+           if ('addPost' === $_GET['route']) {
                    return $postController->add($_POST);
             }
-            if ('updatePost'=== $_GET['route']) {
-                return $postController->update($_POST);
-            }
+
         }
                 return $appController->index();
     }

@@ -50,14 +50,29 @@ class PostController extends Controller
             return $this->render('Post/add.html.twig', ['post' => $postForm]);
     }
 
-    public function update()
+
+
+    public function update($id)
     {
-        $post = $this->postManager->find($_GET['id']);
-        return $this->render('Post/update.html.twig', ['post' => $post]);
+        $post = $this->postManager->find($id);
+        if ($_POST){
+            var_dump($post);
+            //$title = $post['title'];
+            $post = new Post();
+            $post->setId($id);
+            $post->setTitle($_POST['title']);
+            $post->setContent($_POST['content']);
+            $post->setCreatedAt(new \DateTimeImmutable('now'));
+
+            //var_dump($post);die;
+            $this->postManager->update($post);
+        }
+        return $this->render('Post/edit.html.twig', ['post' => $post]);
 
     }
     public function delete()
     {
 
     }
+
 }
