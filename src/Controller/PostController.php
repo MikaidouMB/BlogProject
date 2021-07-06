@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\DAO\DAO;
 use App\DAO\PostManager;
 use App\Model\Post;
 use Twig\Environment;
@@ -50,29 +51,26 @@ class PostController extends Controller
             return $this->render('Post/add.html.twig', ['post' => $postForm]);
     }
 
-
-
     public function update($id)
     {
         $post = $this->postManager->find($id);
-        if ($_POST){
-            var_dump($post);
-            //$title = $post['title'];
-            $post = new Post();
-            $post->setId($id);
-            $post->setTitle($_POST['title']);
-            $post->setContent($_POST['content']);
-            $post->setCreatedAt(new \DateTimeImmutable('now'));
-
-            //var_dump($post);die;
-            $this->postManager->update($post);
+        if ($_POST) {
+            $post
+                ->setTitle($_POST['title'])
+                ->setContent($_POST['content']);
+            (new PostManager())->update($post);
+            header('Location: index.php?route=post&id='.$id);
         }
         return $this->render('Post/edit.html.twig', ['post' => $post]);
-
     }
-    public function delete()
-    {
 
+    public function delete($id)
+    {
+        $post = $this->postManager->delete($id);
+            //(new PostManager())->delete($post);
+        //header('Location: index.php?route=post&id='.$id);
+        echo 'post supprimé';
+        return $this->render('Post/list.html.twig', ['post' => $post]);
     }
 
 }

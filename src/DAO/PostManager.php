@@ -31,7 +31,7 @@ class PostManager extends DAO
     public function update(Post $post): bool
     {
         $result = $this->createQuery(
-            'UPDATE post SET title = ?, content = ?, createdAt = ? WHERE id = ?',
+            'UPDATE post SET title = ?, content = ? WHERE id = ?',
         array_merge($this->buildValues($post), [$post->getId()])
         );
 
@@ -45,6 +45,15 @@ class PostManager extends DAO
         $this->buildValues($post)
     );
         return true;
+    }
+
+    public function delete(Post $post): bool
+    {
+        $result = $this->createQuery(
+            'DELETE FROM post WHERE id = ?',
+            array_merge($this->buildValues($post), [$post->getId()])
+    );
+        return 1<= $result->rowCount();
     }
 
     private function buildValues(Post $post): array
