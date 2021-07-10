@@ -47,11 +47,10 @@ class PostManager extends DAO
         return true;
     }
 
-    public function delete(Post $post): bool
+    public function delete($postId): bool
     {
         $result = $this->createQuery(
-            'DELETE FROM post WHERE id = ?',
-            array_merge($this->buildValues($post), [$post->getId()])
+            'DELETE FROM post WHERE id = ?',[$postId],
     );
         return 1<= $result->rowCount();
     }

@@ -13,7 +13,6 @@
                     <!-- Carousel items -->
                     <a href="index.php?route=addPost" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Ajouter</a>
                     <hr>
-
                     <div class="carousel-inner">
                         <div class="carousel-item active">
                             <div class="row">
@@ -30,20 +29,14 @@
                                         <div class="item-box-blog-body">
                                             <!--Heading-->
                                             <div class="item-box-blog-heading">
-                                                <a href="" tabindex="0">
                                                         {{ post.title }}
-                                                </a>
-                                            </div>
-                                            <!--Data-->
-                                            <div class="item-box-blog-data" style="padding: px 15px;">
-                                                <p><i class="fa fa-user-o"></i> {# {{ user.first_name }} #} <i class="fa fa-comments-o"></i> Comments(3)</p>
                                             </div>
                                             <!--Text-->
                                             <div class="item-box-blog-text">
                                                 {{ post.content }}
                                             </div>
                                             <div class="mt">
-                                                <a href="index.php?route=post&id={{ post.id }}" tabindex="0" class="btn bg-blue-ui white read">read more</a>
+                                                <a href="index.php?route=post&id={{ post.id }}" tabindex="0" class="btn bg-blue-ui white read"> Lire plus</a>
                                             </div>
                                             <!--Read More Button-->
                                         </div>
@@ -51,17 +44,9 @@
                                 </div>
                                 {% endfor %}
                             </div>
-                            <!--.row-->
                         </div>
-                        <!--.item-->
-                        <div class="carousel-item ">
-                            <!--.row-->
-                        </div>
-                        <!--.item-->
                     </div>
-                    <!--.carousel-inner-->
                 </div>
-                <!--.Carousel-->
             </div>
         </div>
     </div>

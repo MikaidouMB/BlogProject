@@ -34,7 +34,6 @@ class PostController extends Controller
     public function show()
     {
         $post = $this->postManager->find($_GET['id']);
-
         return $this->render('Post/show.html.twig',['post'=> $post]);
     }
     public function add($postForm)
@@ -45,7 +44,7 @@ class PostController extends Controller
             $post->setContent($postForm['content']);
             $post = $this->postManager->create($post);
             echo 'post enregistré';
-            return $this->render('App/index.html.twig', ['post' => $post]);
+            header('Location: index.php?route=posts');
         }
             echo 'post pas enregistré';
             return $this->render('Post/add.html.twig', ['post' => $postForm]);
@@ -67,10 +66,9 @@ class PostController extends Controller
     public function delete($id)
     {
         $post = $this->postManager->delete($id);
-            //(new PostManager())->delete($post);
-        //header('Location: index.php?route=post&id='.$id);
+        header('Location: index.php?route=post&id='.$id);
         echo 'post supprimé';
-        return $this->render('Post/list.html.twig', ['post' => $post]);
+        header('Location: index.php?route=posts');
     }
 
 }
