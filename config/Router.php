@@ -4,7 +4,7 @@ namespace App;
 
 use App\Controller\AppController;
 use App\Controller\PostController;
-use App\Model\Post;
+use App\Controller\UserController;
 use Twig\Environment;
 
 class Router
@@ -17,11 +17,13 @@ class Router
     public function run()
     {
         $postController = new PostController($this->twig);
-        $appController = new AppController($this->twig);
+        $appController  = new AppController($this->twig);
+        $userController = new UserController($this->twig);
+
 
         if (isset($_GET['route']))
         {
-            if ('posts'=== $_GET['route']) {
+            if ('posts' === $_GET['route']) {
                 return $postController->list();
             }
             if ($_GET['route']== 'editPost' && (isset($_GET['id']) && $_GET['id'] > 0 )){
@@ -36,7 +38,12 @@ class Router
            if ('addPost' === $_GET['route']) {
                    return $postController->add($_POST);
             }
-
+            if ('login'=== $_GET['route']){
+                return $userController->login($_POST);
+            }
+           /* if ('login'=== $_POST['route']){
+                return $userController->loginPost();
+            }*/
         }
                 return $appController->index();
     }

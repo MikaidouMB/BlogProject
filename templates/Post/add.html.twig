@@ -1,11 +1,12 @@
 {% extends 'base.html.twig' %}
     {% block body %}
         <div class="container">
+            {{ dump() }}
+
             <form action="index.php?route=addPost" method="post">
                 <div class="input-field col s12 m6 l6">
                     <input type="text" name="title" id="title" class="form-control" placeholder="Titre de l'article"
                     >
-
                 </div><br>
                 <div class="form-group">
                     <textarea class="form-control" name="content" id="content" rows="3" placeholder="Contenu de l'article"></textarea>

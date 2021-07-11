@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\DAO\DAO;
 use App\DAO\PostManager;
 use App\Model\Post;
 use Twig\Environment;
