@@ -3,18 +3,11 @@
 {% block title %}Log in!{% endblock %}
 {% block body %}
     <div class="container">
-        {% if errors %}
-            <div class="error" style="color: red">Les champs sont vides</div>
-        {% endif %}
-        {% if validation %}
-            <div class="valid" style="color: green">Utilisateur enregistré</div>
-        {% endif %}
-        <form action="index.php?route=signUp" method="post">
-            <h1 class="h3 mb-3 font-weight-normal">Inscription</h1>
-             {% if error %}
-                <div class="error" style="color: red">Les champs sont vides</div>
+        <form action="index.php?route=login" method="post">
+            <h1 class="h3 mb-3 font-weight-normal">Se connecter</h1>
+            {% if errors %}
+                <div class="error" style="color: red">Identifiant ou mot de passe incorrect</div>
             {% endif %}
-
             <div class="input-field col s12 m6 l6">
                 <input type="text" name="username" id="username" class="form-control" placeholder="username"
                 ><br>

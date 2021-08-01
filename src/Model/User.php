@@ -14,7 +14,7 @@ class User
     /**
      * @return integer
      */
-    public function getId(): int
+  /*  public function getId(): int
     {
         return $this->id;
     }
@@ -23,12 +23,12 @@ class User
      * @param integer $id
      * @return User
      */
-    public function setId(int $id): User
+    /*public function setId(int $id): User
     {
         $this->id = $id;
         return $this;
     }
-
+*/
     /**
      * @return string
      */

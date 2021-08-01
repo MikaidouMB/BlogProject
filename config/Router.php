@@ -38,6 +38,9 @@ class Router
            if ('addPost' === $_GET['route']) {
                    return $postController->add($_POST);
             }
+            if ('signUp'=== $_GET['route']){
+                return $userController->signUp($_POST);
+            }
             if ('login'=== $_GET['route']){
                 return $userController->login($_POST);
             }

@@ -36,7 +36,6 @@ class UserManager extends DAO
     private function buildObject(object $user):User
     {
         return (new User())
-            ->setId($user->id)
             ->setUsername($user->username)
             ->setPassword($user->password);
         return $user;

@@ -16,6 +16,7 @@ abstract class Controller
     public function __construct(Environment $twig)
     {
         $this->twig = $twig;
+        //$twig->addGlobal("session", $_SESSION);
     }
 
     protected function render(string $path, array $params=[]): string
