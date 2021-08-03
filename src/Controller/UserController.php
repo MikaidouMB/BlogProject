@@ -20,9 +20,6 @@ class UserController extends Controller
     {
         $errors = [];
         $validMsg = [];
-        $password = $_POST['password'];
-        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-        var_dump($hashed_password);
 
         if (!empty($_POST)){
             if ($_POST['username'] == '' || ($_POST ['password'] == '')){
@@ -31,11 +28,12 @@ class UserController extends Controller
             }
             else {
                 $user = new User();
+                $password = $_POST['password'];
+                $hashed_password = password_hash($password, PASSWORD_DEFAULT);
                 $user->setUsername($userForm ['username']);
-                $user->setPassword($userForm['password']);
+                $user->setPassword($hashed_password, $userForm['password']);
 
                 $user = $this->userManager->register($user);
-                var_dump($userForm);
                 $validMsg = 'Utilisateur enregistré';
             }
         }
