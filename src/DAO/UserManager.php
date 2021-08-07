@@ -17,6 +17,15 @@ class UserManager extends DAO
         return $this->buildObject($object);
     }
 
+    public function findUser($username): ?User
+    {
+        $result = $this->createQuery('SELECT * FROM user WHERE username = ?', [$username]);
+        if (false === $object = $result->fetchObject()){
+            return null;
+        }
+        return $this->buildObject($object);
+    }
+
     public function register(User $user)
     {
         $this->createQuery(
@@ -40,4 +49,5 @@ class UserManager extends DAO
             ->setPassword($user->password);
         return $user;
     }
+
 }

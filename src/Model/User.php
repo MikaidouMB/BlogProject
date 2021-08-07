@@ -78,11 +78,9 @@ class User
      * @param string $password
      * @return User
      */
-    public function setPassword(string $password, $hashedPassword): User
+    public function setPassword(string $hashedPassword): User
     {
         $this->password = $hashedPassword;
-
-        $this->password = $password;
         return $this;
     }
 

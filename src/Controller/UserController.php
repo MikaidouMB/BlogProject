@@ -16,51 +16,65 @@ class UserController extends Controller
         parent::__construct($twig);
     }
 
-    public function signUp($userForm)
+    public function signUp($userForm): string
     {
-        $errors = [];
+        $errors   = [];
         $validMsg = [];
 
-        if (!empty($_POST)){
-            if ($_POST['username'] == '' || ($_POST ['password'] == '')){
-                $errors =  'Les champs sont vides';
+        if (!empty($_POST)) {
+            if (empty($_POST['username']) || empty($_POST['password'])) {
+                $errors = 'Les champs sont vides';
+            } else {
+                        $user = new User();
+                        $password = $_POST['password'];
+                        $username = $_POST['username'];
+                        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+                        $user->setUsername($username);
+                        $user->setPassword($hashedPassword);
+                        $existUser = $this->userManager->findUser($username);
 
-            }
-            else {
-                $user = new User();
-                $password = $_POST['password'];
-                $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-                $user->setUsername($userForm ['username']);
-                $user->setPassword($hashed_password, $userForm['password']);
-
-                $user = $this->userManager->register($user);
-                $validMsg = 'Utilisateur enregistré';
-            }
+                        if (empty($existUser)) {
+                            $this->userManager->register($user);
+                            $validMsg = 'Utilisateur enregistré';
+                        } else {
+                        echo "L'utilisateur existe déjà";
+                        }
+                    }
         }
-        return $this->render('Auth/register.html.twig', [
-            'userform' => $userForm, 'errors'=> $errors, 'validation'=> $validMsg, 'password'=>$password]);
+        return $this->render('Auth/register.html.twig',
+            [
+                'userform'   => $userForm,
+                'errors'     => $errors,
+                'validation' => $validMsg,
+            ]
+        );
     }
-
-    public function login($userForm)
+    public function login($userForm): string
     {
-        $errors = [];
-        $u = [];
+        $errors   = [];
+        $validMsg = [];
+        $username = false;
+
         if (!empty($_POST)){
             if (empty($_POST['username']) || empty($_POST['password'])) {
-                $errors= 'Identifiant ou mot de passe incorrect';
-            }elseif (!empty($_POST['username']) || empty($_POST['password'])){
-                $user = new User();
-                $user = $this->userManager->findByUsername($userForm['username'] && $userForm['password']);
-                var_dump($user);
-                if (is_null($user)){
-                    echo 'user non trouvé';
-                }else{
-                    echo 'utilisateur trouvé';
+                echo 'Identifiant ou mot de passe incorrect';
+            }else {
+                $username  = $_POST['username'];
+                $existUser = $this->userManager->findUser($username);
+                if (isset($existUser)) {
+                    $validMsg = 'Utilisateur connecté';
+                } else {
+                    $errors = 'Identifiant ou mot de passe inéxistant';
                 }
-
             }
         }
-        return $this->render('Auth/login.html.twig', ['userform' => $userForm, 'errors'=> $errors]);
+        return $this->render('Auth/login.html.twig',
+            [
+                'userform'   => $userForm,
+                'errors'     => $errors,
+                'validation' => $validMsg,
+            ]
+        );
 
     }
 
