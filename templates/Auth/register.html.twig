@@ -11,6 +11,7 @@
         {% endif %}
         <form action="index.php?route=signUp" method="post">
             <h1 class="h3 mb-3 font-weight-normal">Inscription</h1>
+            {{ dump() }}
              {% if errorsExist %}
                 <div class="error" style="color: red">Les champs sont vides</div>
             {% endif %}

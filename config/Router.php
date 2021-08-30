@@ -44,9 +44,9 @@ class Router
             if ('login'=== $_GET['route']){
                 return $userController->login($_POST);
             }
-           /* if ('login'=== $_POST['route']){
-                return $userController->loginPost();
-            }*/
+            if ('signOut'=== $_GET['route']){
+                return $userController->signOut($_POST);
+            }
         }
                 return $appController->index();
     }

@@ -1,8 +1,7 @@
 {% extends 'base.html.twig' %}
 {% block title %}Index - {{ parent() }}{% endblock %}
 {% block body %}
-    <h1>Bienvenue sur mon blog</h1>
-
+    <h1>Bienvenue sur mon blog {{ session.newsession.username }}</h1>
     <header>
         <div class="container">
             <div class="row">

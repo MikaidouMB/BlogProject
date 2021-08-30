@@ -4,15 +4,18 @@ namespace App\Controller;
 
 use App\DAO\UserManager;
 use App\Model\User;
+use App\services\Session;
 use Twig\Environment;
 
 class UserController extends Controller
 {
     private UserManager $userManager;
+    private Session $session;
 
     public function __construct(Environment $twig)
     {
         $this->userManager = new UserManager();
+        $this->session = new Session();
         parent::__construct($twig);
     }
 
@@ -49,6 +52,24 @@ class UserController extends Controller
             ]
         );
     }
+
+    public function signOut()
+    {
+            if (session_id()) {
+                echo 'il ya une session';
+                //var_dump($_SESSION);
+                unset($_SESSION['newsession']);
+                //var_dump($_SESSION);
+                if (empty($_SESSION)){
+                    header('Location:index.php');
+                    echo 'la session est vide';
+                }
+            }
+        }
+
+
+
+
     public function login($userForm): string
     {
         $errors   = [];
@@ -61,7 +82,13 @@ class UserController extends Controller
             }else {
                 $username  = $_POST['username'];
                 $existUser = $this->userManager->findUser($username);
+
                 if (isset($existUser)) {
+                    if (session_id()) {
+                        $_SESSION['newsession'] = $existUser;
+                        header('Location:index.php');
+                    }
+
                     $validMsg = 'Utilisateur connecté';
                 } else {
                     $errors = 'Identifiant ou mot de passe inéxistant';
@@ -83,7 +110,6 @@ class UserController extends Controller
         {
             $user = $this->userManager->findByUsername($_POST['username']);
             return $this->render('Auth/register.html.twig',['user'=> $user]);
-            var_dump($user);
         }
 
 

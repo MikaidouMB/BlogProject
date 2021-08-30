@@ -12,6 +12,7 @@ class AppController extends Controller
 {
     private PostManager $postManager;
     private UserManager $userManager;
+
     public function __construct(Environment $twig)
 {
     $this->postManager = new PostManager();
@@ -22,6 +23,7 @@ class AppController extends Controller
     public function index(): string
     {
         return $this->render('App/index.html.twig');
+
     }
 }
 

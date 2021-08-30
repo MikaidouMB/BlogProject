@@ -9,7 +9,7 @@ class User
     private int $id;
     private string $username;
     private string $password;
-    private bool $admin;
+    private $role;
 
     /**
      * @return integer
@@ -87,18 +87,18 @@ class User
     /**
      * @return bool
      */
-    public function getAdmin(): string
+    public function getRole():? int
     {
-        return $this->admin;
+        return $this->role;
     }
 
     /**
-     * @param bool $admin
+     * @param bool $role
      * @return User
      */
-    public function setAdmin(string $admin): User
+    public function setRole(int $role): User
     {
-        $this->admin = $admin;
+        $this->role = $role;
         return $this;
     }
 
