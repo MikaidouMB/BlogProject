@@ -26,7 +26,6 @@ class PostController extends Controller
     public function list(): string
     {
         $posts = $this->postManager->findAll();
-
         return $this->render('Post/list.html.twig',['posts'=> $posts]);
     }
 
@@ -35,6 +34,13 @@ class PostController extends Controller
         $post = $this->postManager->find($_GET['id']);
         return $this->render('Post/show.html.twig',['post'=> $post]);
     }
+
+    public function administration(): string
+    {
+        $posts = $this->postManager->findAll();
+        return $this->render('Post/administration.html.twig',['posts'=> $posts]);
+    }
+
     public function add($postForm)
     {
         if (!empty($postForm)) {
@@ -69,5 +75,6 @@ class PostController extends Controller
         echo 'post supprimé';
         header('Location: index.php?route=posts');
     }
+
 
 }

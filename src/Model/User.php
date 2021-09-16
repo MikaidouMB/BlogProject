@@ -6,15 +6,16 @@ namespace App\Model;
 
 class User
 {
-    private int $id;
+    private ?int $id = null;
     private string $username;
     private string $password;
     private $role;
+    const DEFAULT_ROLES = array('viewer', 'user', 'admin');
 
     /**
      * @return integer
      */
-  /*  public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -23,12 +24,12 @@ class User
      * @param integer $id
      * @return User
      */
-    /*public function setId(int $id): User
+    public function setId(int $id): User
     {
         $this->id = $id;
         return $this;
     }
-*/
+
     /**
      * @return string
      */
@@ -84,23 +85,24 @@ class User
         return $this;
     }
 
-    /**
+  /*  /**
      * @return bool
      */
-    public function getRole():? int
+   /* public function getRole(): ?int
     {
         return $this->role;
     }
-
-    /**
+*/
+/*    /**
      * @param bool $role
      * @return User
      */
-    public function setRole(int $role): User
+
+  /*  public function setRole(int $role): User
     {
         $this->role = $role;
         return $this;
-    }
+    }*/
 
 }
 

@@ -47,6 +47,9 @@ class Router
             if ('signOut'=== $_GET['route']){
                 return $userController->signOut($_POST);
             }
+            if ('admin'=== $_GET['route']){
+                return $postController->administration($_POST);
+            }
         }
                 return $appController->index();
     }

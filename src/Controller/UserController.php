@@ -19,35 +19,35 @@ class UserController extends Controller
         parent::__construct($twig);
     }
 
+//Fonction permettant à l'utilisateur de s'enregistrer
     public function signUp($userForm): string
     {
-        $errors   = [];
+        $errors = [];
         $validMsg = [];
 
         if (!empty($_POST)) {
             if (empty($_POST['username']) || empty($_POST['password'])) {
                 $errors = 'Les champs sont vides';
             } else {
-                        $user = new User();
-                        $password = $_POST['password'];
-                        $username = $_POST['username'];
-                        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-                        $user->setUsername($username);
-                        $user->setPassword($hashedPassword);
-                        $existUser = $this->userManager->findUser($username);
-
-                        if (empty($existUser)) {
-                            $this->userManager->register($user);
-                            $validMsg = 'Utilisateur enregistré';
-                        } else {
-                        echo "L'utilisateur existe déjà";
-                        }
-                    }
+                $user = new User();
+                $password = $_POST['password'];
+                $username = $_POST['username'];
+                $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+                $user->setUsername($username);
+                $user->setPassword($hashedPassword);
+                $existUser = $this->userManager->findUser($username);
+                if (empty($existUser)) {
+                    $this->userManager->register($user);
+                    $validMsg = 'Utilisateur enregistré';
+                } else {
+                    echo "L'utilisateur existe déjà";
+                }
+            }
         }
         return $this->render('Auth/register.html.twig',
             [
-                'userform'   => $userForm,
-                'errors'     => $errors,
+                'userform' => $userForm,
+                'errors' => $errors,
                 'validation' => $validMsg,
             ]
         );
@@ -55,62 +55,51 @@ class UserController extends Controller
 
     public function signOut()
     {
-            if (session_id()) {
-                echo 'il ya une session';
-                //var_dump($_SESSION);
-                unset($_SESSION['newsession']);
-                //var_dump($_SESSION);
-                if (empty($_SESSION)){
-                    header('Location:index.php');
-                    echo 'la session est vide';
-                }
+        if (session_id()) {
+            echo 'il ya une session';
+            unset($_SESSION['newsession']);
+            if (empty($_SESSION)) {
+                header('Location:index.php');
+                echo 'la session est vide';
             }
         }
-
-
+    }
 
 
     public function login($userForm): string
     {
-        $errors   = [];
+        $errors = [];
         $validMsg = [];
         $username = false;
+        $password = false;
 
-        if (!empty($_POST)){
+        if (!empty($_POST)) {
             if (empty($_POST['username']) || empty($_POST['password'])) {
                 echo 'Identifiant ou mot de passe incorrect';
-            }else {
-                $username  = $_POST['username'];
+            } else {
+                $username = $_POST['username'];
+                $password = $_POST['password'];
+                var_dump($userForm);
                 $existUser = $this->userManager->findUser($username);
-
-                if (isset($existUser)) {
-                    if (session_id()) {
-                        $_SESSION['newsession'] = $existUser;
-                        header('Location:index.php');
-                    }
-
-                    $validMsg = 'Utilisateur connecté';
-                } else {
-                    $errors = 'Identifiant ou mot de passe inéxistant';
-                }
+            }
+            if (session_id()) {
+                $_SESSION['newsession'] = $existUser;
+                var_dump($existUser);
+                header('Location:index.php');
+                $validMsg = 'Utilisateur connecté';
+            } else {
+                $errors = 'Identifiant ou mot de passe inéxistant';
             }
         }
-        return $this->render('Auth/login.html.twig',
-            [
-                'userform'   => $userForm,
-                'errors'     => $errors,
-                'validation' => $validMsg,
-            ]
-        );
+            return $this->render('Auth/login.html.twig',
+                [
+                    'userform' => $userForm,
+                    'errors' => $errors,
+                    'validation' => $validMsg,
+                ]
+            );
 
     }
-
-
-    public function loginPost()
-        {
-            $user = $this->userManager->findByUsername($_POST['username']);
-            return $this->render('Auth/register.html.twig',['user'=> $user]);
-        }
 
 
 }

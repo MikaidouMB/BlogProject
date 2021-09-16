@@ -28,6 +28,16 @@ class PostManager extends DAO
         return $this->buildObject($object);
     }
 
+    public function findPostsByUsername()
+    {
+        $result = $this->createQuery('SELECT * FROM post');
+        if (false === $object = $result->fetchObject()){
+            return null;
+    }
+        return $this->buildObject($object);
+    }
+
+
     public function update(Post $post): bool
     {
         $result = $this->createQuery(
@@ -40,10 +50,13 @@ class PostManager extends DAO
 
     public function create(Post $post): bool
     {
+        $idSession[] = $_SESSION['newsession'];
+        var_dump($idSession);
+        var_dump($post);
+        $arrayPost[]= $post;
         $this->createQuery(
-            'INSERT INTO post(title, content)VALUES(?,?)',
-        $this->buildValues($post)
-    );
+            'INSERT INTO post (title, content,user_id)VALUES(?,?,?)  ',
+            array_merge($this->buildValues($arrayPost), $idSession));
         return true;
     }
 
@@ -66,10 +79,11 @@ class PostManager extends DAO
     private function buildObject(object $post):Post
     {
         return (new Post())
-            ->setId($post->id)
             ->setTitle($post->title)
             ->setContent($post->content)
             ->setCreatedAt(new \DateTimeImmutable($post->createdAt));
             return $post;
     }
+
+
 }

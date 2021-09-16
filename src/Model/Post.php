@@ -7,6 +7,7 @@ namespace App\Model;
 class Post
 {
     private int $id;
+    private int $userId;
     private string $title;
     private string $content;
     private \DateTimeImmutable  $createdAt;
@@ -15,15 +16,15 @@ class Post
     {
         $this->createdAt = new \DateTimeImmutable();
     }
-
+/**
     /**
      * @return integer
      */
-    public function getId(): int
+   /** public function getId(): int
     {
         return $this->id;
     }
-
+**/
     /**
      * @param integer $id
      * @return Post
@@ -31,6 +32,24 @@ class Post
     public function setId(int $id): Post
     {
         $this->id = $id;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUserId(): string
+    {
+        return $this->userId;
+    }
+
+    /**
+     * @param string $userId
+     * @return Post
+     */
+    public function setUserId(string $userId): Post
+    {
+        $this->userId = $userId;
         return $this;
     }
 
