@@ -10,13 +10,23 @@ class PostManager extends DAO
 
     public function findAll(): array
     {
+    /*   if (isset($_SESSION['newsession'])){
+            $idSession = (array)$_SESSION['newsession'];
+            $arrayIdSession =(array)$idSession['id'];
+            var_dump($arrayIdSession);
+        }
+*/
         $result = $this->createQuery('SELECT * FROM post');
-
         $posts =[];
         foreach ($result->fetchAll() as $post){
             $posts[]= $this->buildObject($post);
         }
+        {
+      //  $posts = array_merge($arrayIdSession,$posts);
+        var_dump($posts);
         return $posts;
+    }
+
     }
 
     public function find($postId): ? Post
@@ -48,16 +58,17 @@ class PostManager extends DAO
         return 1<= $result->rowCount();
     }
 
-    public function create(Post $post): bool
+    public function create(Post $post)
     {
-        $idSession[] = $_SESSION['newsession'];
-        var_dump($idSession);
-        var_dump($post);
-        $arrayPost[]= $post;
+        $idSession = (array)$_SESSION['newsession'];
+        $arrayIdSession =(array)$idSession['id'];
+        var_dump($arrayIdSession);
         $this->createQuery(
             'INSERT INTO post (title, content,user_id)VALUES(?,?,?)  ',
-            array_merge($this->buildValues($arrayPost), $idSession));
-        return true;
+       $result= array_merge($this->buildValues($post),$arrayIdSession));
+
+        var_dump($result);
+        return $result;
     }
 
     public function delete($postId): bool
@@ -71,6 +82,7 @@ class PostManager extends DAO
     private function buildValues(Post $post): array
     {
         return[
+            //$post->getUserId(),
             $post->getTitle(),
             $post->getContent(),
         ];
@@ -79,6 +91,7 @@ class PostManager extends DAO
     private function buildObject(object $post):Post
     {
         return (new Post())
+            //->setUserId($post->userId)
             ->setTitle($post->title)
             ->setContent($post->content)
             ->setCreatedAt(new \DateTimeImmutable($post->createdAt));

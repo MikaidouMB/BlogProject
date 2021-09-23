@@ -15,43 +15,46 @@ class Post
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
+
     }
-/**
+/*
     /**
-     * @return integer
+     * @return  integer
      */
-   /** public function getId(): int
+
+/*    public function getId(): int
     {
         return $this->id;
     }
-**/
+
     /**
      * @param integer $id
      * @return Post
      */
-    public function setId(int $id): Post
+
+/*    public function setId(int $id): Post
     {
         $this->id = $id;
         return $this;
     }
-
+*/
     /**
-     * @return string
+     * @return integer
      */
-    public function getUserId(): string
-    {
-        return $this->userId;
-    }
+        public function getUserId(): int
+        {
+            return $this->userId;
+        }
 
-    /**
-     * @param string $userId
-     * @return Post
-     */
-    public function setUserId(string $userId): Post
-    {
-        $this->userId = $userId;
-        return $this;
-    }
+        /**
+         * @param integer $userId
+         * @return Post
+         */
+       public function setUserId(int $userId): Post
+       {
+           $this->userId = $userId;
+           return $this;
+       }
 
     /**
      * @return string

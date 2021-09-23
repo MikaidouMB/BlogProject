@@ -1,8 +1,8 @@
 {% extends 'base.html.twig' %}
     {% block body %}
         <div class="container">
-            {{ dump() }}
-
+            {{ dump(post[0]) }}
+            {{ dump(session.newsession.id) }}
             <form action="index.php?route=addPost" method="post">
                 <div class="input-field col s12 m6 l6">
                     <input type="text" name="title" id="title" class="form-control" placeholder="Titre de l'article"

@@ -18,31 +18,23 @@
                     <hr>
                     <div class="carousel-inner">
                         <div class="carousel-item active">
+                            {{ dump(session.newsession.id) }}
+                            {{ dump(posts.0) }}
 
                             <div class="row">
                                 {% for post in posts %}
-                                    {# {% for user in user %} #}
-                                <div class="col-md-3" >
+
+                                    <div class="col-md-3" >
                                     <div class="item-box-blog">
                                         <div class="item-box-blog-image">
-                                            <!--Date-->
                                             <div class="item-box-blog-date bg-blue-ui white"> {{ post.createdAt|date('H:i:s d/m-Y') }}</div>
-                                            <!--Image-->
                                             <figure> <img alt="" src="https://cdn.pixabay.com/photo/2017/02/08/14/25/computer-2048983_960_720.jpg" style="width: 150px"> </figure>
                                         </div>
                                         <div class="item-box-blog-body">
-                                            <!--Heading-->
-                                            <div class="item-box-blog-heading">
-                                                        {{ post.title }}
+                                            <div class="item-box-blog-heading">{{ post.title }}</div>
+                                            <div class="item-box-blog-text">{{ post.content }}</div>
+                                            <div class="mt"><a href="index.php?route=post&id={{ post.id }}" tabindex="0" class="btn bg-blue-ui white read"> Lire plus</a>
                                             </div>
-                                            <!--Text-->
-                                            <div class="item-box-blog-text">
-                                                {{ post.content }}
-                                            </div>
-                                            <div class="mt">
-                                                <a href="index.php?route=post&id={{ post.id }}" tabindex="0" class="btn bg-blue-ui white read"> Lire plus</a>
-                                            </div>
-                                            <!--Read More Button-->
                                         </div>
                                     </div>
                                 </div>

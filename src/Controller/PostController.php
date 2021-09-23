@@ -45,11 +45,17 @@ class PostController extends Controller
     {
         if (!empty($postForm)) {
             $post = new Post();
-            $post->setTitle($postForm ['title']);
-            $post->setContent($postForm['content']);
-            $post = $this->postManager->create($post);
+            $title = $_POST['title'];
+            $content = $_POST['content'];
+            $post->setTitle($title);
+            $post->setContent($content);
+            $newPost = $this->postManager->create($post);
             echo 'post enregistré';
-            header('Location: index.php?route=posts');
+            $newPost = (array) $newPost[2];
+            $merge = array_merge($newPost,$postForm);
+            $postForm = $merge;
+            var_dump($postForm);
+            //header('Location: index.php?route=posts');
         }
             echo 'post pas enregistré';
             return $this->render('Post/add.html.twig', ['post' => $postForm]);

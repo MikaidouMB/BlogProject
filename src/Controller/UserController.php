@@ -38,6 +38,8 @@ class UserController extends Controller
                 $existUser = $this->userManager->findUser($username);
                 if (empty($existUser)) {
                     $this->userManager->register($user);
+                    var_dump($user);
+
                     $validMsg = 'Utilisateur enregistré';
                 } else {
                     echo "L'utilisateur existe déjà";
@@ -85,7 +87,7 @@ class UserController extends Controller
             if (session_id()) {
                 $_SESSION['newsession'] = $existUser;
                 var_dump($existUser);
-                header('Location:index.php');
+               header('Location:index.php');
                 $validMsg = 'Utilisateur connecté';
             } else {
                 $errors = 'Identifiant ou mot de passe inéxistant';
