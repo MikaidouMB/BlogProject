@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
     {% block body %}
         <div class="container">
-            {{ dump(post[0]) }}
+            {{ dump() }}
             {{ dump(session.newsession.id) }}
             <form action="index.php?route=addPost" method="post">
                 <div class="input-field col s12 m6 l6">

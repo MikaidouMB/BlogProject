@@ -15,14 +15,13 @@ class Post
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
-
     }
-/*
+
     /**
      * @return  integer
      */
 
-/*    public function getId(): int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -32,12 +31,12 @@ class Post
      * @return Post
      */
 
-/*    public function setId(int $id): Post
+    public function setId(int $id): Post
     {
         $this->id = $id;
         return $this;
     }
-*/
+
     /**
      * @return integer
      */
@@ -50,7 +49,7 @@ class Post
          * @param integer $userId
          * @return Post
          */
-       public function setUserId(int $userId): Post
+      public function setUserId(int $userId): Post
        {
            $this->userId = $userId;
            return $this;

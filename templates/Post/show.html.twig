@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 {% block body %}
 <div class="container">
-     {% if session.newsession.username == post.author %}
+     {% if session.newsession.id == post.userId %}
     <a href="index.php?route=editPost&id={{ post.id }}" class="btn btn-warning btn-lg active" role="button" aria-pressed="true">Modifier</a>
     <a href="index.php?route=deletePost&id={{ post.id }}" class="btn btn-danger btn-lg active" role="button" aria-pressed="true">Supprimer</a>
     {% endif %}
     <hr>
-    {{ dump() }}
-
+    {{ dump(session.newsession.id) }}
+    {{ dump(post.userId) }}
     <div class="item-box-blog-heading">
             {{ post.title }}
     </div>

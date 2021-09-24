@@ -18,12 +18,10 @@
                     <hr>
                     <div class="carousel-inner">
                         <div class="carousel-item active">
-                            {{ dump(session.newsession.id) }}
-                            {{ dump(posts.0) }}
+                            {{ dump(session.newsession) }}
 
                             <div class="row">
                                 {% for post in posts %}
-
                                     <div class="col-md-3" >
                                     <div class="item-box-blog">
                                         <div class="item-box-blog-image">

@@ -7,26 +7,14 @@ use App\Model\Post;
 
 class PostManager extends DAO
 {
-
-    public function findAll(): array
+    public function findAll() : array
     {
-    /*   if (isset($_SESSION['newsession'])){
-            $idSession = (array)$_SESSION['newsession'];
-            $arrayIdSession =(array)$idSession['id'];
-            var_dump($arrayIdSession);
-        }
-*/
         $result = $this->createQuery('SELECT * FROM post');
         $posts =[];
         foreach ($result->fetchAll() as $post){
             $posts[]= $this->buildObject($post);
         }
-        {
-      //  $posts = array_merge($arrayIdSession,$posts);
-        var_dump($posts);
         return $posts;
-    }
-
     }
 
     public function find($postId): ? Post
@@ -60,12 +48,11 @@ class PostManager extends DAO
 
     public function create(Post $post)
     {
-        $idSession = (array)$_SESSION['newsession'];
-        $arrayIdSession =(array)$idSession['id'];
-        var_dump($arrayIdSession);
+        $idArray[] = ($_SESSION['newsession']->id);
+        var_dump($idArray);
         $this->createQuery(
             'INSERT INTO post (title, content,user_id)VALUES(?,?,?)  ',
-       $result= array_merge($this->buildValues($post),$arrayIdSession));
+       $result= array_merge($this->buildValues($post),$idArray));
 
         var_dump($result);
         return $result;
@@ -82,7 +69,6 @@ class PostManager extends DAO
     private function buildValues(Post $post): array
     {
         return[
-            //$post->getUserId(),
             $post->getTitle(),
             $post->getContent(),
         ];
@@ -91,11 +77,13 @@ class PostManager extends DAO
     private function buildObject(object $post):Post
     {
         return (new Post())
-            //->setUserId($post->userId)
+            ->setId($post->id)
+            ->setUserId($post->user_id)
             ->setTitle($post->title)
             ->setContent($post->content)
             ->setCreatedAt(new \DateTimeImmutable($post->createdAt));
             return $post;
+
     }
 
 

@@ -21,7 +21,6 @@ abstract class Controller
             session_start();
         if (session_id()) {
             $this->twig->addGlobal('session', $_SESSION);
-            //var_dump($_SESSION['newsession']);
         }
     }
 
