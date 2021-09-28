@@ -6,20 +6,24 @@
     <a href="index.php?route=deletePost&id={{ post.id }}" class="btn btn-danger btn-lg active" role="button" aria-pressed="true">Supprimer</a>
     {% endif %}
     <hr>
-    {{ dump(session.newsession.id) }}
-    {{ dump(post.userId) }}
-    <div class="item-box-blog-heading">
-            {{ post.title }}
-    </div>
-    <div class="item-box-blog-text">
-        {{ post.content }}
-    </div>
-    <hr>
-    <div class="item-box-blog-text">
-        {{ post.author }}
-    </div>
-    <hr>
-    <a href="index.php?route=posts" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">précedent</a>
+    <h1>{{ post.title }}</h1>
 
+    <h2 class="item-box-blog-text">
+        {{ post.content }}
+    </h2>
+    <p>{{ user.username  }}</p>
+
+    <hr>
+    <h3>Commentez l'article</h3>
+    <form action="index.php?route=addComment" method="post">
+        <div class="form-group">
+            <textarea class="form-control" name="content" id="content" rows="3" placeholder="Contenu du commentaire"></textarea>
+        </div>
+        <div class="col-auto my-1">
+            <button type="submit" class="btn btn-primary">Publier</button>
+        </div><br>
+        <hr>
+        <a href="index.php?route=posts" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">précedent</a>
+    </form>
 </div>
 {% endblock %}

@@ -3,7 +3,7 @@
 namespace App\DAO;
 
 use App\Model\User;
-
+use App\Model\Post;
 class UserManager extends DAO
 
 {
@@ -19,15 +19,11 @@ class UserManager extends DAO
         return $this->buildObject($object);
     }
 
-    public function showUsers(): array
+    public function findUsernameByUserId($userId)
     {
-        $result = $this->createQuery('SELECT * FROM user');
 
-        $users = [];
-        foreach ($result->fetchAll() as $user) {
-            $users[] = $this->buildObject($user);
-        }
-        return $users;
+        $result = $this->createQuery('SELECT * from user WHERE user.id = ?', $userId);
+        return $result->fetch(\PDO::FETCH_OBJ);
     }
 
     public function findUser($username)
@@ -35,7 +31,6 @@ class UserManager extends DAO
         $result = $this->createQuery('SELECT * FROM user WHERE username = ?', [$username]);
         if ($result->rowCount() > 0) {
             return $result->fetch(\PDO::FETCH_OBJ);
-            var_dump($result);
         }
     }
 
@@ -43,7 +38,6 @@ class UserManager extends DAO
     {
         $this->createQuery('INSERT INTO user(id,username, password)VALUES(?,?,?)',
             array_merge($this->buildValues($user)));
-        var_dump($user);
         return true;
     }
     private function buildValues(User $user): array
@@ -58,6 +52,7 @@ class UserManager extends DAO
     private function buildObject(object $user):User
     {
         return (new User())
+            ->setId($user->id)
             ->setUsername($user->username)
             ->setPassword($user->password);
         return $user;

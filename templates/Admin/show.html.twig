@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="container">
+        {% if session.newsession.id == post.userId %}
+            <a href="index.php?route=editPost&id={{ post.id }}" class="btn btn-warning btn-lg active" role="button" aria-pressed="true">Modifier</a>
+            <a href="index.php?route=deletePost&id={{ post.id }}" class="btn btn-danger btn-lg active" role="button" aria-pressed="true">Supprimer</a>
+        {% endif %}
+        <hr>
+        <div class="item-box-blog-heading">
+            {{ post.title }}
+        </div>
+        <div class="item-box-blog-text">
+            {{ post.content }}
+        </div>
+        <hr>
+
+        <div class="item-box-blog-text">
+            {{ user.username  }}
+        </div>
+        <hr>
+        <a href="index.php?route=admin" class="btn btn-success btn-lg active" role="button" aria-pressed="true">précedent</a>
+
+    </div>
+{% endblock %}

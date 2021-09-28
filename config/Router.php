@@ -3,8 +3,10 @@
 namespace App;
 
 use App\Controller\AppController;
+use App\Controller\CommentController;
 use App\Controller\PostController;
 use App\Controller\UserController;
+use App\Model\Comment;
 use Twig\Environment;
 
 class Router
@@ -19,6 +21,7 @@ class Router
         $postController = new PostController($this->twig);
         $appController  = new AppController($this->twig);
         $userController = new UserController($this->twig);
+        $commentController = new CommentController($this->twig);
 
 
         if (isset($_GET['route']))
@@ -29,11 +32,17 @@ class Router
             if ($_GET['route']== 'editPost' && (isset($_GET['id']) && $_GET['id'] > 0 )){
             return $postController->update($_GET['id']);
             }
+            if ($_GET['route']== 'addComment'){
+                return $commentController->commentPost($_POST);
+            }
             if ($_GET['route']=='deletePost' && (isset($_GET['id']) && $_GET['id'] > 0)){
                 return $postController->delete($_GET['id']);
             }
+            if ($_GET['route']=='admin' && (isset($_GET['id']) && $_GET['id'] > 0 )){
+                return $postController->showPostAdmin($_POST);
+            }
             if (isset($_GET['id']) && $_GET['id'] > 0 ) {
-                return $postController->show();
+                return $postController->show($_POST);
             }
            if ('addPost' === $_GET['route']) {
                    return $postController->add($_POST);
@@ -50,6 +59,7 @@ class Router
             if ('admin'=== $_GET['route']){
                 return $postController->administration($_POST);
             }
+
         }
                 return $appController->index();
     }

@@ -3,16 +3,19 @@
 namespace App\Controller;
 
 use App\DAO\PostManager;
+use App\DAO\UserManager;
 use App\Model\Post;
 use Twig\Environment;
 
 class PostController extends Controller
 {
     private PostManager  $postManager;
+    private UserManager $userManager;
 
     public function __construct(Environment $twig)
     {
         $this->postManager = new PostManager();
+        $this->userManager = new UserManager();
         parent::__construct($twig);
     }
 
@@ -29,16 +32,37 @@ class PostController extends Controller
         return $this->render('Post/list.html.twig',['posts'=> $posts]);
     }
 
+    public function showPostAdmin()
+    {
+        $post = $this->postManager->find($_GET['id']);
+        $userId[] = $post->getUserId();
+        $user = $this->userManager->findUsernameByUserId($userId);
+
+        return $this->render('Admin/show.html.twig',[
+            'post'=> $post,
+            'user'=>$user,
+        ]);
+    }
+
     public function show()
     {
         $post = $this->postManager->find($_GET['id']);
-        return $this->render('Post/show.html.twig',['post'=> $post]);
+        $userId[] = $post->getUserId();
+        $user = $this->userManager->findUsernameByUserId($userId);
+
+        return $this->render('Post/show.html.twig',[
+            'post'=> $post,
+            'user'=>$user,
+            ]);
     }
+
+
+
 
     public function administration(): string
     {
-        $posts = $this->postManager->findAll();
-        return $this->render('Post/administration.html.twig',['posts'=> $posts]);
+        $posts = $this->postManager->findPostsByIdSession();
+        return $this->render('Admin/administration.html.twig',['posts'=> $posts]);
     }
 
     public function add($postForm)
@@ -60,6 +84,8 @@ class PostController extends Controller
     public function update($id)
     {
         $post = $this->postManager->find($id);
+        var_dump($post);
+
         if ($_POST) {
             $post
                 ->setTitle($_POST['title'])

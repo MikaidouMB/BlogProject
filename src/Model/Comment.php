@@ -4,11 +4,11 @@
 namespace App\Model;
 
 
-class Post
+class Comment
 {
     private int $id;
     private int $userId;
-    private string $title;
+    private int $postId;
     private string $content;
     private \DateTimeImmutable  $createdAt;
 
@@ -18,58 +18,56 @@ class Post
     }
 
     /**
-     * @return  integer
+     * @return int
      */
-
     public function getId(): int
     {
         return $this->id;
     }
 
     /**
-     * @param integer $id
-     * @return Post
+     * @param int $id
+     * @return Comment
      */
-
-    public function setId(int $id): Post
+    public function setId(int $id): Comment
     {
         $this->id = $id;
         return $this;
     }
 
     /**
-     * @return integer
+     * @return int
      */
-        public function getUserId(): int
-        {
-            return $this->userId;
-        }
-
-        /**
-         * @param integer $userId
-         * @return Post
-         */
-      public function setUserId(int $userId): Post
-       {
-           $this->userId = $userId;
-           return $this;
-       }
-
-    /**
-     * @return string
-     */
-    public function getTitle(): string
+ /*   public function getUserId(): int
     {
-        return $this->title;
+        return $this->userId;
+    }
+*/
+    /**
+     * @param int $userId
+     * @return Comment
+     */
+ /*   public function setUserId(int $userId): Comment
+    {
+        $this->userId = $userId;
+        return $this;
+    }
+*/
+    /**
+     * @return int
+     */
+    public function getPostId(): int
+    {
+        return $this->postId;
     }
 
     /**
-     * @param string $title
-     * @return Post
+     * @param int $postId
+     * @return Comment
      */
-    public function setTitle(string $title): Post
+    public function setPostId(int $postId): Comment
     {
-        $this->title = $title;
+        $this->postId = $postId;
         return $this;
     }
 
@@ -83,9 +81,9 @@ class Post
 
     /**
      * @param string $content
-     * @return Post
+     * @return Comment
      */
-    public function setContent(string $content): Post
+    public function setContent(string $content): Comment
     {
         $this->content = $content;
         return $this;
@@ -101,9 +99,9 @@ class Post
 
     /**
      * @param \DateTimeImmutable $createdAt
-     * @return Post
+     * @return Comment
      */
-    public function setCreatedAt(\DateTimeImmutable $createdAt): Post
+    public function setCreatedAt(\DateTimeImmutable $createdAt): Comment
     {
         $this->createdAt = $createdAt;
         return $this;

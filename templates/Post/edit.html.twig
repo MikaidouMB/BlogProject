@@ -1,5 +1,6 @@
 {% extends 'base.html.twig' %}
     {% block body %}
+        {{ dump() }}
         <div class="container">
             <form action="index.php?route=editPost&id={{ post.id }}" method="post">
                 <div class="input-field col s12 m6 l6">

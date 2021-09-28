@@ -19,20 +19,22 @@ class PostManager extends DAO
 
     public function find($postId): ? Post
     {
-        $result = $this->createQuery('SELECT * FROM post WHERE id = ?', [$postId]);
+        $result = $this->createQuery('SELECT * FROM post WHERE post.id = ?', [$postId]);
         if (false === $object = $result->fetchObject()){
             return null;
         }
         return $this->buildObject($object);
     }
 
-    public function findPostsByUsername()
+    public function findPostsByIdSession(): array
     {
-        $result = $this->createQuery('SELECT * FROM post');
-        if (false === $object = $result->fetchObject()){
-            return null;
-    }
-        return $this->buildObject($object);
+        $idArray[] = ($_SESSION['newsession']->id);
+        $result = $this->createQuery('SELECT * FROM post WHERE user_id = ?', $idArray);
+        $posts =[];
+        foreach ($result->fetchAll() as $post){
+            $posts[]= $this->buildObject($post);
+        }
+        return $posts;
     }
 
 
@@ -49,12 +51,9 @@ class PostManager extends DAO
     public function create(Post $post)
     {
         $idArray[] = ($_SESSION['newsession']->id);
-        var_dump($idArray);
         $this->createQuery(
-            'INSERT INTO post (title, content,user_id)VALUES(?,?,?)  ',
+            'INSERT INTO post (title, content,user_id)VALUES(?,?,?) ',
        $result= array_merge($this->buildValues($post),$idArray));
-
-        var_dump($result);
         return $result;
     }
 
