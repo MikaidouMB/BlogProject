@@ -38,21 +38,21 @@ class Comment
     /**
      * @return int
      */
- /*   public function getUserId(): int
+    public function getUserId(): int
     {
         return $this->userId;
     }
-*/
+
     /**
      * @param int $userId
      * @return Comment
      */
- /*   public function setUserId(int $userId): Comment
+    public function setUserId(int $userId): Comment
     {
         $this->userId = $userId;
         return $this;
     }
-*/
+
     /**
      * @return int
      */

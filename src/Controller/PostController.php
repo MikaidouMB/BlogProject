@@ -56,9 +56,6 @@ class PostController extends Controller
             ]);
     }
 
-
-
-
     public function administration(): string
     {
         $posts = $this->postManager->findPostsByIdSession();

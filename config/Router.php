@@ -32,8 +32,8 @@ class Router
             if ($_GET['route']== 'editPost' && (isset($_GET['id']) && $_GET['id'] > 0 )){
             return $postController->update($_GET['id']);
             }
-            if ($_GET['route']== 'addComment'){
-                return $commentController->commentPost($_POST);
+            if ($_GET['route']== 'addComment' && (isset($_GET['id']) && $_GET['id'] > 0 )){
+                return $commentController->commentPost($_GET['id']);
             }
             if ($_GET['route']=='deletePost' && (isset($_GET['id']) && $_GET['id'] > 0)){
                 return $postController->delete($_GET['id']);

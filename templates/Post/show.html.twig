@@ -5,6 +5,7 @@
     <a href="index.php?route=editPost&id={{ post.id }}" class="btn btn-warning btn-lg active" role="button" aria-pressed="true">Modifier</a>
     <a href="index.php?route=deletePost&id={{ post.id }}" class="btn btn-danger btn-lg active" role="button" aria-pressed="true">Supprimer</a>
     {% endif %}
+    {{ dump() }}
     <hr>
     <h1>{{ post.title }}</h1>
 
@@ -12,10 +13,28 @@
         {{ post.content }}
     </h2>
     <p>{{ user.username  }}</p>
-
+    {% for comment in comments %}
+    <div class="col-md-3" >
+        <div class="item-box-blog">
+            <div class="item-box-blog-image">
+                <div class="item-box-blog-date bg-blue-ui white"> {{ comment.createdAt|date('H:i:s d/m-Y') }}</div>
+                <figure> <img alt="" src="https://cdn.pixabay.com/photo/2017/02/08/14/25/computer-2048983_960_720.jpg" style="width: 150px"> </figure>
+            </div>
+            <div class="item-box-blog-body">
+                <div class="item-box-blog-heading">{{ comment.postId }}</div>
+                <div class="item-box-blog-text">{{ comment.content }}</div>
+                <div class="mt"><a href="index.php?route=post&id={{ comment.id }}" tabindex="0" class="btn bg-blue-ui white read"> Lire plus</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
     <hr>
-    <h3>Commentez l'article</h3>
-    <form action="index.php?route=addComment" method="post">
+    {% if session is empty %}
+
+    <a class="nav-link" href="index.php?route=login">Se connecter</a> ou <a class="nav-link" href="index.php?route=signUp">S'inscrire</a>
+    {% else %}
+    <form action="index.php?route=addComment&post&id={{ post.id }}" method="post">
         <div class="form-group">
             <textarea class="form-control" name="content" id="content" rows="3" placeholder="Contenu du commentaire"></textarea>
         </div>
@@ -25,5 +44,6 @@
         <hr>
         <a href="index.php?route=posts" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">précedent</a>
     </form>
+    {% endif %}
 </div>
 {% endblock %}
