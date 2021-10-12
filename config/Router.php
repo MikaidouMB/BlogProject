@@ -32,20 +32,11 @@ class Router
             if ($_GET['route']== 'editPost' && (isset($_GET['id']) && $_GET['id'] > 0 )){
             return $postController->update($_GET['id']);
             }
-            if ($_GET['route']== 'addComment' && (isset($_GET['id']) && $_GET['id'] > 0 )){
-                return $commentController->commentPost($_GET['id']);
-            }
             if ($_GET['route']=='deletePost' && (isset($_GET['id']) && $_GET['id'] > 0)){
                 return $postController->delete($_GET['id']);
             }
-            if ($_GET['route']=='admin' && (isset($_GET['id']) && $_GET['id'] > 0 )){
-                return $postController->showPostAdmin($_POST);
-            }
-            if (isset($_GET['id']) && $_GET['id'] > 0 ) {
-                return $postController->show($_POST);
-            }
-           if ('addPost' === $_GET['route']) {
-                   return $postController->add($_POST);
+            if ('addPost' === $_GET['route']) {
+                return $postController->add($_POST);
             }
             if ('signUp'=== $_GET['route']){
                 return $userController->signUp($_POST);
@@ -56,9 +47,44 @@ class Router
             if ('signOut'=== $_GET['route']){
                 return $userController->signOut($_POST);
             }
-            if ('admin'=== $_GET['route']){
-                return $postController->administration($_POST);
+            if ('adminPostList'=== $_GET['route']){
+                return $postController->adminPostList($_POST);
             }
+            if ('editAdminPost' == $_GET['route']&& (isset($_GET['id']) && $_GET['id'] > 0 )) {
+                return $postController->updateAdminPosts($_GET['id']);
+            }
+            if ($_GET['route']== 'editUser' && (isset($_GET['id']) && $_GET['id'] > 0 )){
+                return $userController->updateUser($_POST);
+            }
+            if ($_GET['route'] === 'deleteAdminPost' && (isset($_GET['id']) && $_GET['id'] > 0)){
+                return $postController->deleteAdminPost($_GET['id']);
+            }
+            if ('adminPostcomments'=== $_GET['route']){
+                return $commentController->adminPostcomments($_POST);
+            }
+            if ($_GET['route'] === 'deleteComment' && (isset($_GET['id']) && $_GET['id'] > 0)){
+                return $commentController->deleteAdminPostcomments($_GET['id']);
+            }
+            if ($_GET['route']=='deleteUser' && (isset($_GET['id']) && $_GET['id'] > 0)){
+                return $userController->deleteUser($_GET['id']);
+            }
+            if ('adminPostUsers'=== $_GET['route']){
+                return $postController->adminPostUsers();
+            }
+            if ($_GET['route']== 'editComment' && (isset($_GET['id']) && $_GET['id'] > 0 )){
+                return $commentController->updateComments($_GET['id']);
+            }
+            if ($_GET['route']== 'addComment' && (isset($_GET['id']) && $_GET['id'] > 0 )){
+                return $commentController->commentPost($_GET['id']);
+            }
+            if (isset($_GET['id']) && $_GET['id'] > 0 ) {
+                return $postController->show($_POST);
+            }
+            if (isset($_GET['id']) && $_GET['id'] > 0 ) {
+                return $commentController->listComments();
+            }
+
+
 
         }
                 return $appController->index();

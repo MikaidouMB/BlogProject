@@ -10,25 +10,44 @@ class CommentManager extends DAO
 {
     public function createComment(Comment $comment)
     {
-        $idArray[] = ($_SESSION['newsession']->id);
-        $idPost [] = $comment->getPostId();
         $this->createQuery(
-            'INSERT INTO comment (content,user_id,postId)VALUES(?,?,?) ',
-            $result= array_merge($this->buildValues($comment),$idArray,$idPost));
+            'INSERT INTO comment (id ,user_id, postId, username, content)VALUES(?,?,?,?,?) ',
+            $result = array_merge($this->buildValues($comment)));
         return $result;
+        var_dump($result);
     }
 
-    //voir si cette fonction peut récupérer les userid et postId
-    private function buildValues(Comment $comment): array
+    public function update(Comment $comment): bool
     {
-        return[
-            $comment->getContent(),
-        ];
+        $result = $this->createQuery(
+            'UPDATE comment SET id = ?, user_id = ? ,postId = ?, username = ?,  content = ? 
+                WHERE id = ?',
+            array_merge($this->buildValues($comment), [$comment->getId()])
+        );
+
+        return 1<= $result->rowCount();
     }
 
-    public function findAll() : array
+
+    public function find($commentId): ? Comment
     {
-        $result = $this->createQuery('SELECT * FROM comment ');
+        $result = $this->createQuery('SELECT * FROM comment WHERE comment.id = ?', [$commentId]);
+        if (false === $object = $result->fetchObject()){
+            return null;
+        }
+        return $this->buildObject($object);
+    }
+
+    public function findCommentsBypostId($postId): array
+    {
+        $result = $this->createQuery('SELECT * FROM comment WHERE comment.postId = ?', $postId);
+        return $result->fetchAll();
+
+    }
+
+    public function findAllComments(): array
+    {
+        $result = $this->createQuery('SELECT * FROM comment ORDER BY CreatedAt DESC ');
         $comments =[];
         foreach ($result->fetchAll() as $comment){
             $comments[]= $this->buildObject($comment);
@@ -36,15 +55,47 @@ class CommentManager extends DAO
         return $comments;
     }
 
+    public function findCommentAuthorsByUserId($comment): array
+    {
+        $result = $this->createQuery('SELECT * from comment');
+        $comments = [];
+        foreach ($result->fetchAll() as $comment) {
+            $comments[] = $this->buildObject($comment);
+        }
+        return $comments;
+    }
+    public function deleteAdminPostcomments($commentId): bool
+    {
+        $result = $this->createQuery(
+            'DELETE FROM comment WHERE id = ?',[$commentId],
+        );
+        return 1<= $result->rowCount();
+    }
+
+    //voir si cette fonction peut récupérer les userid et postId
+    private function buildValues(Comment $comment): array
+    {
+        return[
+            $comment->getId(),
+            $comment->getUserId(),
+            $comment->getPostId(),
+            $comment->getUsername(),
+            $comment->getContent(),
+        ];
+    }
+
     private function buildObject(object $comment):Comment
     {
         return (new Comment())
-            ->setPostId($comment->postId)
+            ->setId($comment->id)
             ->setUserId($comment->user_id)
+            ->setUsername($comment->username)
+            ->setPostId($comment->postId)
             ->setContent($comment->content)
             ->setCreatedAt(new \DateTimeImmutable($comment->createdAt));
         return $comment;
 
     }
+
 
 }

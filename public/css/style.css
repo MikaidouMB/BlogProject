@@ -1,3 +1,17 @@
 body {
-    margin-top: 200px;
+    margin-top: 120px;
+
 }
+
+#sidebar-wrapper {
+    margin-top: -25px;
+    z-index: 1;
+    position: fixed;
+    height: auto;
+    background-color: #1a242f;
+    border: 2px solid black;
+    opacity: 0.9;
+}
+
+
+

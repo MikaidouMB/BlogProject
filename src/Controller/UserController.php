@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\DAO\DAO;
 use App\DAO\UserManager;
 use App\Model\User;
 use App\services\Session;
@@ -19,7 +20,6 @@ class UserController extends Controller
         parent::__construct($twig);
     }
 
-//Fonction permettant à l'utilisateur de s'enregistrer
     public function signUp($userForm): string
     {
         $errors = [];
@@ -35,10 +35,12 @@ class UserController extends Controller
                 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
                 $user->setUsername($username);
                 $user->setPassword($hashedPassword);
-                $existUser = $this->userManager->findUser($username);
-                if (empty($existUser)) {
+                $user->setRole('viewer');
+                $existingUser = $this->userManager->checkIfUserExist($username);
+                if (empty($existingUser)) {
                     $this->userManager->register($user);
-                    var_dump($user);
+                    $_SESSION['newsession'] = $user;
+                    header('Location:index.php');
 
                     $validMsg = 'Utilisateur enregistré';
                 } else {
@@ -66,8 +68,6 @@ class UserController extends Controller
             }
         }
     }
-
-
     public function login($userForm): string
     {
         $errors = [];
@@ -81,12 +81,10 @@ class UserController extends Controller
             } else {
                 $username = $_POST['username'];
                 $password = $_POST['password'];
-                var_dump($userForm);
-                $existUser = $this->userManager->findUser($username);
+                $existingUser = $this->userManager->checkIfUserExist($username);
             }
-            if (session_id()) {
-                $_SESSION['newsession'] = $existUser;
-                var_dump($existUser);
+            if (session_id() && $existingUser != null) {
+                $_SESSION['newsession'] = $existingUser;
                header('Location:index.php');
                 $validMsg = 'Utilisateur connecté';
             } else {
@@ -100,8 +98,30 @@ class UserController extends Controller
                     'validation' => $validMsg,
                 ]
             );
+    }
+    public function updateUser($userId)
+    {
+        $userId =  array($_GET['id']);
+        $user = $this->userManager->findPostAuthorByUserId($userId);
 
+        if (isset($_POST['user_id'])){
+            if ($_POST['user_id'] == 1) {
+                $user->setRole('viewver');
+
+            } elseif ($_POST['user_id'] == 2) {
+                $user->setRole('admin');
+            }
+            (new UserManager())->update($user);
+            header('Location: index.php?route=adminPostUsers');
+        }
+        return $this->render('Admin/editUser.html.twig', ['user' => $user]);
     }
 
+    public function deleteUser($userId)
+    {
+        $user = $this->userManager->delete($userId);
+        header('Location: index.php?route=adminPostUsers');
+        echo 'post supprimé';
+    }
 
 }

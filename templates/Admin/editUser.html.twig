@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+    {% block body %}
+        <div class="container">
+            <form action="index.php?route=editUser&id={{ user.id }}" method="POST">
+                <div class="form-group">
+                    <label for="roles">Assigner role</label>
+                    <select name="user_id" class="form-control" id="role">
+                        <option value="1">viewer</option>
+                        <option value="2">admin</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary">Valider</button>
+                </div>
+            </form>
+        </div>
+    {% endblock %}

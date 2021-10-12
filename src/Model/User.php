@@ -9,8 +9,7 @@ class User
     private ?int $id = null;
     private string $username;
     private string $password;
-    private $role;
-    const DEFAULT_ROLES = array('viewer', 'user', 'admin');
+    private ?string $role = null;
 
     /**
      * @return integer
@@ -85,24 +84,24 @@ class User
         return $this;
     }
 
-  /*  /**
+    /**
      * @return bool
      */
-   /* public function getRole(): ?int
+    public function getRole(): ?string
     {
         return $this->role;
     }
-*/
-/*    /**
+
+    /**
      * @param bool $role
      * @return User
      */
 
-  /*  public function setRole(int $role): User
+    public function setRole(string $role): User
     {
         $this->role = $role;
         return $this;
-    }*/
+    }
 
 }
 

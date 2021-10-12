@@ -17,6 +17,7 @@ class PostManager extends DAO
         return $posts;
     }
 
+
     public function find($postId): ? Post
     {
         $result = $this->createQuery('SELECT * FROM post WHERE post.id = ?', [$postId]);
@@ -26,34 +27,33 @@ class PostManager extends DAO
         return $this->buildObject($object);
     }
 
-    public function findPostsByIdSession(): array
-    {
-        $idArray[] = ($_SESSION['newsession']->id);
-        $result = $this->createQuery('SELECT * FROM post WHERE user_id = ?', $idArray);
-        $posts =[];
-        foreach ($result->fetchAll() as $post){
-            $posts[]= $this->buildObject($post);
-        }
-        return $posts;
-    }
-
-
     public function update(Post $post): bool
     {
         $result = $this->createQuery(
-            'UPDATE post SET title = ?, content = ? WHERE id = ?',
+            'UPDATE post SET content = ?, author = ?,user_id = ?, title = ? WHERE id = ?',
         array_merge($this->buildValues($post), [$post->getId()])
         );
 
         return 1<= $result->rowCount();
     }
 
+    public function updateAdminPost(?Post $post):bool
+    {
+        $result = $this->createQuery(
+            'UPDATE post SET content = ?, author = ?,user_id = ?, title = ? WHERE id = ?',
+            array_merge($this->buildValues($post), [$post->getId()])
+        );
+
+        return 1<= $result->rowCount();
+    }
+
+
+
     public function create(Post $post)
     {
-        $idArray[] = ($_SESSION['newsession']->id);
         $this->createQuery(
-            'INSERT INTO post (title, content,user_id)VALUES(?,?,?) ',
-       $result= array_merge($this->buildValues($post),$idArray));
+            'INSERT INTO post (title, content,user_id,author)VALUES(?,?,?,?) ',
+            $result= array_merge($this->buildValues($post)));
         return $result;
     }
 
@@ -68,7 +68,10 @@ class PostManager extends DAO
     private function buildValues(Post $post): array
     {
         return[
+            //$post->getId(),
+            $post->getAuthor(),
             $post->getTitle(),
+            $post->getUserId(),
             $post->getContent(),
         ];
     }
@@ -78,6 +81,7 @@ class PostManager extends DAO
         return (new Post())
             ->setId($post->id)
             ->setUserId($post->user_id)
+            ->setAuthor($post->author)
             ->setTitle($post->title)
             ->setContent($post->content)
             ->setCreatedAt(new \DateTimeImmutable($post->createdAt));

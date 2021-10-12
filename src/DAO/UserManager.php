@@ -7,26 +7,16 @@ use App\Model\Post;
 class UserManager extends DAO
 
 {
-
-    private $user;
-
-    public function findByUsername($username): ? User
+    public function findPostAuthorByUserId($userId): ?User
     {
-        $result = $this->createQuery('SELECT * FROM user WHERE username = ?', [$username]);
+        $result = $this->createQuery('SELECT * from user WHERE user.id = ?', $userId);
         if (false === $object = $result->fetchObject()){
             return null;
         }
         return $this->buildObject($object);
     }
 
-    public function findUsernameByUserId($userId)
-    {
-
-        $result = $this->createQuery('SELECT * from user WHERE user.id = ?', $userId);
-        return $result->fetch(\PDO::FETCH_OBJ);
-    }
-
-    public function findUser($username)
+    public function checkIfUserExist($username)
     {
         $result = $this->createQuery('SELECT * FROM user WHERE username = ?', [$username]);
         if ($result->rowCount() > 0) {
@@ -36,9 +26,36 @@ class UserManager extends DAO
 
     public function register(User $user)
     {
-        $this->createQuery('INSERT INTO user(id,username, password)VALUES(?,?,?)',
+        $this->createQuery('INSERT INTO user(id,username, password, role)VALUES(?,?,?,?)',
             array_merge($this->buildValues($user)));
         return true;
+    }
+
+    public function findAllUsers(): array
+    {
+        $result = $this->createQuery('SELECT * FROM user');
+        $users =[];
+        foreach ($result->fetchAll() as $user){
+            $users[]= $this->buildObject($user);
+        }
+        return $users;
+    }
+    public function delete($userId): bool
+    {
+        $result = $this->createQuery(
+            'DELETE FROM user WHERE id = ?',[$userId],
+        );
+        return 1<= $result->rowCount();
+    }
+
+    public function update(User $user): bool
+    {
+        $result = $this->createQuery(
+            'UPDATE user SET id = ?, username = ?, password = ?, role = ? WHERE id = ?',
+            array_merge($this->buildValues($user), [$user->getId()])
+        );
+
+        return 1<= $result->rowCount();
     }
     private function buildValues(User $user): array
     {
@@ -46,6 +63,7 @@ class UserManager extends DAO
             $user->getId(),
             $user->getUsername(),
             $user->getPassword(),
+            $user->getRole(),
 
         ];
     }
@@ -54,7 +72,8 @@ class UserManager extends DAO
         return (new User())
             ->setId($user->id)
             ->setUsername($user->username)
-            ->setPassword($user->password);
+            ->setPassword($user->password)
+            ->setRole($user->role);
         return $user;
     }
 

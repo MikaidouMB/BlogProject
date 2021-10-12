@@ -4,10 +4,13 @@
 namespace App\Model;
 
 
+use phpDocumentor\Reflection\Types\Integer;
+
 class Comment
 {
-    private int $id;
-    private int $userId;
+    private ?int $id = null;
+    private ?int $userId = null;
+    private string $username;
     private int $postId;
     private string $content;
     private \DateTimeImmutable  $createdAt;
@@ -16,11 +19,10 @@ class Comment
     {
         $this->createdAt = new \DateTimeImmutable();
     }
-
     /**
      * @return int
      */
-    public function getId(): int
+    public function getId():? int
     {
         return $this->id;
     }
@@ -50,6 +52,24 @@ class Comment
     public function setUserId(int $userId): Comment
     {
         $this->userId = $userId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUsername(): string
+    {
+        return $this->username;
+    }
+
+    /**
+     * @param string $username
+     * @return Comment
+     */
+    public function setUsername(string $username): Comment
+    {
+        $this->username = $username;
         return $this;
     }
 

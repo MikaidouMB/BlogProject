@@ -6,8 +6,9 @@ namespace App\Model;
 
 class Post
 {
-    private int $id;
+    private ?int $id = null;
     private int $userId;
+    private string $author;
     private string $title;
     private string $content;
     private \DateTimeImmutable  $createdAt;
@@ -106,6 +107,24 @@ class Post
     public function setCreatedAt(\DateTimeImmutable $createdAt): Post
     {
         $this->createdAt = $createdAt;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAuthor(): string
+    {
+        return $this->author;
+    }
+
+    /**
+     * @param int $author
+     * @return Post
+     */
+    public function setAuthor(string $author): Post
+    {
+        $this->author = $author;
         return $this;
     }
 
