@@ -22,6 +22,7 @@ class PostManager extends DAO
         if (false === $object = $result->fetchObject()){
             return null;
         }
+
         return $this->buildObject($object);
     }
 
