@@ -10,7 +10,9 @@
                         <li data-target="#blogCarousel" data-slide-to="0" class="active"></li>
                         <li data-target="#blogCarousel" data-slide-to="1"></li>
                     </ol>
-                    <a href="index.php?route=addPost" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Ajouter</a>
+                    {% if session is not empty %}
+                    <a href="index.php?route=addPost" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Ajouter un article</a>
+                    {% endif %}
                     <hr>
                     <div class="carousel-inner">
                         <div class="carousel-item active">
@@ -24,7 +26,7 @@
                                         </div>
                                         <div class="item-box-blog-body">
                                             <div class="item-box-blog-heading">{{ post.title }}</div>
-                                            <div class="item-box-blog-text">{{ post.content }}</div>
+                                            <div class="item-box-blog-text">{{ post.author }}</div>
                                             <div class="mt"><a href="index.php?route=post&id={{ post.id }}" tabindex="0" class="btn bg-blue-ui white read"> Lire plus</a>
                                             </div>
                                         </div>

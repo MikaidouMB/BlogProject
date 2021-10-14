@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
   {% block body %}
     <div class="container">
-      <form action="index.php?route=editPost&id={{ post.id }}" method="post">
+      <form action="index.php?route=editAdminPost&id={{ post.id }}" method="post">
         <div class="input-field col s12 m6 l6">
           <input type="text" name="title" id="title" class="form-control" placeholder="Titre de l'article" value="{{ post.title }}">
         </div><br>

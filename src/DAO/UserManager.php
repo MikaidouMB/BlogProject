@@ -27,8 +27,12 @@ class UserManager extends DAO
     public function register(User $user)
     {
         $this->createQuery('INSERT INTO user(id,username, password, role)VALUES(?,?,?,?)',
-            array_merge($this->buildValues($user)));
-        return true;
+           $result =  array_merge($this->buildValues($user)));
+        var_dump($result);die();
+
+        return $result;
+        $_SESSION['newsession'] = $result;
+
     }
 
     public function findAllUsers(): array

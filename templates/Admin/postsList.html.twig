@@ -28,7 +28,9 @@
                    <td>{{ post.content }}</td>
                    <td>
                        <a href="index.php?route=editAdminPost&id={{ post.id }}" class="btn btn-warning btn-lg active" role="button" aria-pressed="true">Modifier</a>
-                       <a href="index.php?route=deleteAdminPost&id={{ post.id }}" class="btn btn-danger btn-lg active" role="button" aria-pressed="true">Supprimer</a>
+                       <a href="index.php?route=deleteAdminPost&id={{ post.id }}"
+                          onclick="return confirm('Voulez-vous effacer l\'article n°{{ post.title }} ?')"
+                          class="btn btn-danger btn-lg active" role="button" aria-pressed="true">Supprimer</a>
                    </td>
 
                </tr>

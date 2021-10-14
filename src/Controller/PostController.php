@@ -106,17 +106,13 @@ class PostController extends Controller
             $post = new Post();
             $title = $_POST['title'];
             $content = $_POST['content'];
-
             $session =  $_SESSION['newsession'];
             $userId = $session->id;
             $post->setUserId($userId);
-
             $username = $session->username;
             $post->setAuthor($username);
-
             $post->setTitle($title);
             $post->setContent($content);
-
             $postForm = $this->postManager->create($post);
             echo 'post enregistré';
             header('Location: index.php?route=posts');
@@ -125,7 +121,7 @@ class PostController extends Controller
             return $this->render('Post/add.html.twig', ['post' => $postForm]);
     }
 
-    public function update($id)
+  /*  public function update($id)
     {
         $post = $this->postManager->find($id);
         if ($_POST) {
@@ -137,7 +133,7 @@ class PostController extends Controller
             header('Location: index.php?route=post&id='.$id);
         }
         return $this->render('Post/edit.html.twig', ['post' => $post]);
-    }
+    }*/
 
     public function updateAdminPosts($postId)
     {

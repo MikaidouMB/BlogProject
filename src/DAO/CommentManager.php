@@ -14,7 +14,6 @@ class CommentManager extends DAO
             'INSERT INTO comment (id ,user_id, postId, username, content)VALUES(?,?,?,?,?) ',
             $result = array_merge($this->buildValues($comment)));
         return $result;
-        var_dump($result);
     }
 
     public function update(Comment $comment): bool
@@ -40,14 +39,14 @@ class CommentManager extends DAO
 
     public function findCommentsBypostId($postId): array
     {
-        $result = $this->createQuery('SELECT * FROM comment WHERE comment.postId = ?', $postId);
+        $result = $this->createQuery('SELECT * FROM comment WHERE comment.postId = ? ORDER BY createdAt DESC  ', $postId  );
         return $result->fetchAll();
 
     }
 
     public function findAllComments(): array
     {
-        $result = $this->createQuery('SELECT * FROM comment ORDER BY CreatedAt DESC ');
+        $result = $this->createQuery('SELECT * FROM comment ORDER BY createdAt DESC ');
         $comments =[];
         foreach ($result->fetchAll() as $comment){
             $comments[]= $this->buildObject($comment);
@@ -72,7 +71,6 @@ class CommentManager extends DAO
         return 1<= $result->rowCount();
     }
 
-    //voir si cette fonction peut récupérer les userid et postId
     private function buildValues(Comment $comment): array
     {
         return[

@@ -16,6 +16,7 @@ abstract class Controller
 
     public function __construct(Environment $twig)
     {
+
         $this->twig = $twig;
         if (!session_id())
             session_start();

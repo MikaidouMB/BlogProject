@@ -54,11 +54,11 @@ class CommentController extends Controller
             $comment->setPostId($_GET['id']);
 
             $post = $this->postManager->find($_GET['id']);
-
+            $postId = $post->getId();
             $commentForm = $this->commentManager->createComment($comment);
 
             echo 'commentaire enregistré';
-            header('Location: index.php?route=posts');
+            header('Location: index.php?route=post&id='.$postId);
         }
         return $this->render('Post/show.html.twig', [
             'post' => $commentForm,

@@ -9,7 +9,7 @@ class PostManager extends DAO
 {
     public function findAll() : array
     {
-        $result = $this->createQuery('SELECT * FROM post');
+        $result = $this->createQuery('SELECT * FROM post ORDER BY createdAt DESC');
         $posts =[];
         foreach ($result->fetchAll() as $post){
             $posts[]= $this->buildObject($post);
@@ -52,7 +52,7 @@ class PostManager extends DAO
     public function create(Post $post)
     {
         $this->createQuery(
-            'INSERT INTO post (title, content,user_id,author)VALUES(?,?,?,?) ',
+            'INSERT INTO post (author,title,user_id,content)VALUES(?,?,?,?) ',
             $result= array_merge($this->buildValues($post)));
         return $result;
     }
