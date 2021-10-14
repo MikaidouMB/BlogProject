@@ -3,14 +3,13 @@
 namespace App\DAO;
 
 use App\Model\User;
-use App\Model\Post;
-class UserManager extends DAO
 
+class UserManager extends DAO
 {
     public function findPostAuthorByUserId($userId): ?User
     {
         $result = $this->createQuery('SELECT * from user WHERE user.id = ?', $userId);
-        if (false === $object = $result->fetchObject()){
+        if (!$object = $result->fetchObject()){
             return null;
         }
         return $this->buildObject($object);
@@ -26,30 +25,27 @@ class UserManager extends DAO
 
     public function register(User $user)
     {
-        $this->createQuery('INSERT INTO user(id,username, password, role)VALUES(?,?,?,?)',
-           $result =  array_merge($this->buildValues($user)));
-        var_dump($result);die();
+        $this->createQuery('INSERT INTO user(id, username, password, role)VALUES(?,?,?,?)',
+            $result = array_merge($this->buildValues($user)));
 
-        return $result;
         $_SESSION['newsession'] = $result;
-
+        return $result;
     }
 
     public function findAllUsers(): array
     {
         $result = $this->createQuery('SELECT * FROM user');
-        $users =[];
+        $users = [];
         foreach ($result->fetchAll() as $user){
             $users[]= $this->buildObject($user);
         }
         return $users;
     }
+
     public function delete($userId): bool
     {
-        $result = $this->createQuery(
-            'DELETE FROM user WHERE id = ?',[$userId],
-        );
-        return 1<= $result->rowCount();
+        $result = $this->createQuery('DELETE FROM user WHERE id = ?', [$userId]);
+        return 1 <= $result->rowCount();
     }
 
     public function update(User $user): bool
@@ -59,11 +55,12 @@ class UserManager extends DAO
             array_merge($this->buildValues($user), [$user->getId()])
         );
 
-        return 1<= $result->rowCount();
+        return 1 <= $result->rowCount();
     }
+
     private function buildValues(User $user): array
     {
-        return[
+        return [
             $user->getId(),
             $user->getUsername(),
             $user->getPassword(),
@@ -71,6 +68,7 @@ class UserManager extends DAO
 
         ];
     }
+
     private function buildObject(object $user):User
     {
         return (new User())
@@ -78,7 +76,7 @@ class UserManager extends DAO
             ->setUsername($user->username)
             ->setPassword($user->password)
             ->setRole($user->role);
+
         return $user;
     }
-
 }

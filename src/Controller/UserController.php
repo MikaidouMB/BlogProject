@@ -48,6 +48,7 @@ class UserController extends Controller
                 }
             }
         }
+
         return $this->render('Auth/register.html.twig',
             [
                 'userform' => $userForm,
@@ -72,33 +73,33 @@ class UserController extends Controller
     {
         $errors = [];
         $validMsg = [];
-        $username = false;
-        $password = false;
 
         if (!empty($_POST)) {
             if (empty($_POST['username']) || empty($_POST['password'])) {
                 echo 'Identifiant ou mot de passe incorrect';
             } else {
                 $username = $_POST['username'];
-                $password = $_POST['password'];
                 $existingUser = $this->userManager->checkIfUserExist($username);
             }
-            if (session_id() && $existingUser != null) {
+
+            if (session_id() && $existingUser !== null) {
                 $_SESSION['newsession'] = $existingUser;
-               header('Location:index.php');
+                header('Location:index.php');
                 $validMsg = 'Utilisateur connecté';
             } else {
                 $errors = 'Identifiant ou mot de passe inéxistant';
             }
         }
-            return $this->render('Auth/login.html.twig',
-                [
-                    'userform' => $userForm,
-                    'errors' => $errors,
-                    'validation' => $validMsg,
-                ]
-            );
+
+        return $this->render('Auth/login.html.twig',
+            [
+                'userform' => $userForm,
+                'errors' => $errors,
+                'validation' => $validMsg,
+            ]
+        );
     }
+
     public function updateUser($userId)
     {
         $userId =  array($_GET['id']);
@@ -111,15 +112,17 @@ class UserController extends Controller
             } elseif ($_POST['user_id'] == 2) {
                 $user->setRole('admin');
             }
+
             (new UserManager())->update($user);
             header('Location: index.php?route=adminPostUsers');
         }
+
         return $this->render('Admin/editUser.html.twig', ['user' => $user]);
     }
 
     public function deleteUser($userId)
     {
-        $user = $this->userManager->delete($userId);
+        $this->userManager->delete($userId);
         header('Location: index.php?route=adminPostUsers');
         echo 'post supprimé';
     }

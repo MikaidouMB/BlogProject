@@ -1,12 +1,11 @@
 <?php
 
-
 namespace App\DAO;
-
 
 abstract class DAO
 {
      private \PDO $database;
+
      public function __construct()
      {
         $this->database = new \PDO(
@@ -15,10 +14,11 @@ abstract class DAO
             $_ENV['DB_PASSWORD'],
             [
                 \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
-                \PDO::ATTR_DEFAULT_FETCH_MODE =>\PDO::FETCH_OBJ,
+                \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_OBJ,
             ]
         );
     }
+
     public function createQuery(string $sql, array $params = [])
     {
         if (!$params) {

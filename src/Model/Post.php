@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Model;
-
 
 class Post
 {
@@ -21,7 +19,6 @@ class Post
     /**
      * @return  integer
      */
-
     public function getId(): int
     {
         return $this->id;
@@ -31,7 +28,6 @@ class Post
      * @param integer $id
      * @return Post
      */
-
     public function setId(int $id): Post
     {
         $this->id = $id;
@@ -41,20 +37,20 @@ class Post
     /**
      * @return integer
      */
-        public function getUserId(): int
-        {
-            return $this->userId;
-        }
+    public function getUserId(): int
+    {
+        return $this->userId;
+    }
 
-        /**
-         * @param integer $userId
-         * @return Post
-         */
-      public function setUserId(int $userId): Post
-       {
-           $this->userId = $userId;
-           return $this;
-       }
+    /**
+     * @param integer $userId
+     * @return Post
+     */
+    public function setUserId(int $userId): Post
+    {
+        $this->userId = $userId;
+        return $this;
+    }
 
     /**
      * @return string

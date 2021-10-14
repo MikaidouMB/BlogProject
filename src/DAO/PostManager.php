@@ -2,7 +2,6 @@
 
 namespace App\DAO;
 
-
 use App\Model\Post;
 
 class PostManager extends DAO
@@ -16,7 +15,6 @@ class PostManager extends DAO
         }
         return $posts;
     }
-
 
     public function find($postId): ? Post
     {
@@ -54,6 +52,7 @@ class PostManager extends DAO
         $this->createQuery(
             'INSERT INTO post (author,title,user_id,content)VALUES(?,?,?,?) ',
             $result= array_merge($this->buildValues($post)));
+
         return $result;
     }
 
@@ -62,13 +61,14 @@ class PostManager extends DAO
         $result = $this->createQuery(
             'DELETE FROM post WHERE id = ?',[$postId],
     );
+
         return 1<= $result->rowCount();
     }
 
     private function buildValues(Post $post): array
     {
         return[
-            //$post->getId(),
+
             $post->getAuthor(),
             $post->getTitle(),
             $post->getUserId(),
@@ -85,8 +85,6 @@ class PostManager extends DAO
             ->setTitle($post->title)
             ->setContent($post->content)
             ->setCreatedAt(new \DateTimeImmutable($post->createdAt));
-            return $post;
-
     }
 
 

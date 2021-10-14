@@ -3,12 +3,9 @@
 namespace App\Controller;
 
 use App\DAO\CommentManager;
-use App\DAO\DAO;
 use App\DAO\PostManager;
 use App\DAO\UserManager;
-use App\Model\Comment;
 use App\Model\Post;
-use App\Model\User;
 use App\services\Session;
 use Twig\Environment;
 
@@ -84,7 +81,6 @@ class PostController extends Controller
         $user = $this->userManager->findPostAuthorByUserId($userId);
         $comments = $this->commentManager->findCommentsBypostId($postId);
 
-
         return $this->render('Post/show.html.twig',[
             'post'=> $post,
             'user'=>$user,
@@ -92,13 +88,11 @@ class PostController extends Controller
         ]);
     }
 
-
     public function adminPostUsers(): string
     {
         $users = $this->userManager->findAllUsers();
         return $this->render('Admin/usersList.html.twig',['users'=> $users]);
     }
-
 
     public function add($postForm)
     {
@@ -121,20 +115,6 @@ class PostController extends Controller
             return $this->render('Post/add.html.twig', ['post' => $postForm]);
     }
 
-  /*  public function update($id)
-    {
-        $post = $this->postManager->find($id);
-        if ($_POST) {
-            $post
-                ->setTitle($_POST['title'])
-                ->setContent($_POST['content']);
-            (new PostManager())->update($post);
-
-            header('Location: index.php?route=post&id='.$id);
-        }
-        return $this->render('Post/edit.html.twig', ['post' => $post]);
-    }*/
-
     public function updateAdminPosts($postId)
     {
         $postId = (int) ($_GET['id']);
@@ -149,12 +129,13 @@ class PostController extends Controller
 
             header('Location: index.php?route=adminPostList');
         }
+
         return $this->render('Admin/editPost.html.twig', ['post' => $post]);
     }
 
     public function delete($id)
     {
-        $post = $this->postManager->delete($id);
+        $this->postManager->delete($id);
         header('Location: index.php?route=post&id='.$id);
         echo 'post supprimé';
         header('Location: index.php?route=posts');
@@ -162,7 +143,7 @@ class PostController extends Controller
 
     public function deleteAdminPost($id)
     {
-        $post = $this->postManager->delete($id);
+        $this->postManager->delete($id);
         header('Location: index.php?route=adminPostList');
         echo 'post supprimé';
     }
