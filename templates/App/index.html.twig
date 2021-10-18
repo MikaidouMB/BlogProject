@@ -1,15 +1,15 @@
 {% extends 'base.html.twig' %}
 {% block title %}Index - {{ parent() }}{% endblock %}
 {% block body %}
-    <h1>Bienvenue {{ session.newsession.username }}</h1>
     <header>
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
+                    <img src="../../public/img/IMG_2057.jpg" class="img-thumbnail" alt="Responsive image" width="250vh">
                     <div class="intro-text">
                         <span class="name">Mikaïdou M'Bo</span>
                         <hr class="star-light">
-                        <span class="skills">Développeur - PHP - Symfony</span>
+                        <span class="skills">Développeur PHP - Symfony</span>
                     </div>
                 </div>
             </div>
@@ -94,26 +94,26 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <h2>About</h2>
+                    <h2>A propos</h2>
                     <hr class="star-light">
                     <img class="img-responsive" src="../../public/img/" alt="">
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-4 col-lg-offset-2">
-                    <p>Freelancer is a free bootstrap theme created by Start Bootstrap. The download includes the complete source files including HTML, CSS, and JavaScript as well as optional LESS stylesheets for easy customization.</p>
+                <p>Après 10 ans d'activité en qualité d'éducateur sportif, j'ai décidé de revenir vers mon
+                    premier choix de carrière qui se situe dans le monde du digital. En 2017, Codecademy et freecodeCamp m'ont aidé à faire mes premiers pas en
+                    développement web à travers des exercices d'apprentissage HTML, CSS et JavaScript.</p>
                 </div>
                 <div class="col-lg-4">
-                    <p>Whether you're a student looking to showcase your work, a professional looking to attract clients, or a graphic artist looking to share your projects, this template is the perfect starting point!</p>
+                <p>Tout au long de ces missions, les qualités et méthodes acquises par la pratique du
+                    sport m'ont été utiles car elles m'ont permis de persévérer et d'appréhender
+                    sereinement la rigueur que nécessite le code. Ce sont ces mêmes qualités qui feront
+                    de mon profil un atout dans votre équipe car étant issu d'un milieu différent, je peux
+                    joindre le meilleur des deux mondes pour réaliser un sprint productif.</p>
                 </div>
                 <div class="col-lg-8 col-lg-offset-2 text-center">
                     <a href="../../public/img/CV_dev_PHP_Mikaidou_MBo.pdf" class="btn btn-lg btn-outline" target="_blank">Cliquez ici pour voir mon CV</a>
-                </div>
-
-                <div class="col-lg-8 col-lg-offset-2 text-center">
-                    <a href="#" class="btn btn-lg btn-outline">
-                        <i class="fa fa-download"></i> Download Theme
-                    </a>
                 </div>
             </div>
         </div>
@@ -154,19 +154,11 @@
                         </div>
                         <div class="row control-group">
                             <div class="form-group col-xs-12 floating-label-form-group controls">
-                                <label>Phone Number</label>
-                                <input type="tel" class="form-control" placeholder="Téléphone" id="phone" name="phone" required data-validation-required-message="Please enter your phone number.">
-                                <p class="help-block text-danger"></p>
-                            </div>
-                        </div>
-                        <div class="row control-group">
-                            <div class="form-group col-xs-12 floating-label-form-group controls">
                                 <label>Message</label>
                                 <textarea rows="5" class="form-control" placeholder="Message" id="message" name="message" required data-validation-required-message="Please enter a message."></textarea>
                                 <p class="help-block text-danger"></p>
                             </div>
                         </div>
-                        <br>
                         <div id="success"></div>
                         <div class="row">
                             <div class="form-group col-xs-12">

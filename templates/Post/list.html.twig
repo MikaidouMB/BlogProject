@@ -1,44 +1,22 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="container cta-100 ">
-    <div class="container">
-        <div class="row blog">
-            <div class="col-md-12">
-                <div id="blogCarousel" class="carousel slide container-blog" data-ride="carousel">
-                    <ol class="carousel-indicators">
-                        <li data-target="#blogCarousel" data-slide-to="0" class="active"></li>
-                        <li data-target="#blogCarousel" data-slide-to="1"></li>
-                    </ol>
-                    {% if session is not empty %}
+        <div class="container">
+            <div class="row blog">
+                {% if session is not empty %}
                     <a href="index.php?route=addPost" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Ajouter un article</a>
-                    {% endif %}
-                    <hr>
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <div class="row">
-                                {% for post in posts %}
-                                    <div class="col-md-3" >
-                                    <div class="item-box-blog">
-                                        <div class="item-box-blog-image">
-                                            <div class="item-box-blog-date bg-blue-ui white"> {{ post.createdAt|date('H:i:s d/m-Y') }}</div>
-                                            <figure> <img alt="" src="https://cdn.pixabay.com/photo/2017/02/08/14/25/computer-2048983_960_720.jpg" style="width: 150px"> </figure>
-                                        </div>
-                                        <div class="item-box-blog-body">
-                                            <div class="item-box-blog-heading">{{ post.title }}</div>
-                                            <div class="item-box-blog-text">{{ post.author }}</div>
-                                            <div class="mt"><a href="index.php?route=post&id={{ post.id }}" tabindex="0" class="btn bg-blue-ui white read"> Lire plus</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div>
+                {% endif %}
+                <hr>
+                <div class="container">
+                    {% for post in posts %}
+                    <h1>{{ post.title }} </h1>
+                        <span class="badge">mis à jour le {{ post.modifiedOn|date('H:i:s d/m-Y') }}</span><br>
+                        <p>'{{ post.content|length > 300 ? post.content|slice(0,300) ~ '...'}}
+                            <a href="index.php?route=post&id={{ post.id }}" tabindex="0" class="btn bg-blue-ui white read">Lire plus</a>
+                        </p>
                 </div>
+                <hr>
             </div>
-        </div>
-    </div>
-</div>
+          </div>
+         {% endfor %}
 {% endblock %}

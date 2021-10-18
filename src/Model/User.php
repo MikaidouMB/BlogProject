@@ -10,6 +10,8 @@ class User
     private string $username;
     private string $password;
     private ?string $role = null;
+    private ?string $email = null;
+
 
     /**
      * @return integer
@@ -50,22 +52,21 @@ class User
     /**
      * @return string
      */
-    /*   public function getEmail(): string
+       public function getEmail(): string
        {
            return $this->email;
-       }*/
+       }
 
     /**
      * @param string $email
      * @return User
      */
-    /*
     public function setEmail(string $email): User
     {
         $this->email = $email;
         return $this;
     }
-*/
+
     /**
      * @return string
      */

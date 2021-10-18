@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\DAO\DAO;
 use App\DAO\UserManager;
 use App\Model\User;
 use App\services\Session;
@@ -20,28 +19,33 @@ class UserController extends Controller
         parent::__construct($twig);
     }
 
-    public function signUp($userForm): string
+    /**
+     * @param $userForm
+     * @return string
+     */
+    public function signUp($userForm)
     {
-        $errors = [];
+          $errors = [];
         $validMsg = [];
 
         if (!empty($_POST)) {
-            if (empty($_POST['username']) || empty($_POST['password'])) {
+            if (empty($_POST['username']) || empty($_POST['password']) ||empty($_POST['email'])) {
                 $errors = 'Les champs sont vides';
             } else {
-                $user = new User();
-                $password = $_POST['password'];
-                $username = $_POST['username'];
+                          $user = new User();
+                      $password = $_POST['password'];
+                      $username = $_POST['username'];
+                         $email = $_POST['email'];
                 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
                 $user->setUsername($username);
                 $user->setPassword($hashedPassword);
+                $user->setEmail($email);
                 $user->setRole('viewer');
                 $existingUser = $this->userManager->checkIfUserExist($username);
                 if (empty($existingUser)) {
                     $this->userManager->register($user);
                     $_SESSION['newsession'] = $user;
                     header('Location:index.php');
-
                     $validMsg = 'Utilisateur enregistré';
                 } else {
                     echo "L'utilisateur existe déjà";
@@ -69,6 +73,11 @@ class UserController extends Controller
             }
         }
     }
+
+    /**
+     * @param $userForm
+     * @return string
+     */
     public function login($userForm): string
     {
         $errors = [];
@@ -100,6 +109,10 @@ class UserController extends Controller
         );
     }
 
+    /**
+     * @param $userId
+     * @return string
+     */
     public function updateUser($userId)
     {
         $userId =  array($_GET['id']);
@@ -120,6 +133,9 @@ class UserController extends Controller
         return $this->render('Admin/editUser.html.twig', ['user' => $user]);
     }
 
+    /**
+     * @param $userId
+     */
     public function deleteUser($userId)
     {
         $this->userManager->delete($userId);

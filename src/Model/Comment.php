@@ -13,11 +13,13 @@ class Comment
     private string $username;
     private int $postId;
     private string $content;
-    private \DateTimeImmutable  $createdAt;
+    private ?string $valid = null;
+    private \DateTimeImmutable  $modifiedOn;
+    private $setValid;
 
     public function __construct()
     {
-        $this->createdAt = new \DateTimeImmutable();
+        $this->modifiedOn = new \DateTimeImmutable();
     }
     /**
      * @return int
@@ -110,20 +112,39 @@ class Comment
     }
 
     /**
-     * @return \DateTimeImmutable
+     * @return string
+     * @return Comment
      */
-    public function getCreatedAt(): \DateTimeImmutable
+    public function getValid(): string
     {
-        return $this->createdAt;
+        return $this->valid;
     }
 
     /**
-     * @param \DateTimeImmutable $createdAt
+     * @param string $valid
      * @return Comment
      */
-    public function setCreatedAt(\DateTimeImmutable $createdAt): Comment
+    public function setValid(string $valid): Comment
     {
-        $this->createdAt = $createdAt;
+        $this->valid = $valid;
+        return $this;
+    }
+
+    /**
+     * @return \DateTimeImmutable
+     */
+    public function getModifiedOn(): \DateTimeImmutable
+    {
+        return $this->modifiedOn;
+    }
+
+    /**
+     * @param \DateTimeImmutable $modifiedOn
+     * @return Comment
+     */
+    public function setModifiedOn(\DateTimeImmutable $modifiedOn): Comment
+    {
+        $this->modifiedOn = $modifiedOn;
         return $this;
     }
 

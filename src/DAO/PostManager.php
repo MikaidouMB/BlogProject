@@ -6,9 +6,12 @@ use App\Model\Post;
 
 class PostManager extends DAO
 {
+    /**
+     * @return array
+     */
     public function findAll() : array
     {
-        $result = $this->createQuery('SELECT * FROM post ORDER BY createdAt DESC');
+        $result = $this->createQuery('SELECT * FROM post ORDER BY modifiedOn DESC');
         $posts =[];
         foreach ($result->fetchAll() as $post){
             $posts[]= $this->buildObject($post);
@@ -16,6 +19,10 @@ class PostManager extends DAO
         return $posts;
     }
 
+    /**
+     * @param $postId
+     * @return Post|null
+     */
     public function find($postId): ? Post
     {
         $result = $this->createQuery('SELECT * FROM post WHERE post.id = ?', [$postId]);
@@ -26,30 +33,27 @@ class PostManager extends DAO
         return $this->buildObject($object);
     }
 
-    public function update(Post $post): bool
-    {
-        $result = $this->createQuery(
-            'UPDATE post SET content = ?, author = ?,user_id = ?, title = ? WHERE id = ?',
-        array_merge($this->buildValues($post), [$post->getId()])
-        );
-
-        return 1<= $result->rowCount();
-    }
-
+    /**
+     * @param Post|null $post
+     * @return bool
+     */
     public function updateAdminPost(?Post $post):bool
     {
         $result = $this->createQuery(
-            'UPDATE post SET content = ?, author = ?,user_id = ?, title = ? WHERE id = ?',
+            'UPDATE post SET  author = ?, title = ?, user_id = ?, content = ? WHERE id = ?',
             array_merge($this->buildValues($post), [$post->getId()])
         );
 
         return 1<= $result->rowCount();
     }
 
-
-
+    /**
+     * @param Post $post
+     * @return mixed
+     */
     public function create(Post $post)
     {
+        var_dump($post);
         $this->createQuery(
             'INSERT INTO post (author,title,user_id,content)VALUES(?,?,?,?) ',
             $result= array_merge($this->buildValues($post)));
@@ -57,6 +61,10 @@ class PostManager extends DAO
         return $result;
     }
 
+    /**
+     * @param $postId
+     * @return bool
+     */
     public function delete($postId): bool
     {
         $result = $this->createQuery(
@@ -66,6 +74,10 @@ class PostManager extends DAO
         return 1<= $result->rowCount();
     }
 
+    /**
+     * @param Post $post
+     * @return array
+     */
     private function buildValues(Post $post): array
     {
         return[
@@ -77,6 +89,11 @@ class PostManager extends DAO
         ];
     }
 
+    /**
+     * @param object $post
+     * @return Post
+     * @throws \Exception
+     */
     private function buildObject(object $post):Post
     {
         return (new Post())
@@ -85,7 +102,7 @@ class PostManager extends DAO
             ->setAuthor($post->author)
             ->setTitle($post->title)
             ->setContent($post->content)
-            ->setCreatedAt(new \DateTimeImmutable($post->createdAt));
+            ->setModifiedOn(new \DateTimeImmutable($post->modifiedOn));
     }
 
 

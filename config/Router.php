@@ -6,7 +6,6 @@ use App\Controller\AppController;
 use App\Controller\CommentController;
 use App\Controller\PostController;
 use App\Controller\UserController;
-use App\Model\Comment;
 use Twig\Environment;
 
 class Router
@@ -16,11 +15,12 @@ class Router
     public function __construct(Environment $twig){
         $this->twig = $twig;
     }
+
     public function run()
     {
-        $postController = new PostController($this->twig);
-        $appController  = new AppController($this->twig);
-        $userController = new UserController($this->twig);
+           $postController = new PostController($this->twig);
+           $appController  = new AppController($this->twig);
+           $userController = new UserController($this->twig);
         $commentController = new CommentController($this->twig);
 
 
@@ -77,9 +77,6 @@ class Router
             if (isset($_GET['id']) && $_GET['id'] > 0 ) {
                 return $commentController->listComments();
             }
-
-
-
         }
                 return $appController->index();
     }

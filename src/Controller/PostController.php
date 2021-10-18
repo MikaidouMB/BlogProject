@@ -14,17 +14,21 @@ class PostController extends Controller
     private PostManager  $postManager;
     private UserManager $userManager;
     private CommentManager $commentManager;
+    private Session $session;
 
     public function __construct(Environment $twig)
     {
-        $this->postManager = new PostManager();
-        $this->userManager = new UserManager();
+           $this->postManager = new PostManager();
+           $this->userManager = new UserManager();
         $this->commentManager = new CommentManager();
-        $this->session = new Session();
+               $this->session = new Session();
 
         parent::__construct($twig);
     }
 
+    /**
+     * @return string
+     */
     public function index()
     {
         $posts = $this->postManager->findAll();
@@ -32,6 +36,9 @@ class PostController extends Controller
 
     }
 
+    /**
+     * @return string
+     */
     public function list(): string
     {
         $posts = $this->postManager->findAll();
@@ -59,33 +66,17 @@ class PostController extends Controller
         $user = $this->userManager->findPostAuthorByUserId($userId);
         $comments = $this->commentManager->findCommentsBypostId($postId);
 
-
         return $this->render('Post/show.html.twig',[
             'post'=> $post,
             'user'=>$user,
             'comments'=>$comments,
             ]);
     }
+    
     public function adminPostList(): string
     {
         $posts = $this->postManager->findAll();
         return $this->render('Admin/postsList.html.twig',['posts'=> $posts]);
-    }
-
-    public function showAdminPost(): string
-    {
-        $post = $this->postManager->find($_GET['id']);
-        $postId[] =$post->getId();
-        $userId[] = $post->getUserId();
-
-        $user = $this->userManager->findPostAuthorByUserId($userId);
-        $comments = $this->commentManager->findCommentsBypostId($postId);
-
-        return $this->render('Post/show.html.twig',[
-            'post'=> $post,
-            'user'=>$user,
-            'comments'=>$comments,
-        ]);
     }
 
     public function adminPostUsers(): string
@@ -94,16 +85,24 @@ class PostController extends Controller
         return $this->render('Admin/usersList.html.twig',['users'=> $users]);
     }
 
+    /**
+     * @param $postForm
+     * @return string
+     */
     public function add($postForm)
     {
         if (!empty($postForm)) {
-            $post = new Post();
-            $title = $_POST['title'];
-            $content = $_POST['content'];
-            $session =  $_SESSION['newsession'];
-            $userId = $session->id;
-            $post->setUserId($userId);
+           $post = new Post();
+          $title = $_POST['title'];
+        $content = $_POST['content'];
+        $session =  $_SESSION['newsession'];
+        var_dump($session);
+         $userId = $session->id;
+            //$post->setUserId($userId);
             $username = $session->username;
+            var_dump($username);
+            $post->setUserId($userId);
+
             $post->setAuthor($username);
             $post->setTitle($title);
             $post->setContent($content);
@@ -115,24 +114,29 @@ class PostController extends Controller
             return $this->render('Post/add.html.twig', ['post' => $postForm]);
     }
 
+    /**
+     * @param $postId
+     * @return string
+     */
     public function updateAdminPosts($postId)
     {
         $postId = (int) ($_GET['id']);
-        $post = $this->postManager->find($postId);
+        $post   = $this->postManager->find($postId);
 
         if ($_POST) {
-            $post
-                ->setId($postId)
-                ->setTitle($_POST['title'])
-                ->setContent($_POST['content']);
-            (new PostManager())->updateAdminPost($post);
-
+            $post->setId($postId)
+                 ->setTitle($_POST['title'])
+                 ->setContent($_POST['content']);
+                 (new PostManager())->updateAdminPost($post);
             header('Location: index.php?route=adminPostList');
         }
 
         return $this->render('Admin/editPost.html.twig', ['post' => $post]);
     }
 
+    /**
+     * @param $id
+     */
     public function delete($id)
     {
         $this->postManager->delete($id);
@@ -141,6 +145,9 @@ class PostController extends Controller
         header('Location: index.php?route=posts');
     }
 
+    /**
+     * @param $id
+     */
     public function deleteAdminPost($id)
     {
         $this->postManager->delete($id);

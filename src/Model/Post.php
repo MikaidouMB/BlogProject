@@ -9,11 +9,11 @@ class Post
     private string $author;
     private string $title;
     private string $content;
-    private \DateTimeImmutable  $createdAt;
+    private \DateTimeImmutable  $modifiedOn;
 
     public function __construct()
     {
-        $this->createdAt = new \DateTimeImmutable();
+        $this->modifiedOn = new \DateTimeImmutable();
     }
 
     /**
@@ -91,18 +91,18 @@ class Post
     /**
      * @return \DateTimeImmutable
      */
-    public function getCreatedAt(): \DateTimeImmutable
+    public function getModifiedOn(): \DateTimeImmutable
     {
-        return $this->createdAt;
+        return $this->modifiedOn;
     }
 
     /**
-     * @param \DateTimeImmutable $createdAt
+     * @param \DateTimeImmutable $modifiedOn
      * @return Post
      */
-    public function setCreatedAt(\DateTimeImmutable $createdAt): Post
+    public function setModifiedOn(\DateTimeImmutable $modifiedOn): Post
     {
-        $this->createdAt = $createdAt;
+        $this->modifiedOn = $modifiedOn;
         return $this;
     }
 
