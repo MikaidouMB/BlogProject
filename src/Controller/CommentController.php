@@ -52,7 +52,7 @@ class CommentController extends Controller
             $comment->setUsername($username);
             $comment->setContent($content);
             $comment->setPostId($_GET['id']);
-            $comment->setValid('notValid');
+            $comment->setIsValid(0);
             $post = $this->postManager->find($_GET['id']);
             $postId = $post->getId();
             $commentForm = $this->commentManager->createComment($comment);
@@ -72,9 +72,14 @@ class CommentController extends Controller
         $valid = "valid";
         if ($_POST) {
             $comment
-                ->setContent($_POST['content'])
-                ->setValid($valid);
+                ->setContent($_POST['content']);
+            if (isset($_POST['valid']))
+            {
+                $comment
+                    ->setIsValid(1);
+            }
             (new CommentManager())->update($comment);
+
             header('Location: index.php?route=adminPostcomments');
         }
         return $this->render('Admin/editComment.html.twig', ['comment' => $comment]);

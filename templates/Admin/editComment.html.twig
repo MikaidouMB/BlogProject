@@ -1,10 +1,15 @@
 {% extends 'base.html.twig' %}
     {% block body %}
-
         <div class="container">
             <form action="index.php?route=editComment&id={{ comment.id }}" method="post">
                 <div class="form-group">
                     <textarea class="form-control" name="content" id="content" rows="3" placeholder="Contenu de l'article">{{ comment.content }}</textarea>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" name="valid">
+                    <label class="form-check-label" for="flexCheckDefault">
+                    Valider le commentaire ?
+                    </label>
                 </div>
                 <div class="col-auto my-1">
                     <button type="submit" class="btn btn-primary">Publier</button>

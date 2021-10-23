@@ -15,4 +15,7 @@ $dotenv->load(__DIR__.'/../.env');
        $twig = new Environment($loader, ['debug' => true]);
 $twig->addExtension(new DebugExtension());
 
- echo (new Router($twig))->run();
+try {
+    echo (new Router($twig))->run();
+} catch (Exception $e) {
+}

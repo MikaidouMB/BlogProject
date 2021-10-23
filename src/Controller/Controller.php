@@ -28,7 +28,6 @@ abstract class Controller
     protected function render(string $path, array $params=[]): string
     {
         try {
-
             return $this->twig->render($path, $params,'global');
             } catch (LoaderError | RuntimeError | SyntaxError $e) {
             return $e->getMessage();

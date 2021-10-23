@@ -13,9 +13,8 @@ class Comment
     private string $username;
     private int $postId;
     private string $content;
-    private ?string $valid = null;
+    private ?string $is_valid = null;
     private \DateTimeImmutable  $modifiedOn;
-    private $setValid;
 
     public function __construct()
     {
@@ -112,21 +111,20 @@ class Comment
     }
 
     /**
-     * @return string
-     * @return Comment
+     * @return string|null
      */
-    public function getValid(): string
+    public function getIsValid(): ?string
     {
-        return $this->valid;
+        return $this->is_valid;
     }
 
     /**
-     * @param string $valid
+     * @param string|null $is_valid
      * @return Comment
      */
-    public function setValid(string $valid): Comment
+    public function setIsValid(?string $is_valid): Comment
     {
-        $this->valid = $valid;
+        $this->is_valid = $is_valid;
         return $this;
     }
 

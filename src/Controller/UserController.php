@@ -25,26 +25,26 @@ class UserController extends Controller
      */
     public function signUp($userForm)
     {
-          $errors = [];
+        $errors = [];
         $validMsg = [];
 
         if (!empty($_POST)) {
-            if (empty($_POST['username']) || empty($_POST['password']) ||empty($_POST['email'])) {
+            if (empty($_POST['username']) || empty($_POST['password']) || empty($_POST['email'])) {
                 $errors = 'Les champs sont vides';
             } else {
-                          $user = new User();
-                      $password = $_POST['password'];
-                      $username = $_POST['username'];
-                         $email = $_POST['email'];
-                $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-                $user->setUsername($username);
-                $user->setPassword($hashedPassword);
-                $user->setEmail($email);
-                $user->setRole('viewer');
-                $existingUser = $this->userManager->checkIfUserExist($username);
+                    $user = new User();
+                    $password = $_POST['password'];
+                    $username = $_POST['username'];
+                    $email = $_POST['email'];
+                    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+                    $user->setUsername($username);
+                    $user->setPassword($hashedPassword);
+                    $user->setEmail($email);
+                    $user->setRole('viewer');
+                    $existingUser = $this->userManager->checkIfUserExist($username);
+
                 if (empty($existingUser)) {
                     $this->userManager->register($user);
-                    $_SESSION['newsession'] = $user;
                     header('Location:index.php');
                     $validMsg = 'Utilisateur enregistré';
                 } else {
@@ -113,7 +113,7 @@ class UserController extends Controller
      * @param $userId
      * @return string
      */
-    public function updateUser($userId)
+    public function updateUser($userId): string
     {
         $userId =  array($_GET['id']);
         $user = $this->userManager->findPostAuthorByUserId($userId);
@@ -121,7 +121,6 @@ class UserController extends Controller
         if (isset($_POST['user_id'])){
             if ($_POST['user_id'] == 1) {
                 $user->setRole('viewver');
-
             } elseif ($_POST['user_id'] == 2) {
                 $user->setRole('admin');
             }

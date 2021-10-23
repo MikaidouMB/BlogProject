@@ -81,7 +81,7 @@ class Session
     }
 
     /**
-     * @param string $password
+     * @param string $hashedPassword
      * @return Session
      */
     public function setPassword(string $hashedPassword): Session
@@ -91,7 +91,7 @@ class Session
     }
 
     /**
-     * @return bool
+     * @return string|null
      */
     public function getRole(): ?string
     {
@@ -99,7 +99,7 @@ class Session
     }
 
     /**
-     * @param bool $role
+     * @param string $role
      * @return Session
      */
 

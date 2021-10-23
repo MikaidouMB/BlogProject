@@ -6,12 +6,16 @@
                 <article>
                         <h1 class="fw-bolder mb-1">{{ post.title }}</h1>
                         <!-- Post meta content-->
-                        <div class="text-muted fst-italic mb-2">Posted on January 1, 2021 by Start Bootstrap</div>
+                        <div class="text-muted fst-italic mb-2">Posté par {{ post.author }}</div>
+                    <strong><div class="text-muted fst-italic mb-2">Mis à jour le {{ post.modifiedOn|date('d/m/Y') }} à {{ post.modifiedOn|date('H:i:s') }}</div></strong>
+
                     <!-- Preview image figure-->
-                    <figure class="mb-4"><img class="img-fluid rounded" src="https://dummyimage.com/900x400/ced4da/6c757d.jpg" alt="..." /></figure>
+                    <figure class="mb-3"><img class="img-fluid rounded" src="https://dummyimage.com/900x400/ced4da/6c757d.jpg" alt="..." /></figure>
+                    <br>
                     <!-- Post content-->
                         <p class="mb-2">{{ post.content|nl2br }}</p>
                 </article>
+                <hr>
                 <br>
             {% if session is not empty %}
                 <div class="coment-bottom bg-white p-2 px-4">
@@ -26,7 +30,7 @@
                 {% endif %}
                 <!-- Comments section-->
                 {% for comment in comments %}
-                    {% if (comment.valid == 'valid') %}
+                    {% if (comment.is_valid == 1) %}
                         <div class="commented-section mt-2">
                             <div class="d-flex flex-row align-items-center commented-user">
                                 <h5 class="mr-2">{{ comment.username }}</h5><span class="dot mb-1"></span>

@@ -27,7 +27,7 @@ class UserManager extends DAO
     {
         $result = $this->createQuery('SELECT * FROM user WHERE username = ?', [$username]);
         if ($result->rowCount() > 0) {
-            return $result->fetch(\PDO::FETCH_OBJ);
+        return $result->fetch(\PDO::FETCH_OBJ);
         }
     }
 
@@ -38,8 +38,7 @@ class UserManager extends DAO
     public function register(User $user)
     {
         $this->createQuery('INSERT INTO user(id, username, password,email, role)VALUES(?,?,?,?,?)',
-            $result = array_merge($this->buildValues($user)));
-            $_SESSION['newsession'] = $result;
+        $result = array_merge($this->buildValues($user)));
         return $result;
     }
 
@@ -76,7 +75,6 @@ class UserManager extends DAO
             'UPDATE user SET id = ?, username = ?, password = ?, role = ?, email = ?  WHERE id = ?',
             array_merge($this->buildValues($user), [$user->getId()])
         );
-
         return 1 <= $result->rowCount();
     }
 
@@ -92,7 +90,6 @@ class UserManager extends DAO
             $user->getPassword(),
             $user->getEmail(),
             $user->getRole(),
-
         ];
     }
 
@@ -108,7 +105,5 @@ class UserManager extends DAO
             ->setPassword($user->password)
             ->setEmail($user->email)
             ->setRole($user->role);
-
-        return $user;
     }
 }

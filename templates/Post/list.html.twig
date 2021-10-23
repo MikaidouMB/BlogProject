@@ -7,16 +7,14 @@
                     <a href="index.php?route=addPost" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Ajouter un article</a>
                 {% endif %}
                 <hr>
-                <div class="container">
                     {% for post in posts %}
-                    <h1>{{ post.title }} </h1>
+                        <h1>{{ post.title }} </h1>
                         <span class="badge">mis à jour le {{ post.modifiedOn|date('H:i:s d/m-Y') }}</span><br>
                         <p>'{{ post.content|length > 300 ? post.content|slice(0,300) ~ '...'}}
                             <a href="index.php?route=post&id={{ post.id }}" tabindex="0" class="btn bg-blue-ui white read">Lire plus</a>
                         </p>
-                </div>
-                <hr>
+                        <hr>
+                    {% endfor %}
             </div>
-          </div>
-         {% endfor %}
+            </div>
 {% endblock %}

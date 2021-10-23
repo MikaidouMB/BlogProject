@@ -10,19 +10,21 @@ use Twig\Environment;
 
 class Router
 {
-    private $twig;
+    private Environment $twig;
 
     public function __construct(Environment $twig){
         $this->twig = $twig;
     }
 
+    /**
+     * @throws \Exception
+     */
     public function run()
     {
-           $postController = new PostController($this->twig);
-           $appController  = new AppController($this->twig);
-           $userController = new UserController($this->twig);
+        $postController = new PostController($this->twig);
+        $appController  = new AppController($this->twig);
+        $userController = new UserController($this->twig);
         $commentController = new CommentController($this->twig);
-
 
         if (isset($_GET['route']))
         {

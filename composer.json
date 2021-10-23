@@ -12,8 +12,7 @@
         }
     },
     "require-dev": {
-        "robmorgan/phinx": "^0.12.6",
-        "squizlabs/php_codesniffer": "*"
+        "robmorgan/phinx": "^0.12.6"
     },
     "description": "",
     "require": {

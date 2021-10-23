@@ -16,28 +16,32 @@ class PostController extends Controller
     private CommentManager $commentManager;
     private Session $session;
 
+    /**
+     * PostController constructor.
+     * @param \Twig\Environment $twig
+     */
     public function __construct(Environment $twig)
     {
-           $this->postManager = new PostManager();
-           $this->userManager = new UserManager();
+        $this->postManager = new PostManager();
+        $this->userManager = new UserManager();
         $this->commentManager = new CommentManager();
-               $this->session = new Session();
-
+        $this->session = new Session();
         parent::__construct($twig);
     }
 
     /**
      * @return string
+     * @throws \Exception
      */
     public function index()
     {
         $posts = $this->postManager->findAll();
         return $this->render('Post/index.html.twig', ['posts' =>$posts]);
-
     }
 
     /**
      * @return string
+     * @throws \Exception
      */
     public function list(): string
     {
@@ -45,18 +49,10 @@ class PostController extends Controller
         return $this->render('Post/list.html.twig',['posts'=> $posts]);
     }
 
-    public function showPostAdmin()
-    {
-        $post = $this->postManager->find($_GET['id']);
-        $userId[] = $post->getUserId();
-        $user = $this->userManager->findPostAuthorByUserId($userId);
-
-        return $this->render('Admin/postsList.html.twig',[
-            'post'=> $post,
-            'user'=>$user,
-        ]);
-    }
-
+    /**
+     * @return string
+     * @throws \Exception
+     */
     public function show(): string
     {
         $post = $this->postManager->find($_GET['id']);
@@ -72,7 +68,11 @@ class PostController extends Controller
             'comments'=>$comments,
             ]);
     }
-    
+
+    /**
+     * @return string
+     * @throws \Exception
+     */
     public function adminPostList(): string
     {
         $posts = $this->postManager->findAll();
@@ -89,23 +89,21 @@ class PostController extends Controller
      * @param $postForm
      * @return string
      */
-    public function add($postForm)
+    public function add($postForm): string
     {
         if (!empty($postForm)) {
-           $post = new Post();
-          $title = $_POST['title'];
-        $content = $_POST['content'];
-        $session =  $_SESSION['newsession'];
-        var_dump($session);
-         $userId = $session->id;
-            //$post->setUserId($userId);
+            $post = new Post();
+            $title = $_POST['title'];
+            $content = $_POST['content'];
+            $session =  $_SESSION['newsession'];
+            $userId = $session->id;
             $username = $session->username;
-            var_dump($username);
-            $post->setUserId($userId);
 
+            $post->setUserId($userId);
             $post->setAuthor($username);
             $post->setTitle($title);
             $post->setContent($content);
+
             $postForm = $this->postManager->create($post);
             echo 'post enregistré';
             header('Location: index.php?route=posts');
@@ -117,14 +115,15 @@ class PostController extends Controller
     /**
      * @param $postId
      * @return string
+     * @throws \Exception
      */
     public function updateAdminPosts($postId)
     {
         $postId = (int) ($_GET['id']);
         $post   = $this->postManager->find($postId);
-
         if ($_POST) {
             $post->setId($postId)
+                ->setAuthor($_POST['author'])
                  ->setTitle($_POST['title'])
                  ->setContent($_POST['content']);
                  (new PostManager())->updateAdminPost($post);

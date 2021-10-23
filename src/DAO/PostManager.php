@@ -8,11 +8,12 @@ class PostManager extends DAO
 {
     /**
      * @return array
+     * @throws \Exception
      */
     public function findAll() : array
     {
         $result = $this->createQuery('SELECT * FROM post ORDER BY modifiedOn DESC');
-        $posts =[];
+        $posts = [];
         foreach ($result->fetchAll() as $post){
             $posts[]= $this->buildObject($post);
         }
@@ -22,6 +23,7 @@ class PostManager extends DAO
     /**
      * @param $postId
      * @return Post|null
+     * @throws \Exception
      */
     public function find($postId): ? Post
     {
@@ -53,7 +55,6 @@ class PostManager extends DAO
      */
     public function create(Post $post)
     {
-        var_dump($post);
         $this->createQuery(
             'INSERT INTO post (author,title,user_id,content)VALUES(?,?,?,?) ',
             $result= array_merge($this->buildValues($post)));
@@ -68,7 +69,7 @@ class PostManager extends DAO
     public function delete($postId): bool
     {
         $result = $this->createQuery(
-            'DELETE FROM post WHERE id = ?',[$postId],
+            'DELETE FROM post WHERE id = ?', [$postId],
     );
 
         return 1<= $result->rowCount();
@@ -80,7 +81,7 @@ class PostManager extends DAO
      */
     private function buildValues(Post $post): array
     {
-        return[
+        return [
 
             $post->getAuthor(),
             $post->getTitle(),
@@ -104,6 +105,5 @@ class PostManager extends DAO
             ->setContent($post->content)
             ->setModifiedOn(new \DateTimeImmutable($post->modifiedOn));
     }
-
 
 }
