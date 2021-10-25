@@ -1,14 +1,14 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-    <div id="wrapper">
-        <div id="sidebar-wrapper">
-            <ul class="nav flex-column mb-2" >
-                <li><a href="index.php?route=adminPostList">Articles</a></li>
-                <li><a href="index.php?route=adminPostcomments">Commentaires</a></li>
-                <li><a href="index.php?route=adminPostUsers">Utilisateurs</a></li>
-            </ul>
-        </div>
+    <div id="mySidebar" class="sidebar" >
+        <a href="index.php?route=adminPostList">Articles</a>
+        <a href="index.php?route=adminPostcomments">Commentaires</a>
+        <a href="index.php?route=adminPostUsers">Utilisateurs</a>
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">x</a>
     </div>
+    <div id="main">
+        <button class="openbtn" onclick="openNav()">&#9776;</button>
+
         <div class="container">
             <h1>Gérer les utilisateurs</h1>
                 <table class="table table-striped">
@@ -23,7 +23,6 @@
                         <td>{{ user.role }}</td>
                         <td>
                             <div class="btn-group" role="group" aria-label="Basic example">
-
                             <a href="index.php?route=editUser&id={{ user.id }}" class="btn btn-warning btn-lg active" role="button" aria-pressed="true">Modifier</a>
                             <a href="index.php?route=deleteUser&id={{ user.id }}"
                                onclick="return confirm('Voulez-vous effacer l\'utilisateur n°{{ user.username }} ?')"
@@ -33,5 +32,6 @@
                         </tr>
                 {% endfor %}
             </table>
+        </div>
         </div>
 {% endblock %}
