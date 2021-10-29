@@ -57,13 +57,11 @@ class CommentController extends Controller
             $postId = $post->getId();
             $commentForm = $this->commentManager->createComment($comment);
 
-            echo 'commentaire enregistré';
             header('Location: index.php?route=post&id='.$postId);
         }
         return $this->render('Post/show.html.twig', [
             'post' => $commentForm,
         ]);
-        echo 'commentaire pas enregistré';
     }
 
     public function updateComments($id)
@@ -89,7 +87,6 @@ class CommentController extends Controller
     {
         $comment = $this->commentManager->deleteAdminPostcomments($id);
         header('Location: index.php?route=adminPostcomments');
-        echo 'post supprimé';
 
     }
 

@@ -45,6 +45,7 @@ class UserController extends Controller
 
                 if (empty($existingUser)) {
                     $this->userManager->register($user);
+                    $this->login($user);
                     header('Location:index.php');
                     $validMsg = 'Utilisateur enregistré';
                 } else {
@@ -65,11 +66,9 @@ class UserController extends Controller
     public function signOut()
     {
         if (session_id()) {
-            echo 'il ya une session';
             unset($_SESSION['newsession']);
             if (empty($_SESSION)) {
                 header('Location:index.php');
-                echo 'la session est vide';
             }
         }
     }
@@ -85,18 +84,16 @@ class UserController extends Controller
 
         if (!empty($_POST)) {
             if (empty($_POST['username']) || empty($_POST['password'])) {
-                echo 'Identifiant ou mot de passe incorrect';
-            } else {
+                $errors =  'Identifiant ou mot de passe incorrect';
+            }
+            else {
                 $username = $_POST['username'];
                 $existingUser = $this->userManager->checkIfUserExist($username);
             }
 
-            if (session_id() && $existingUser !== null) {
+            if (session_id() && isset($existingUser)) {
                 $_SESSION['newsession'] = $existingUser;
                 header('Location:index.php');
-                $validMsg = 'Utilisateur connecté';
-            } else {
-                $errors = 'Identifiant ou mot de passe inéxistant';
             }
         }
 

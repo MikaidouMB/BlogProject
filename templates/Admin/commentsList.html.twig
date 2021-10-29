@@ -12,16 +12,25 @@
                 <h1>Gérer les commentaires</h1>
                 <table class="table table-striped">
                     <thead>
-                    <tr>
-                        <th>Auteur</th>
-                        <th>Mis à jour le</th>
-                        <th>Contenu</th>
-                        <th>Actions</th>
+                        <tr>
+                            <th>Auteur</th>
+                            <th>Mis à jour le</th>
+                            <th>Contenu</th>
+                            <th>Statut</th>
+                            <th>Actions</th>
+                        </tr>
                     </thead>
-                    {% for comment in comments %}
+                    <tbody>
+                        {% for comment in comments %}
                         <td>{{ comment.username }}</td>
                         <td>{{ comment.modifiedOn|date('d/m/Y') }} à {{ comment.modifiedOn|date('H:m:s') }}</td>
                         <td>{{ comment.content }}</td>
+                        {% if (comment.isvalid == 1) %}
+                            <td>Validé</td>
+                            {% endif %}
+                        {% if (comment.isvalid == 0) %}
+                            <td>En attente de validation</td>
+                        {% endif %}
                         <td>
                             <div class="btn-group" role="group" aria-label="Basic example">
                                 <a href="index.php?route=editComment&id={{ comment.id }}" class="btn btn-warning btn-lg active" role="button" aria-pressed="true">Modifier</a>
@@ -30,7 +39,7 @@
                                    class="btn btn-danger btn-lg active" role="button" aria-pressed="true">Supprimer</a>
                             </div>
                         </td>
-                    </tr>
+                    </tbody>
                     {% endfor %}
                 </table>
             </div>

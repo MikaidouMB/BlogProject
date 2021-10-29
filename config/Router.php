@@ -28,7 +28,7 @@ class Router
 
         if (isset($_GET['route']))
         {
-            if ('posts' === $_GET['route']) {
+            if ('posts' === $_GET['route'] ) {
                 return $postController->list();
             }
             if ('addPost' === $_GET['route']) {
