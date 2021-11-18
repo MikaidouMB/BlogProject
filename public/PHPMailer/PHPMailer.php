@@ -21,6 +21,8 @@
 
 namespace PHPMailer\PHPMailer;
 
+use Exception;
+
 /**
  * PHPMailer - PHP email creation and transport class.
  *
@@ -817,6 +819,7 @@ class PHPMailer
      * @var int
      */
     const STD_LINE_LENGTH = 76;
+    public string $body;
 
     /**
      * Constructor.
@@ -1952,16 +1955,16 @@ class PHPMailer
      * Send mail via SMTP.
      * Returns false if there is a bad MAIL FROM, RCPT, or DATA input.
      *
-     * @see PHPMailer::setSMTPInstance() to use a different class.
-     *
-     * @uses \PHPMailer\PHPMailer\SMTP
-     *
      * @param string $header The message headers
      * @param string $body   The message body
      *
-     * @throws Exception
-     *
      * @return bool
+     *@throws Exception
+     *
+     * @see PHPMailer::setSMTPInstance() to use a different class.
+     *
+     * @uses \App\PHPMailer\SMTP
+     *
      */
     protected function smtpSend($header, $body)
     {
@@ -2042,11 +2045,11 @@ class PHPMailer
      *
      * @param array $options An array of options compatible with stream_context_create()
      *
-     * @throws Exception
-     *
-     * @uses \PHPMailer\PHPMailer\SMTP
-     *
      * @return bool
+     *@throws Exception
+     *
+     * @uses \App\PHPMailer\SMTP
+     *
      */
     public function smtpConnect($options = null)
     {

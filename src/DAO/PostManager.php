@@ -82,7 +82,6 @@ class PostManager extends DAO
     private function buildValues(Post $post): array
     {
         return [
-
             $post->getAuthor(),
             $post->getTitle(),
             $post->getUserId(),

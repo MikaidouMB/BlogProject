@@ -6,7 +6,6 @@ use App\DAO\CommentManager;
 use App\DAO\PostManager;
 use App\DAO\UserManager;
 use App\Model\Post;
-use App\services\Session;
 use Twig\Environment;
 
 class PostController extends Controller
@@ -14,7 +13,6 @@ class PostController extends Controller
     private PostManager  $postManager;
     private UserManager $userManager;
     private CommentManager $commentManager;
-    private Session $session;
 
     /**
      * PostController constructor.
@@ -25,18 +23,7 @@ class PostController extends Controller
         $this->postManager = new PostManager();
         $this->userManager = new UserManager();
         $this->commentManager = new CommentManager();
-        $this->session = new Session();
         parent::__construct($twig);
-    }
-
-    /**
-     * @return string
-     * @throws \Exception
-     */
-    public function index()
-    {
-        $posts = $this->postManager->findAll();
-        return $this->render('Post/index.html.twig', ['posts' =>$posts]);
     }
 
     /**
@@ -60,7 +47,7 @@ class PostController extends Controller
         $userId[] = $post->getUserId();
 
         $user = $this->userManager->findPostAuthorByUserId($userId);
-        $comments = $this->commentManager->findCommentsBypostId($postId);
+        $comments = $this->commentManager->findCommentsByPostId($postId);
 
         return $this->render('Post/show.html.twig',[
             'post'=> $post,
@@ -96,40 +83,40 @@ class PostController extends Controller
             $title = $_POST['title'];
             $content = $_POST['content'];
             $session =  $_SESSION['newsession'];
-            $userId = $session->id;
-            $username = $session->username;
-
+            $sessionId = $_SESSION['newsession']['id'];
+            $sessionUsername = $_SESSION['newsession']['username'];
+            $userId = $sessionId;
+            $username = $sessionUsername;
             $post->setUserId($userId);
             $post->setAuthor($username);
             $post->setTitle($title);
             $post->setContent($content);
-
-            $postForm = $this->postManager->create($post);
-            echo 'post enregistré';
+            $this->postManager->create($post);
+            $_SESSION['newsession']['ajout'] = "Nouvelle article publié";
             header('Location: index.php?route=posts');
+            exit();
         }
-            echo 'post pas enregistré';
             return $this->render('Post/add.html.twig', ['post' => $postForm]);
     }
 
     /**
-     * @param $postId
      * @return string
      * @throws \Exception
      */
-    public function updateAdminPosts($postId)
+    public function updateAdminPosts(): string
     {
         $postId = (int) ($_GET['id']);
         $post   = $this->postManager->find($postId);
         if ($_POST) {
             $post->setId($postId)
-                ->setAuthor($_POST['author'])
+                 ->setAuthor($_POST['author'])
                  ->setTitle($_POST['title'])
                  ->setContent($_POST['content']);
                  (new PostManager())->updateAdminPost($post);
+            $_SESSION['newsession']['article_update'] = "Article modifié";
             header('Location: index.php?route=adminPostList');
+            exit();
         }
-
         return $this->render('Admin/editPost.html.twig', ['post' => $post]);
     }
 
@@ -140,8 +127,6 @@ class PostController extends Controller
     {
         $this->postManager->delete($id);
         header('Location: index.php?route=post&id='.$id);
-        echo 'post supprimé';
-        header('Location: index.php?route=posts');
     }
 
     /**
@@ -151,7 +136,5 @@ class PostController extends Controller
     {
         $this->postManager->delete($id);
         header('Location: index.php?route=adminPostList');
-        echo 'post supprimé';
     }
-
 }

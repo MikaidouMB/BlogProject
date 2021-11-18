@@ -1,18 +1,50 @@
 {% extends 'base.html.twig' %}
     {% block body %}
         <div class="container">
-
-            <form action="index.php?route=addPost" method="post">
-                <div class="input-field col s12 m6 l6">
-                    <input type="text" name="title" id="title" class="form-control" placeholder="Titre de l'article"
-                    >
-                </div><br>
-                <div class="form-group">
-                    <textarea class="form-control" name="content" id="content" rows="3" placeholder="Contenu de l'article"></textarea>
-                </div>
-                <div class="col-auto my-1">
-                    <button type="submit" class="btn btn-primary">Publier</button>
-                </div><br>
-            </form>
+            <div class="text-left">
+                <a href="index.php?route=posts" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">précedent</a>
+            </div>
+            <div class="main-form">
+                <form action="index.php?route=addPost" method="post">
+                    <div class="input-field col s12 m6 l6">
+                        <input type="text" name="title" id="title" class="form-control" placeholder="Titre de l'article">
+                    </div><br>
+                    <div class="form-group">
+                        <textarea class="form-control" name="content" id="content" rows="3" placeholder="Contenu de l'article"></textarea>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-success btn-lg active">Publier</button>
+                    </div>
+                </form>
+            </div>
         </div>
+        <br>
+        <footer id="footer">
+            <div class="row">
+                <div class="footer-col col-md-4">
+                    <h3>Localisation</h3>
+                    <p> Rue Louis Pasteur, 92100<br>Boulogne-Billancourt</p>
+                </div>
+                <div class="footer-col col-md-4">
+                    <a href="https://www.linkedin.com/in/mika%C3%AFdou-m%E2%80%99bo-b86892173/" target="_blank" class="btn-social btn-outline">
+                        <i class="fa fa-linkedin" aria-hidden="true"></i>
+                    </a>
+                    <a href="https://github.com/MikaidouMB" target="_blank" class="btn-social btn-outline">
+                        <i class="fab fa-github"></i>
+                    </a>
+                </div>
+                <div class="footer-col col-md-4">
+                    {% if session is not empty %}
+                        <h3><a href="index.php?route=adminPostList">Administration</a></h3>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="text-center">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            Copyright &copy; PortfolioMikaidou 2022
+                        </div>
+                    </div>
+                </div>
+        </footer>
 {% endblock %}

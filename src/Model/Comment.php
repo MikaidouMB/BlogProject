@@ -1,10 +1,6 @@
 <?php
 
-
 namespace App\Model;
-
-
-use phpDocumentor\Reflection\Types\Integer;
 
 class Comment
 {
@@ -14,12 +10,13 @@ class Comment
     private int $postId;
     private string $content;
     private ?int $is_valid = null;
-    private \DateTimeImmutable  $modifiedOn;
+    private \DateTimeImmutable $modifiedOn;
 
     public function __construct()
     {
         $this->modifiedOn = new \DateTimeImmutable();
     }
+
     /**
      * @return int
      */

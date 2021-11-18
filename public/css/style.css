@@ -1,45 +1,50 @@
+
 html{
     height: 100%;
 }
 
 body {
-    margin-top: 100px;
+    width: 100%;
+    height: 100%;
+
     flex-grow: 1;
-    overflow: auto;
     min-height: 100vh;
-    display: grid;
+    display: flex;
     flex-direction: column;
 }
 
+.img-fluid{
+    max-width: 100%;
+    height: auto;
+}
+
 .sidebar {
-    height: 100%; /* 100% Full-height */
-    width: 0; /* 0 width - change this with JavaScript */
-    position: fixed; /* Stay in place */
-    z-index: 1;
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 2;
     top: 0;
     left: 0;
     background-color: #1a242f;
     border: 1px solid black;
-    opacity: 0.9;
-    overflow-x: hidden; /* Disable horizontal scroll */
-    padding-top: 60px; /* Place content 60px from the top */
-    transition: 0.5s; /* 0.5 second transition effect to slide in the sidebar */
+    opacity: 90%;
+    overflow-x: auto;
+    padding-top: 60px;
+    transition: 0.5s;
 }
 
-/* The sidebar links */
 .sidebar a {
     padding: 60px 8px 8px 32px;
     text-decoration: none;
-    font-size: 20px;
+    font-size: 3vh;
     display: block;
     transition: 0.3s;
 }
-/* When you mouse over the navigation links, change their color */
+
 .sidebar a:hover {
     color: #f1f1f1;
 }
 
-/* Position and style the close button (top right corner) */
 .sidebar .closebtn {
     position: absolute;
     top: 0;
@@ -47,6 +52,7 @@ body {
     font-size: 36px;
     margin-left: 50px;
 }
+
 .closebtn{
     margin-top: 35px;
     cursor: pointer;
@@ -55,30 +61,51 @@ body {
     border: none;
 }
 
-/* The button used to open the sidebar */
 .openbtn {
-    font-size: 20px;
+    margin-top: 22px;
     cursor: pointer;
-    background-color: #111;
     color: white;
-    padding: 20px 15px;
+    padding: 10px 25px;
     border: none;
+    font-size: 20px;
+    background-color: #111;
+    position: absolute;
+    z-index: 100000;
+    margin-left: 350px;
 }
 
 .openbtn:hover {
     background-color: #444;
 }
-form{
-    margin-top: 50px;
-}
-#main {
-    transition: margin-left .5s;
+
+.main-post{
+    margin: auto;
+    margin-top: 100px;
+    min-height: 100%;
+    width: auto;
+    padding: 50px;
 }
 
-/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
-@media screen and (max-height: 450px) {
-    .sidebar {padding-top: 15px;}
-    .sidebar a {font-size: 18px;}
+.main-form{
+    min-height: 100%;
+    margin: auto;
+    margin-top: 70px;
+    width: 70%;
+    padding: 50px;
+}
+
+#main {
+    min-height: 100%;
+    width: auto;
+    overflow: auto;
+    padding: 50px;
+}
+
+#main-tab{
+    min-height: 100%;
+    margin: auto;
+    margin-top: 140px;
+    width: 70%;
 }
 
 .bdge {
@@ -105,18 +132,64 @@ form{
     border-radius: 50%;
     display: inline-block
 }
-#mainNav{
-    width: 100%;
-    transition: margin-left .5s; /* If you want a transition effect */
 
+#mainNav{
+    margin-bottom: 50px;
+    position: absolute;
 }
+
+.container{
+    margin: auto;
+    margin-top: 20px;
+    width: 100%;
+}
+
 footer{
-    padding: 40px;
-    margin-top: auto;
     width: 100%;
     color: white;
     text-align: center;
-    border: #1a242f solid 2px;
     background-color: #2C3E50;
-    transition: margin-left .5s; /* If you want a transition effect */
+    bottom: 0;
+    z-index: 2;
+    transition: margin-left .5s;
+    position: relative;
+    margin:0;
+}
+
+.row-blog{
+    margin-top: 20px;
+}
+
+.text-left{
+    margin-top: 100px;
+    margin-left: 100px;
+}
+
+select{
+    margin-bottom: 50px;
+}
+
+.btn-add{
+    margin: auto;
+    margin-top: 120px;
+    text-align: center;
+}
+
+@media screen and (max-width: 650px) {
+    .sidebar a{
+        font-size: 25px;
+    }
+    .sidebar{
+        width: auto;
+    }
+    .openbtn{
+        margin-top: 60px;
+        margin-left: 250px ;
+    }
+}
+@media (min-width: 768px) {
+    .navbar-right {
+        float: right !important;
+        margin-right: 15px;
+    }
 }

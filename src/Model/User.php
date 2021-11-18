@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Model;
-
 
 class User
 {
@@ -11,7 +9,6 @@ class User
     private string $password;
     private ?string $role = null;
     private ?string $email = null;
-
 
     /**
      * @return integer
@@ -76,7 +73,7 @@ class User
     }
 
     /**
-     * @param string $password
+     * @param string $hashedPassword
      * @return User
      */
     public function setPassword(string $hashedPassword): User
@@ -86,7 +83,7 @@ class User
     }
 
     /**
-     * @return bool
+     * @return string|null
      */
     public function getRole(): ?string
     {
@@ -94,7 +91,7 @@ class User
     }
 
     /**
-     * @param bool $role
+     * @param string $role
      * @return User
      */
 
@@ -103,6 +100,5 @@ class User
         $this->role = $role;
         return $this;
     }
-
 }
 

@@ -1,52 +1,86 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-lg-8">
-                <article>
+    <div class="container">
+        <div class="main-post">
+            <div class="row">
+                <div class="col-lg-8">
+                    <article>
                         <h1 class="fw-bolder mb-1">{{ post.title }}</h1>
                         <!-- Post meta content-->
                         <div class="text-muted fst-italic mb-2">Posté par {{ post.author }}</div>
-                    <strong><div class="text-muted fst-italic mb-2">Mis à jour le {{ post.modifiedOn|date('d/m/Y') }} à {{ post.modifiedOn|date('H:i:s') }}</div></strong>
+                        <strong><div class="text-muted fst-italic mb-2">Mis à jour le {{ post.modifiedOn|date('d/m/Y') }} à {{ post.modifiedOn|date('H:i:s') }}</div></strong>
 
-                    <!-- Preview image figure-->
-                    <figure class="mb-3"><img class="img-fluid rounded" src="https://dummyimage.com/900x400/ced4da/6c757d.jpg" alt="..." /></figure>
-                    <br>
-                    <!-- Post content-->
-                        <p class="mb-2">{{ post.content|nl2br }}</p>
-                </article>
-                <hr>
-                <br>
-            {% if session is not empty %}
-                <div class="coment-bottom bg-white p-2 px-4">
-                    <form action="index.php?route=addComment&post&id={{ post.id }}" method="post">
-                        <div class="d-flex flex-row add-comment-section mt-4 mb-4">
-                            <input type="text" class="form-control mb-3" name="content" id="content" placeholder="Contenu du commentaire"><br>
-                                <button type="submit" class="btn btn-primary">Publier</button>
-                        </div>
+                        <img class="img-fluid rounded" src="https://dummyimage.com/1200x400/ced4da/6c757d.jpg" alt="..." />
                         <br>
-                    </form>
+                        <!-- Post content-->
+                        <p class="mb-4">{{ post.content|nl2br }}</p>
+                        <hr>
+                        {% if session is not empty %}
+                            <div class="coment-bottom bg-white p-2 px-4">
+                                <form action="index.php?route=addComment&post&id={{ post.id }}" method="post">
+                                    <div class="d-flex flex-row add-comment-section mt-4 mb-4">
+                                        <input type="text" class="form-control mb-3" name="content" id="content" placeholder="Contenu du commentaire"><br>
+                                        <div class="text-center">
+                                            <button type="submit" class="btn btn-success btn-lg active">Publier</button>
+                                        </div>
+                                    </div>
+                                    <br>
+                                </form>
+                            </div>
+                        {% endif %}
+                    </article>
+                    <hr>
+                    <!-- Comments section-->
+                    {% for comment in comments %}
+                        {% if (comment.is_valid == 1) %}
+                            <div class="commented-section mt-2">
+                                <div class="d-flex flex-row align-items-center commented-user">
+                                    <h5 class="mr-2">{{ comment.username }}</h5><span class="dot mb-1"></span>
+                                    <span class="small"> Le {{ comment.modifiedOn|date('d/m/Y') }} à {{  comment.modifiedOn|date('H:i:s') }} </span>
+                                </div>
+                                <div class="comment-text-sm">
+                                    <span>{{ comment.content }}</span>
+                                </div>
+                            </div><hr>
+                        {% endif %}
+                    {% endfor %}
                 </div>
-                {% endif %}
-                <!-- Comments section-->
-                {% for comment in comments %}
-                    {% if (comment.is_valid == 1) %}
-                        <div class="commented-section mt-2">
-                            <div class="d-flex flex-row align-items-center commented-user">
-                                <h5 class="mr-2">{{ comment.username }}</h5><span class="dot mb-1"></span>
-                                <strong>{{ comment.username }}</strong>
-                                <span class="small"> Le {{ comment.modifiedOn|date('d/m/Y') }} à {{  comment.modifiedOn|date('H:i:s') }} </span>
-                            </div>
-                            <div class="comment-text-sm">
-                                <span>{{ comment.content }}</span>
-                            </div>
-                        </div><hr>
-                    {% endif %}
-                {% endfor %}
+            </div>
+            <div class="text-center">
+                <a href="index.php?route=posts" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">précedent</a>
             </div>
         </div>
-    </div><br>
-    <div class="text-center">
-        <a href="index.php?route=posts" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">précedent</a>
-    </div><br>
+        <br>
+    </div>
+    <footer id="footer">
+        <div class="row">
+            <div class="footer-col col-md-4">
+                <h3>Localisation</h3>
+                <p> Rue Louis Pasteur, 92100
+                    <br>Boulogne-Billancourt</p>
+            </div>
+            <div class="footer-col col-md-4">
+                <a href="https://www.linkedin.com/in/mika%C3%AFdou-m%E2%80%99bo-b86892173/" target="_blank" class="btn-social btn-outline">
+                    <i class="fa fa-linkedin" aria-hidden="true"></i>
+                </a>
+                <a href="https://github.com/MikaidouMB" target="_blank" class="btn-social btn-outline">
+                    <i class="fab fa-github"></i>
+                </a>
+            </div>
+            <div class="footer-col col-md-4">
+                {% if session is not empty %}
+                    <h3><a href="index.php?route=adminPostList">Administration</a></h3>
+                {% endif %}
+            </div>
+        </div>
+        <div class="text-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        Copyright &copy; PortfolioMikaidou 2022
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
 {% endblock %}

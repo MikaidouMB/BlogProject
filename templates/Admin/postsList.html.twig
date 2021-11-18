@@ -1,24 +1,33 @@
 {% extends 'base.html.twig' %}
 {% block body %}
+    <button class="openbtn" onclick="openNav()">&#9776;</button>
     <div id="mySidebar" class="sidebar" >
         <a href="index.php?route=adminPostList">Articles</a>
         <a href="index.php?route=adminPostcomments">Commentaires</a>
         <a href="index.php?route=adminPostUsers">Utilisateurs</a>
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">x</a>
     </div>
-    <div id="main">
-        <button class="openbtn" onclick="openNav()">&#9776;</button>
-        <div class="container mt-3">
-
-       <h1>Gérer les articles</h1>
-       <table class="table table-striped">
+        <div class="container">
+            <div id="main-tab">
+                {% if session.newsession.article_update %}
+                    <div class="alert alert-success alert-dismissible show" id="" role="alert">
+                        <strong>Votre article a bien été modifié</strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endif %}
+            <h1>Gérer les articles</h1>
+           <table class="table table-striped">
            <thead>
                <tr>
                    <th class="col-md-2">Titre</th>
                    <th>Auteur</th>
                    <th>Contenu</th>
                    <th>Actions</th>
-           </thead>
+               </tr>
+             </thead>
+           <tbody>
            {% for post in posts %}
                    <td>{{ post.title }}</td>
                    <td>{{ post.author }}</td>
@@ -34,9 +43,39 @@
                           class="btn btn-danger btn-lg active" role="button" aria-pressed="true">Supprimer</a>
                        </div>
                    </td>
-               </tr>
+           </tbody>
            {% endfor %}
        </table>
-   </div>
-   </div>
+       </div>
+        </div>
+            <footer id="footer">
+                <div class="row">
+                    <div class="footer-col col-md-4">
+                        <h3>Localisation</h3>
+                        <p> Rue Louis Pasteur, 92100<br>Boulogne-Billancourt</p>
+                    </div>
+                    <div class="footer-col col-md-4">
+                        <a href="https://www.linkedin.com/in/mika%C3%AFdou-m%E2%80%99bo-b86892173/" target="_blank" class="btn-social btn-outline">
+                            <i class="fa fa-linkedin" aria-hidden="true"></i>
+                        </a>
+                        <a href="https://github.com/MikaidouMB" target="_blank" class="btn-social btn-outline">
+                            <i class="fab fa-github"></i>
+                        </a>
+                    </div>
+                    <div class="footer-col col-md-4">
+                        {% if session is not empty %}
+                            <h3><a href="index.php?route=adminPostList">Administration</a></h3>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="text-center">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                Copyright &copy; PortfolioMikaidou 2022
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
 {% endblock %}

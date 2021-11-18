@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\DAO;
 
 use App\Model\Comment;
@@ -35,6 +34,7 @@ class CommentManager extends DAO
     /**
      * @param $commentId
      * @return \App\Model\Comment|null
+     * @throws \Exception
      */
     public function find($commentId): ? Comment
     {
@@ -49,15 +49,15 @@ class CommentManager extends DAO
      * @param $postId
      * @return array
      */
-    public function findCommentsBypostId($postId): array
+    public function findCommentsByPostId($postId): array
     {
         $result = $this->createQuery('SELECT * FROM comment WHERE comment.postId = ? ORDER BY modifiedOn DESC  ', $postId);
         return $result->fetchAll();
-
     }
 
     /**
      * @return array
+     * @throws \Exception
      */
     public function findAllComments(): array
     {
@@ -113,6 +113,5 @@ class CommentManager extends DAO
             ->setIsValid($comment->is_valid)
             ->setModifiedOn(new \DateTimeImmutable($comment->modifiedOn));
     }
-
 
 }

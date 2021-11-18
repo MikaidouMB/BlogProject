@@ -12,7 +12,9 @@
         }
     },
     "require-dev": {
-        "robmorgan/phinx": "^0.12.6"
+        "robmorgan/phinx": "^0.12.6",
+        "friendsofphp/php-cs-fixer": "^3.2",
+        "symfony/process": "^5.3"
     },
     "description": "",
     "require": {

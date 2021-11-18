@@ -123,5 +123,4 @@ class Post
         $this->author = $author;
         return $this;
     }
-
 }

@@ -27,7 +27,7 @@ class UserManager extends DAO
     {
         $result = $this->createQuery('SELECT * FROM user WHERE username = ?', [$username]);
         if ($result->rowCount() > 0) {
-        return $result->fetch(\PDO::FETCH_OBJ);
+        return $result->fetch(\PDO::FETCH_ASSOC);
         }
     }
 
@@ -72,7 +72,7 @@ class UserManager extends DAO
     public function update(User $user): bool
     {
         $result = $this->createQuery(
-            'UPDATE user SET id = ?, username = ?, password = ?, role = ?, email = ?  WHERE id = ?',
+            'UPDATE user SET id = ?, username = ?, password = ?, email = ?,  role = ?  WHERE id = ?',
             array_merge($this->buildValues($user), [$user->getId()])
         );
         return 1 <= $result->rowCount();

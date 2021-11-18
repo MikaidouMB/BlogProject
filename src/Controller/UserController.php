@@ -4,18 +4,15 @@ namespace App\Controller;
 
 use App\DAO\UserManager;
 use App\Model\User;
-use App\services\Session;
 use Twig\Environment;
 
 class UserController extends Controller
 {
     private UserManager $userManager;
-    private Session $session;
 
     public function __construct(Environment $twig)
     {
         $this->userManager = new UserManager();
-        $this->session = new Session();
         parent::__construct($twig);
     }
 
@@ -23,10 +20,11 @@ class UserController extends Controller
      * @param $userForm
      * @return string
      */
-    public function signUp($userForm)
+    public function signUp($userForm): string
     {
         $errors = [];
         $validMsg = [];
+        $error_user = [];
 
         if (!empty($_POST)) {
             if (empty($_POST['username']) || empty($_POST['password']) || empty($_POST['email'])) {
@@ -44,12 +42,14 @@ class UserController extends Controller
                     $existingUser = $this->userManager->checkIfUserExist($username);
 
                 if (empty($existingUser)) {
+
                     $this->userManager->register($user);
-                    $this->login($user);
+                    $_SESSION['newsession']['inscription'] = "Bienvenue";
                     header('Location:index.php');
-                    $validMsg = 'Utilisateur enregistré';
+                    $this->login($user);
+                    exit();
                 } else {
-                    echo "L'utilisateur existe déjà";
+                    $error_user = 'Ce nom d\'utilisateur existe déjà';
                 }
             }
         }
@@ -58,6 +58,7 @@ class UserController extends Controller
             [
                 'userform' => $userForm,
                 'errors' => $errors,
+                'errorsUser' => $error_user,
                 'validation' => $validMsg,
             ]
         );
@@ -67,8 +68,10 @@ class UserController extends Controller
     {
         if (session_id()) {
             unset($_SESSION['newsession']);
-            if (empty($_SESSION)) {
+            if (empty($_SESSION['newsession'])) {
+                $_SESSION['newsession']['deconnection'] = "Vous êtes déconnecté";
                 header('Location:index.php');
+                exit();
             }
         }
     }
@@ -93,7 +96,9 @@ class UserController extends Controller
 
             if (session_id() && isset($existingUser)) {
                 $_SESSION['newsession'] = $existingUser;
-                header('Location:index.php');
+                $_SESSION['newsession']['confirmation'] = "Connexion effectuée";
+                header('Location:index.php?connexion');
+            exit();
             }
         }
 
@@ -117,15 +122,15 @@ class UserController extends Controller
 
         if (isset($_POST['user_id'])){
             if ($_POST['user_id'] == 1) {
-                $user->setRole('viewver');
+                $user->setRole('viewer');
             } elseif ($_POST['user_id'] == 2) {
                 $user->setRole('admin');
             }
-
             (new UserManager())->update($user);
+            $_SESSION['newsession']['update_user'] = "Utilisateur mis à jour";
             header('Location: index.php?route=adminPostUsers');
+            exit();
         }
-
         return $this->render('Admin/editUser.html.twig', ['user' => $user]);
     }
 
@@ -136,7 +141,6 @@ class UserController extends Controller
     {
         $this->userManager->delete($userId);
         header('Location: index.php?route=adminPostUsers');
-        echo 'post supprimé';
     }
 
 }

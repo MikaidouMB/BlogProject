@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Controller;
-
 
 use Twig\Environment;
 use Twig\Error\LoaderError;
@@ -16,7 +14,6 @@ abstract class Controller
 
     public function __construct(Environment $twig)
     {
-
         $this->twig = $twig;
         if (!session_id())
             session_start();
@@ -28,8 +25,9 @@ abstract class Controller
     protected function render(string $path, array $params=[]): string
     {
         try {
-            return $this->twig->render($path, $params,'global');
-            } catch (LoaderError | RuntimeError | SyntaxError $e) {
+            return $this->twig->render($path, $params);
+        }
+        catch (LoaderError | RuntimeError | SyntaxError $e) {
             return $e->getMessage();
         }
     }
