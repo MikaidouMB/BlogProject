@@ -5,11 +5,13 @@ namespace App\Controller;
 use App\DAO\UserManager;
 use App\Model\User;
 use Twig\Environment;
+use App\Session;
+
+//require '..\Session.php';
 
 class UserController extends Controller
 {
     private UserManager $userManager;
-
     public function __construct(Environment $twig)
     {
         $this->userManager = new UserManager();
@@ -44,7 +46,7 @@ class UserController extends Controller
                 if (empty($existingUser)) {
 
                     $this->userManager->register($user);
-                    $_SESSION['newsession']['inscription'] = "Bienvenue";
+                    //$_SESSION['newsession']['inscription'] = "Bienvenue";
                     header('Location:index.php');
                     $this->login($user);
                     exit();
@@ -66,15 +68,11 @@ class UserController extends Controller
 
     public function signOut()
     {
-        if (session_id()) {
-            unset($_SESSION['newsession']);
-            if (empty($_SESSION['newsession'])) {
-                $_SESSION['newsession']['deconnection'] = "Vous êtes déconnecté";
-                header('Location:index.php');
-                exit();
+            Session::destroy();
+            Session::addMessage();
+            header('Location:index.php');
+            exit();
             }
-        }
-    }
 
     /**
      * @param $userForm
@@ -94,9 +92,10 @@ class UserController extends Controller
                 $existingUser = $this->userManager->checkIfUserExist($username);
             }
 
-            if (session_id() && isset($existingUser)) {
-                $_SESSION['newsession'] = $existingUser;
-                $_SESSION['newsession']['confirmation'] = "Connexion effectuée";
+            if (isset($existingUser)) {
+                $message = "Vous êtes connecté";
+                $existingUser['message'] = $message;
+                Session::set('newsession',$existingUser);
                 header('Location:index.php?connexion');
             exit();
             }
