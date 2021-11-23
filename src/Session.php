@@ -80,13 +80,4 @@ class Session {
     {
         unset($_SESSION['newsession']);
     }
-
-    public static function display()
-    {
-        echo '<pre>';
-        print_r($_SESSION);
-        echo '</pre>';
-    }
-
-
 }

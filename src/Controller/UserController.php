@@ -63,7 +63,7 @@ class UserController extends Controller
         );
     }
 
-    public function signOut()
+    public function signOut() : void
     {
         Session::destroySession();
         Session::addMsgDeco();
@@ -107,10 +107,9 @@ class UserController extends Controller
     }
 
     /**
-     * @param $userId
      * @return string
      */
-    public function updateUser($userId): string
+    public function updateUser(): string
     {
         $userId =  array($_GET['id']);
         $user = $this->userManager->findPostAuthorByUserId($userId);
@@ -132,7 +131,7 @@ class UserController extends Controller
     /**
      * @param $userId
      */
-    public function deleteUser($userId)
+    public function deleteUser($userId):void
     {
         $this->userManager->delete($userId);
         header('Location: index.php?route=adminPostUsers');

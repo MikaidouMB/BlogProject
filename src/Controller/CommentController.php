@@ -91,7 +91,7 @@ class CommentController extends Controller
         return $this->render('Admin/editComment.html.twig', ['comment' => $comment]);
     }
 
-    public function deleteAdminPostcomments($id)
+    public function deleteAdminPostcomments($id):void
     {
         $this->commentManager->deleteAdminPostcomments($id);
         header('Location: index.php?route=adminPostcomments');

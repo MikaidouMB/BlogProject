@@ -133,7 +133,7 @@ class PostController extends Controller
     /**
      * @param $id
      */
-    public function deleteAdminPost($id)
+    public function deleteAdminPost($id):void
     {
         $this->postManager->delete($id);
         header('Location: index.php?route=adminPostList');
