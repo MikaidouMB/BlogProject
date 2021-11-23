@@ -34,10 +34,6 @@ class PostManager extends DAO
 
         return $this->buildObject($object);
     }
-    public static function getId()
-    {
-        $urlId = $_GET['id'];
-    }
 
     /**
      * @param Post|null $post

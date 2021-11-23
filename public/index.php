@@ -20,18 +20,18 @@ $dotenv->load(__DIR__.'/../.env');
         echo (new Router($twig))->run();
     } catch (Exception $e) {}
 
-    if (Session::get('newsession','message','connection')) {
+    if (Session::getMessage('newsession','message','connection')) {
         Session::destroyMsg();
-    } elseif (Session::get('newsession','message','deconnection')) {
+    } elseif (Session::getMessage('newsession','message','deconnection')) {
         Session::destroyMsg();
-    } elseif (Session::get('newsession','message','update_user')) {
+    } elseif (Session::getMessage('newsession','message','update_user')) {
         Session::destroyMsg();
-    } elseif (Session::get('newsession','message','moderation')) {
+    } elseif (Session::getMessage('newsession','message','moderation')) {
         Session::destroyMsg();
-    } elseif (Session::get('newsession','message','update_comment')) {
+    } elseif (Session::getMessage('newsession','message','update_comment')) {
         Session::destroyMsg();
-    } elseif (Session::get('newsession','message','article_update')) {
+    } elseif (Session::getMessage('newsession','message','article_update')) {
         Session::destroyMsg();
-    } elseif (Session::get('newsession','add_article')) {
+    } elseif (Session::getMessage('newsession','message','add_article')) {
         Session::destroyMsg();
     }

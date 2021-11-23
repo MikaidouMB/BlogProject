@@ -6,6 +6,8 @@ use App\DAO\CommentManager;
 use App\DAO\PostManager;
 use App\DAO\UserManager;
 use App\Model\Comment;
+use App\Model\GetValue;
+use App\Model\PostValue;
 use App\Session;
 use Twig\Environment;
 
@@ -46,14 +48,12 @@ class CommentController extends Controller
     {
         if (!empty($commentForm)) {
             $comment = new Comment();
-            $content = $_POST['content'];
-            $sessionId = $_SESSION['newsession']['id'];
-            $sessionUsername = $_SESSION['newsession']['username'];
-            $postId = $_GET['id'];
-            $userId = $sessionId;
-            $username = $sessionUsername;
-            $comment->setUserId($userId);
-            $comment->setUsername($username);
+            $content = PostValue::findPostValue('content');
+            $sessionUserId = Session::getSessionValue('newsession','id');
+            $sessionUsername = Session::getSessionValue('newsession','username');
+            $postId = GetValue::findGetValue('id');
+            $comment->setUserId($sessionUserId);
+            $comment->setUsername($sessionUsername);
             $comment->setContent($content);
             $comment->setPostId($postId);
             $comment->setIsValid(0);
@@ -74,11 +74,10 @@ class CommentController extends Controller
     public function updateComments($id): string
     {
         $comment = $this->commentManager->find($id);
-        if ($_POST) {
+        if (PostValue::findPostValue('content') || PostValue::findPostValue('valid')) {
             $comment
-                ->setContent($_POST['content']);
-
-            if (isset($_POST['valid']))
+                ->setContent(PostValue::findPostValue('content'));
+            if (PostValue::findPostValue('valid') !== null)
             {
                 $comment
                  ->setIsValid(1);

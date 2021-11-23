@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\DAO\UserManager;
+use App\Model\GetValue;
+use App\Model\PostValue;
 use App\Model\User;
 use Twig\Environment;
 use App\Session;
@@ -10,6 +12,7 @@ use App\Session;
 class UserController extends Controller
 {
     private UserManager $userManager;
+
     public function __construct(Environment $twig)
     {
         $this->userManager = new UserManager();
@@ -27,23 +30,25 @@ class UserController extends Controller
         $error_user = [];
 
         if (!empty($_POST)) {
-            if (empty($_POST['username']) || empty($_POST['password']) || empty($_POST['email'])) {
+            if (empty(PostValue::findPostValue('username'))
+                || empty(PostValue::findPostValue('password'))
+                || empty(PostValue::findPostValue('email'))) {
                 $errors = 'Les champs sont vides';
             } else {
-                    $user = new User();
-                    $password = $_POST['password'];
-                    $username = $_POST['username'];
-                    $email = $_POST['email'];
-                    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-                    $user->setUsername($username);
-                    $user->setPassword($hashedPassword);
-                    $user->setEmail($email);
-                    $user->setRole('viewer');
-                    $existingUser = $this->userManager->checkIfUserExist($username);
+                $user = new User();
+                $password = PostValue::findPostValue('password');
+                $username = PostValue::findPostValue('username');
+                $email = PostValue::findPostValue('email');
+                $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+                $user->setUsername($username);
+                $user->setPassword($hashedPassword);
+                $user->setEmail($email);
+                $user->setRole('viewer');
+                $existingUser = $this->userManager->checkIfUserExist($username);
 
                 if (empty($existingUser)) {
                     $this->userManager->register($user);
-                    Session::set('newsession',$user);
+                    Session::set('newsession', $user);
                     header('Location:index.php');
                     $this->login($user);
                     exit();
@@ -63,7 +68,7 @@ class UserController extends Controller
         );
     }
 
-    public function signOut() : void
+    public function signOut(): void
     {
         Session::destroySession();
         Session::addMsgDeco();
@@ -80,22 +85,21 @@ class UserController extends Controller
         $errors = [];
         $validMsg = [];
 
-        if (!empty($_POST)) {
-            if (empty($_POST['username']) || empty($_POST['password'])) {
-                $errors =  'Identifiant ou mot de passe incorrect';
-            }
-            else {
-                $username = $_POST['username'];
-                $existingUser = $this->userManager->checkIfUserExist($username);
-            }
-
-            if (isset($existingUser)) {
-                Session::set('newsession',$existingUser);
-                Session::addMsgConn();
-                header('Location:index.php?connexion');
-            exit();
-            }
+        if (!empty(PostValue::findPostValue('username')) || empty(PostValue::findPostValue('password'))){
+            if (empty(PostValue::findPostValue('username')) || empty(PostValue::findPostValue('password'))){
+                $errors = 'Identifiant ou mot de passe incorrect';
+        } else {
+            $username = PostValue::findPostValue('username');
+            $existingUser = $this->userManager->checkIfUserExist($username);
         }
+
+        if (isset($existingUser)) {
+            Session::set('newsession', $existingUser);
+            Session::addMsgConn();
+            header('Location:index.php?connexion');
+            exit();
+        }
+    }
 
         return $this->render('Auth/login.html.twig',
             [
@@ -111,13 +115,13 @@ class UserController extends Controller
      */
     public function updateUser(): string
     {
-        $userId =  array($_GET['id']);
+        $userId =  array(GetValue::findGetValue('id'));
         $user = $this->userManager->findPostAuthorByUserId($userId);
 
-        if (isset($_POST['user_id'])){
-            if ($_POST['user_id'] == 1) {
+        if (PostValue::findPostValue('user_id')){
+            if (PostValue::findPostValue('user_id') == 1) {
                 $user->setRole('viewer');
-            } elseif ($_POST['user_id'] == 2) {
+            } elseif (PostValue::findPostValue('user_id') == 2) {
                 $user->setRole('admin');
             }
             Session::addMsgUpdateUser();
@@ -136,5 +140,4 @@ class UserController extends Controller
         $this->userManager->delete($userId);
         header('Location: index.php?route=adminPostUsers');
     }
-
 }

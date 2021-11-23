@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\DAO\CommentManager;
 use App\DAO\PostManager;
 use App\DAO\UserManager;
+use App\Model\GetValue;
 use App\Model\Post;
+use App\Model\PostValue;
 use App\Session;
 use Twig\Environment;
 
@@ -43,7 +45,7 @@ class PostController extends Controller
      */
     public function show(): string
     {
-        $post = $this->postManager->find($_GET['id']);
+        $post = $this->postManager->find(GetValue::findGetValue('id'));
         $postId[] = $post->getId();
         $userId[] = $post->getUserId();
 
@@ -81,15 +83,12 @@ class PostController extends Controller
     {
         if (!empty($postForm)) {
             $post = new Post();
-            $title = $_POST['title'];
-            $content = $_POST['content'];
-            $session =  $_SESSION['newsession'];
-            $sessionId = $_SESSION['newsession']['id'];
-            $sessionUsername = $_SESSION['newsession']['username'];
-            $userId = $sessionId;
-            $username = $sessionUsername;
-            $post->setUserId($userId);
-            $post->setAuthor($username);
+            $title = PostValue::findPostValue('title');
+            $content = PostValue::findPostValue('content');
+            $sessionUserId = Session::getSessionValue('newsession','id');
+            $sessionUsername = Session::getSessionValue('newsession','username');
+            $post->setUserId($sessionUserId);
+            $post->setAuthor($sessionUsername);
             $post->setTitle($title);
             $post->setContent($content);
             $this->postManager->create($post);
@@ -106,13 +105,13 @@ class PostController extends Controller
      */
     public function updateAdminPosts(): string
     {
-        $postId = (int) ($_GET['id']);
-        $post   = $this->postManager->find($postId);
+        $postId = (int) (GetValue::findGetValue('id'));
+        $post = $this->postManager->find($postId);
         if ($_POST) {
             $post->setId($postId)
-                 ->setAuthor($_POST['author'])
-                 ->setTitle($_POST['title'])
-                 ->setContent($_POST['content']);
+                 ->setAuthor(PostValue::findPostValue('author'))
+                 ->setTitle(PostValue::findPostValue('title'))
+                 ->setContent(PostValue::findPostValue('content'));
                  (new PostManager())->updateAdminPost($post);
                  Session::addMsgUpdatePost();
             header('Location: index.php?route=adminPostList');

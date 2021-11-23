@@ -4,9 +4,9 @@
 namespace App\Model;
 
 
-class getUrl
+class GetValue
 {
-    public static function getRoute($key, $secondKey = false)
+    public static function findGetValue($key, $secondKey = false)
     {
         if ($secondKey == true)
         {
