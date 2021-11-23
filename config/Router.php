@@ -26,6 +26,7 @@ class Router
         $userController = new UserController($this->twig);
         $commentController = new CommentController($this->twig);
 
+
         if (isset($_GET['route']))
         {
             if ('posts' === $_GET['route'] ) {

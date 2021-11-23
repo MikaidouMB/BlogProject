@@ -7,8 +7,6 @@ use App\Model\User;
 use Twig\Environment;
 use App\Session;
 
-//require '..\Session.php';
-
 class UserController extends Controller
 {
     private UserManager $userManager;
@@ -44,9 +42,8 @@ class UserController extends Controller
                     $existingUser = $this->userManager->checkIfUserExist($username);
 
                 if (empty($existingUser)) {
-
                     $this->userManager->register($user);
-                    //$_SESSION['newsession']['inscription'] = "Bienvenue";
+                    Session::set('newsession',$user);
                     header('Location:index.php');
                     $this->login($user);
                     exit();
@@ -68,11 +65,11 @@ class UserController extends Controller
 
     public function signOut()
     {
-            Session::destroy();
-            Session::addMessage();
-            header('Location:index.php');
-            exit();
-            }
+        Session::destroySession();
+        Session::addMsgDeco();
+        header('Location:index.php');
+        exit();
+    }
 
     /**
      * @param $userForm
@@ -93,9 +90,8 @@ class UserController extends Controller
             }
 
             if (isset($existingUser)) {
-                $message = "Vous êtes connecté";
-                $existingUser['message'] = $message;
                 Session::set('newsession',$existingUser);
+                Session::addMsgConn();
                 header('Location:index.php?connexion');
             exit();
             }
@@ -125,8 +121,8 @@ class UserController extends Controller
             } elseif ($_POST['user_id'] == 2) {
                 $user->setRole('admin');
             }
+            Session::addMsgUpdateUser();
             (new UserManager())->update($user);
-            $_SESSION['newsession']['update_user'] = "Utilisateur mis à jour";
             header('Location: index.php?route=adminPostUsers');
             exit();
         }

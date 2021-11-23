@@ -6,6 +6,7 @@ use App\DAO\CommentManager;
 use App\DAO\PostManager;
 use App\DAO\UserManager;
 use App\Model\Post;
+use App\Session;
 use Twig\Environment;
 
 class PostController extends Controller
@@ -43,7 +44,7 @@ class PostController extends Controller
     public function show(): string
     {
         $post = $this->postManager->find($_GET['id']);
-        $postId[] =$post->getId();
+        $postId[] = $post->getId();
         $userId[] = $post->getUserId();
 
         $user = $this->userManager->findPostAuthorByUserId($userId);
@@ -92,7 +93,7 @@ class PostController extends Controller
             $post->setTitle($title);
             $post->setContent($content);
             $this->postManager->create($post);
-            $_SESSION['newsession']['ajout'] = "Nouvelle article publié";
+            Session::addMsgCreatePost();
             header('Location: index.php?route=posts');
             exit();
         }
@@ -113,7 +114,7 @@ class PostController extends Controller
                  ->setTitle($_POST['title'])
                  ->setContent($_POST['content']);
                  (new PostManager())->updateAdminPost($post);
-            $_SESSION['newsession']['article_update'] = "Article modifié";
+                 Session::addMsgUpdatePost();
             header('Location: index.php?route=adminPostList');
             exit();
         }

@@ -7,7 +7,7 @@
             </div>
         {% endif %}
         <div id="main">
-            {% if session.newsession.ajout %}
+            {% if session.newsession.message.add %}
                 <div class="alert alert-success alert-dismissible show" id="" role="alert">
                     <strong>Votre article a bien été publié</strong>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -15,7 +15,7 @@
                     </button>
                 </div>
             {% endif %}
-            {% if session.newsession.moderation %}
+            {% if session.newsession.message.moderation %}
                 <div class="alert alert-warning alert-dismissible show" role="alert">
                     <strong>Merci d'avoir publié !</strong>
                     Votre commentaire est en attente de validation auprès de notre modérateur.

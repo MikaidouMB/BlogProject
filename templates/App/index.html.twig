@@ -3,11 +3,11 @@
 {% block body %}
     <header>
         <div class="container">
-            {{ dump() }}
+            {{ dump(session.newsession) }}
 
             <div class="row">
                 <div class="col-lg-12">
-                    {% if session.newsession.message %}
+                    {% if session.newsession.message.connection %}
                         <div class="alert alert-success alert-dismissible show" id="" role="alert">
                             <strong>Vous êtes connecté</strong>
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -15,7 +15,7 @@
                             </button>
                         </div>
                     {% endif %}
-                    {% if session.newsession.inscription %}
+                    {% if session.newsession.message.inscription %}
                         <div class="alert alert-success alert-dismissible show" id="" role="alert">
                             <strong>Bienvenue{{ session.newsession.username }}!</strong>
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -23,7 +23,7 @@
                             </button>
                         </div>
                     {% endif %}
-                    {% if session.newsession.deconnection %}
+                    {% if session.newsession.message.deconnection %}
                         <div class="alert alert-danger alert-dismissible show" id="" role="alert">
                             <strong>Vous êtes déconnecté</strong>
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">

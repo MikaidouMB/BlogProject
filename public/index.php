@@ -16,15 +16,22 @@ $dotenv->load(__DIR__.'/../.env');
      $twig = new Environment($loader, ['debug' => true]);
      $twig->addExtension(new DebugExtension());
 
-
     try {
         echo (new Router($twig))->run();
     } catch (Exception $e) {}
 
-if (isset($message)){
-    $message = $_SESSION['newsession']['message'];
-    $message = $_SESSION['newsession']['deconnection'];
-    Session::unsetMessage($message);
-}
-
-
+    if (Session::get('newsession','message','connection')) {
+        Session::destroyMsg();
+    } elseif (Session::get('newsession','message','deconnection')) {
+        Session::destroyMsg();
+    } elseif (Session::get('newsession','message','update_user')) {
+        Session::destroyMsg();
+    } elseif (Session::get('newsession','message','moderation')) {
+        Session::destroyMsg();
+    } elseif (Session::get('newsession','message','update_comment')) {
+        Session::destroyMsg();
+    } elseif (Session::get('newsession','message','article_update')) {
+        Session::destroyMsg();
+    } elseif (Session::get('newsession','add_article')) {
+        Session::destroyMsg();
+    }

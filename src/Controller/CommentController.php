@@ -6,12 +6,13 @@ use App\DAO\CommentManager;
 use App\DAO\PostManager;
 use App\DAO\UserManager;
 use App\Model\Comment;
+use App\Session;
 use Twig\Environment;
 
 class CommentController extends Controller
 {
     private PostManager  $postManager;
-    private UserManager $userManager;
+    private UserManager  $userManager;
     private CommentManager $commentManager;
 
     public function __construct(Environment $twig)
@@ -48,16 +49,17 @@ class CommentController extends Controller
             $content = $_POST['content'];
             $sessionId = $_SESSION['newsession']['id'];
             $sessionUsername = $_SESSION['newsession']['username'];
+            $postId = $_GET['id'];
             $userId = $sessionId;
             $username = $sessionUsername;
             $comment->setUserId($userId);
             $comment->setUsername($username);
             $comment->setContent($content);
-            $comment->setPostId($_GET['id']);
+            $comment->setPostId($postId);
             $comment->setIsValid(0);
-            $this->postManager->find($_GET['id']);
+            $this->postManager->find($postId);
             $this->commentManager->createComment($comment);
-            $_SESSION['newsession']['moderation'] = "Commentaire en attente";
+            Session::addMsgModeration();
             header('Location: index.php?route=posts');
             exit();
         }
@@ -82,7 +84,7 @@ class CommentController extends Controller
                  ->setIsValid(1);
             }
             (new CommentManager())->update($comment);
-            $_SESSION['newsession']['update_comment'] = "Commentaire validé";
+            Session::addMsgValidation();
             header('Location: index.php?route=adminPostcomments');
             exit();
         }
