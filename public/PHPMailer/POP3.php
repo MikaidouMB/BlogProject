@@ -187,7 +187,7 @@ class POP3
      * A connect, login, disconnect sequence
      * appropriate for POP-before SMTP authorisation.
      *
-     * @param string   $host        The hostname to connect to
+     * @param string $host        The hostname to connect to
      * @param int|bool $port        The port number to connect to
      * @param int|bool $timeout     The timeout value
      * @param string   $username
@@ -196,7 +196,7 @@ class POP3
      *
      * @return bool
      */
-    public function authorise($host, $port = false, $timeout = false, $username = '', $password = '', $debug_level = 0): bool
+    public function authorise(string $host, $port = false, $timeout = false, $username = '', $password = '', $debug_level = 0): bool
     {
         $this->host = $host;
         //If no port value provided, use default
