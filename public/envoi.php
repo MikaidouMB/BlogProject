@@ -38,7 +38,7 @@ $mail->isHTML ( true );
 $mail->Subject = 'Formulaire du portfolio';
 
  if(! $mail->send ()) {
-    echo  'Le message n"a pas pu être envoyé. Erreur de courrier : ' . $mail->ErrorInfo ;
+    print_r('Le message n"a pas pu être envoyé. Erreur de courrier : ' . $mail->ErrorInfo);
 } else{
      header('Location: index.php');
      exit();

@@ -61,7 +61,7 @@ class CommentController extends Controller
             $this->commentManager->createComment($comment);
             Session::addMsgModeration();
             header('Location: index.php?route=posts');
-            exit();
+            GetValue::exitMessage();
         }
         return $this->render('Post/show.html.twig', [
             'post' => $commentForm,
@@ -85,7 +85,7 @@ class CommentController extends Controller
             (new CommentManager())->update($comment);
             Session::addMsgValidation();
             header('Location: index.php?route=adminPostcomments');
-            exit();
+            GetValue::exitMessage();
         }
         return $this->render('Admin/editComment.html.twig', ['comment' => $comment]);
     }

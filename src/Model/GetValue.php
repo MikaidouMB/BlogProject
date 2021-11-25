@@ -20,4 +20,8 @@ class GetValue
         }
         return false;
     }
+    public static function exitMessage()
+    {
+        exit();
+    }
 }

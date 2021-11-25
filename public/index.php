@@ -32,6 +32,6 @@ $dotenv->load(__DIR__.'/../.env');
         Session::destroyMsg();
     } elseif (Session::getMessage('newsession','message','article_update')) {
         Session::destroyMsg();
-    } elseif (Session::getMessage('newsession','message','add_article')) {
+    } elseif (Session::getMessage('newsession','message','add')) {
         Session::destroyMsg();
     }

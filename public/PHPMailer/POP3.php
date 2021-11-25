@@ -371,7 +371,7 @@ class POP3
     {
         $response = fgets($this->pop_conn, $size);
         if ($this->do_debug >= self::DEBUG_SERVER) {
-            echo 'Server -> Client: ', $response;
+            print_r('Server -> Client: ', $response) ;
         }
 
         return $response;
@@ -426,11 +426,11 @@ class POP3
     {
         $this->errors[] = $error;
         if ($this->do_debug >= self::DEBUG_SERVER) {
-            echo '<pre>';
+            print_r('<pre>') ;
             foreach ($this->errors as $e) {
                 print_r($e);
             }
-            echo '</pre>';
+            print_r('</pre>') ;
         }
     }
 

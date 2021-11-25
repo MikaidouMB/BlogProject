@@ -54,7 +54,7 @@ class UserController extends Controller
                     Session::set('newsession', $user);
                     header('Location:index.php');
                     $this->login($user);
-                    exit();
+                    GetValue::exitMessage();
                 } else {
                     $error_user = 'Ce nom d\'utilisateur existe déjà';
                 }
@@ -76,7 +76,7 @@ class UserController extends Controller
         Session::destroySession();
         Session::addMsgDeco();
         header('Location:index.php');
-        exit();
+        GetValue::exitMessage();
     }
 
     /**
@@ -100,7 +100,7 @@ class UserController extends Controller
             Session::set('newsession', $existingUser);
             Session::addMsgConn();
             header('Location:index.php?connexion');
-            exit();
+            GetValue::exitMessage();
         }
     }
 
@@ -130,7 +130,7 @@ class UserController extends Controller
             Session::addMsgUpdateUser();
             (new UserManager())->update($user);
             header('Location: index.php?route=adminPostUsers');
-            exit();
+            GetValue::exitMessage();
         }
         return $this->render('Admin/editUser.html.twig', ['user' => $user]);
     }

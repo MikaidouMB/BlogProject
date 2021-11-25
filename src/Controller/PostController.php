@@ -94,7 +94,7 @@ class PostController extends Controller
             $this->postManager->create($post);
             Session::addMsgCreatePost();
             header('Location: index.php?route=posts');
-            exit();
+            GetValue::exitMessage();
         }
             return $this->render('Post/add.html.twig', ['post' => $postForm]);
     }
@@ -118,7 +118,7 @@ class PostController extends Controller
                  (new PostManager())->updateAdminPost($post);
                  Session::addMsgUpdatePost();
             header('Location: index.php?route=adminPostList');
-            exit();
+            GetValue::exitMessage();
         }
         return $this->render('Admin/editPost.html.twig', ['post' => $post]);
     }

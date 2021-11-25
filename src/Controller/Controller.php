@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Session;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -18,7 +19,7 @@ abstract class Controller
         if (!session_id())
             session_start();
         if (session_id()) {
-            $this->twig->addGlobal('session', $_SESSION);
+            $this->twig->addGlobal('session', Session::setSession('newsession'));
         }
     }
 

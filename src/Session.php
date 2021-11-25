@@ -84,7 +84,13 @@ class Session {
             $_SESSION[$key] = $value;
         }
     }
-
+    public static function setSession($value): array
+    {
+        if ($value == true)
+        {
+            return $_SESSION;
+        }
+    }
     public static function getSessionValue($key, $secondKey = false)
     {
         if ($secondKey == true)
