@@ -196,7 +196,7 @@ class POP3
      *
      * @return bool
      */
-    public function authorise($host, $port = false, $timeout = false, $username = '', $password = '', $debug_level = 0)
+    public function authorise($host, $port = false, $timeout = false, $username = '', $password = '', $debug_level = 0): bool
     {
         $this->host = $host;
         //If no port value provided, use default
