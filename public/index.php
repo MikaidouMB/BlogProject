@@ -17,7 +17,7 @@ $dotenv->load(__DIR__.'/../.env');
      $twig->addExtension(new DebugExtension());
 
     try {
-        echo (new Router($twig))->run();
+        print_r((new Router($twig))->run()) ;
     } catch (Exception $e) {}
 
     if (Session::getMessage('newsession','message','connection')) {

@@ -14,7 +14,8 @@
     "require-dev": {
         "robmorgan/phinx": "^0.12.6",
         "friendsofphp/php-cs-fixer": "^3.2",
-        "symfony/process": "^5.3"
+        "symfony/process": "^5.3",
+        "nunomaduro/phpinsights": "^2.0"
     },
     "description": "",
     "require": {

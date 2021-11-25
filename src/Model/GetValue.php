@@ -10,13 +10,13 @@ class GetValue
     {
         if ($secondKey == true)
         {
-            if (isset($_GET[$key][$secondKey]))
-                return $_GET[$key][$secondKey];
+            if (isset(filter_input_array(INPUT_GET)[$key][$secondKey]))
+                return filter_input_array(INPUT_GET)[$key][$secondKey];
         }
         else
         {
-            if (isset($_GET[$key]))
-                return $_GET[$key];
+            if (isset(filter_input_array(INPUT_GET)[$key]))
+                return filter_input_array(INPUT_GET)[$key];
         }
         return false;
     }

@@ -9,13 +9,13 @@ class PostValue
     {
         if ($secondKey == true)
         {
-            if (isset($_POST[$key][$secondKey]))
-                return $_POST[$key][$secondKey];
+            if (isset(filter_input_array(INPUT_POST)[$key][$secondKey]))
+                return filter_input_array(INPUT_POST)[$key][$secondKey];
         }
         else
         {
-            if (isset($_POST[$key]))
-                return $_POST[$key];
+            if (isset(filter_input_array(INPUT_POST)[$key]))
+                return filter_input_array(INPUT_POST)[$key];
         }
         return false;
     }

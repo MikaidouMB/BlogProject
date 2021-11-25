@@ -4,6 +4,7 @@ require  'PHPMailer/Exception.php' ;
 require  'PHPMailer/PHPMailer.php' ;
 require  'PHPMailer/SMTP.php' ;
 
+use App\Model\GetValue;
 use PHPMailer\PHPMailer\PHPMailer;
 
 $name = filter_input(INPUT_POST, 'name');
@@ -41,6 +42,6 @@ $mail->Subject = 'Formulaire du portfolio';
     print_r('Le message n"a pas pu être envoyé. Erreur de courrier : ' . $mail->ErrorInfo);
 } else{
      header('Location: index.php');
-     exit();
+     GetValue::exitMessage();
  }
 
