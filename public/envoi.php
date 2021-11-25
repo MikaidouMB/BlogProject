@@ -6,10 +6,11 @@ require  'PHPMailer/SMTP.php' ;
 
 use PHPMailer\PHPMailer\PHPMailer;
 
-$name = $_POST['name'];
-$firstName = $_POST['firstname'];
-$email = $_POST['email'];
-$subject = $_POST['subject'] ;
+$name = filter_input(INPUT_POST, 'name');
+$firstName = filter_input(INPUT_POST, 'firstname');
+$email =filter_input(INPUT_POST, 'email');
+$subject = filter_input(INPUT_POST, 'subject');
+;
 
 $mail = new PHPMailer ;
 

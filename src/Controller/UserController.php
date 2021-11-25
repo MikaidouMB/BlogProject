@@ -29,7 +29,10 @@ class UserController extends Controller
         $validMsg = [];
         $error_user = [];
 
-        if (!empty($_POST)) {
+        if (!empty(PostValue::findPostValue('username'))
+            || empty(PostValue::findPostValue('password'))
+            || empty(PostValue::findPostValue('email'))) {
+
             if (empty(PostValue::findPostValue('username'))
                 || empty(PostValue::findPostValue('password'))
                 || empty(PostValue::findPostValue('email'))) {

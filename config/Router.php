@@ -33,13 +33,13 @@ class Router
                 return $postController->list();
             }
             if (GetValue::findGetValue('route') == 'addPost'){
-                return $postController->add($_POST);
+                return $postController->add(filter_input_array(INPUT_POST));
             }
             if (GetValue::findGetValue('route') == 'signUp'){
-                return $userController->signUp($_POST);
+                return $userController->signUp(filter_input_array(INPUT_POST));
             }
             if (GetValue::findGetValue('route') == 'login'){
-                return $userController->login($_POST);
+                return $userController->login(filter_input_array(INPUT_POST));
             }
             if (GetValue::findGetValue('route') == 'signOut'){
                 return $userController->signOut();

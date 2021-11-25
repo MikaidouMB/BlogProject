@@ -107,7 +107,10 @@ class PostController extends Controller
     {
         $postId = (int) (GetValue::findGetValue('id'));
         $post = $this->postManager->find($postId);
-        if ($_POST) {
+
+        if (PostValue::findPostValue('title')
+            || PostValue::findPostValue('content')
+            || PostValue::findPostValue('author')) {
             $post->setId($postId)
                  ->setAuthor(PostValue::findPostValue('author'))
                  ->setTitle(PostValue::findPostValue('title'))
