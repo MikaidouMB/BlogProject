@@ -124,20 +124,20 @@ class PostController extends Controller
     }
 
     /**
-     * @param $id
+     * @param $postId
      */
-    public function delete($id)
+    public function delete($postId)
     {
-        $this->postManager->delete($id);
-        header('Location: index.php?route=post&id='.$id);
+        $this->postManager->delete($postId);
+        header('Location: index.php?route=post&id='.$postId);
     }
 
     /**
-     * @param $id
+     * @param $postId
      */
-    public function deleteAdminPost($id):void
+    public function deleteAdminPost($postId):void
     {
-        $this->postManager->delete($id);
+        $this->postManager->delete($postId);
         header('Location: index.php?route=adminPostList');
     }
 }

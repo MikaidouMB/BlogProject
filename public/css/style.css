@@ -1,19 +1,19 @@
 html {
-    height:  100%;
+     height: 100%;
 }
 
 body {
-    width:  100%;
-    height: 100%;
-    flex-grow:  1;
-    min-height:  100vh;
-    display:  flex;
-    flex-direction:  column;
+     width:  100%;
+     height: 100%;
+     flex-grow:  1;
+     min-height:  100vh;
+     display:  flex;
+     flex-direction:  column;
 }
 
 .img-fluid {
-    max-width:  100%;
-    height:  auto;
+     max-width:  100%;
+     height:  auto;
 }
 
 .sidebar {

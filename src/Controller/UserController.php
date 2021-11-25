@@ -37,30 +37,28 @@ class UserController extends Controller
                 || empty(PostValue::findPostValue('password'))
                 || empty(PostValue::findPostValue('email'))) {
                 $errors = 'Les champs sont vides';
-            } else {
-                $user = new User();
-                $password = PostValue::findPostValue('password');
-                $username = PostValue::findPostValue('username');
-                $email = PostValue::findPostValue('email');
-                $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-                $user->setUsername($username);
-                $user->setPassword($hashedPassword);
-                $user->setEmail($email);
-                $user->setRole('viewer');
-                $existingUser = $this->userManager->checkIfUserExist($username);
+            }
+            $user = new User();
+            $password = PostValue::findPostValue('password');
+            $username = PostValue::findPostValue('username');
+            $email = PostValue::findPostValue('email');
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+            $user->setUsername($username);
+            $user->setPassword($hashedPassword);
+            $user->setEmail($email);
+            $user->setRole('viewer');
+            $existingUser = $this->userManager->checkIfUserExist($username);
 
-                if (empty($existingUser)) {
-                    $this->userManager->register($user);
-                    Session::set('newsession', $user);
-                    header('Location:index.php');
-                    $this->login($user);
-                    GetValue::exitMessage();
-                } else {
-                    $error_user = 'Ce nom d\'utilisateur existe déjà';
-                }
+            if (empty($existingUser)) {
+                $this->userManager->register($user);
+                Session::set('newsession', $user);
+                header('Location:index.php');
+                $this->login($user);
+                GetValue::exitMessage();
+            } else {
+                $error_user = 'Ce nom d\'utilisateur existe déjà';
             }
         }
-
         return $this->render('Auth/register.html.twig',
             [
                 'userform' => $userForm,

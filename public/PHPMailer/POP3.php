@@ -208,9 +208,8 @@ class POP3
         //If no timeout value provided, use default
         if (false === $timeout) {
             $this->tval = static::DEFAULT_TIMEOUT;
-        } else {
-            $this->tval = (int) $timeout;
         }
+        $this->tval = (int) $timeout;
         $this->do_debug = $debug_level;
         $this->username = $username;
         $this->password = $password;
@@ -367,13 +366,12 @@ class POP3
      *
      * @return string
      */
-    protected function getResponse($size = 128)
+    protected function getResponse($size = 128): string
     {
         $response = fgets($this->pop_conn, $size);
         if ($this->do_debug >= self::DEBUG_SERVER) {
             print_r('Server -> Client: ', $response) ;
         }
-
         return $response;
     }
 

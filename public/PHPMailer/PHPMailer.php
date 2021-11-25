@@ -69,21 +69,21 @@ class PHPMailer
      *
      * @var int|null
      */
-    public $Priority;
+    public ?int $Priority;
 
     /**
      * The character set of the message.
      *
      * @var string
      */
-    public $CharSet = self::CHARSET_ISO88591;
+    public string $CharSet = self::CHARSET_ISO88591;
 
     /**
      * The MIME Content-type of the message.
      *
      * @var string
      */
-    public $ContentType = self::CONTENT_TYPE_PLAINTEXT;
+    public string $ContentType = self::CONTENT_TYPE_PLAINTEXT;
 
     /**
      * The message encoding.
@@ -91,28 +91,28 @@ class PHPMailer
      *
      * @var string
      */
-    public $Encoding = self::ENCODING_8BIT;
+    public string $Encoding = self::ENCODING_8BIT;
 
     /**
      * Holds the most recent mailer error message.
      *
      * @var string
      */
-    public $ErrorInfo = '';
+    public string $ErrorInfo = '';
 
     /**
      * The From email address for the message.
      *
      * @var string
      */
-    public $From = '';
+    public string $From = '';
 
     /**
      * The From name of the message.
      *
      * @var string
      */
-    public $FromName = '';
+    public string $FromName = '';
 
     /**
      * The envelope sender of the message.
@@ -122,14 +122,14 @@ class PHPMailer
      *
      * @var string
      */
-    public $Sender = '';
+    public string $Sender = '';
 
     /**
      * The Subject of the message.
      *
      * @var string
      */
-    public $Subject = '';
+    public string $Subject = '';
 
     /**
      * An HTML or plain text message body.
@@ -166,7 +166,7 @@ class PHPMailer
      *
      * @var string[]
      */
-    protected static $IcalMethods = [
+    protected static array $IcalMethods = [
         self::ICAL_METHOD_REQUEST,
         self::ICAL_METHOD_PUBLISH,
         self::ICAL_METHOD_REPLY,
@@ -182,21 +182,21 @@ class PHPMailer
      *
      * @var string
      */
-    protected $MIMEBody = '';
+    protected string $MIMEBody = '';
 
     /**
      * The complete compiled MIME message headers.
      *
      * @var string
      */
-    protected $MIMEHeader = '';
+    protected string $MIMEHeader = '';
 
     /**
      * Extra headers that createHeader() doesn't fold in.
      *
      * @var string
      */
-    protected $mailHeader = '';
+    protected string $mailHeader = '';
 
     /**
      * Word-wrap the message body to this number of chars.
@@ -206,7 +206,7 @@ class PHPMailer
      *
      * @var int
      */
-    public $WordWrap = 0;
+    public int $WordWrap = 0;
 
     /**
      * Which method to use to send mail.
@@ -214,14 +214,14 @@ class PHPMailer
      *
      * @var string
      */
-    public $Mailer = 'mail';
+    public string $Mailer = 'mail';
 
     /**
      * The path to the sendmail program.
      *
      * @var string
      */
-    public $Sendmail = '/usr/sbin/sendmail';
+    public string $Sendmail = '/usr/sbin/sendmail';
 
     /**
      * Whether mail() uses a fully sendmail-compatible MTA.
@@ -229,14 +229,14 @@ class PHPMailer
      *
      * @var bool
      */
-    public $UseSendmailOptions = true;
+    public bool $UseSendmailOptions = true;
 
     /**
      * The email address that a reading confirmation should be sent to, also known as read receipt.
      *
      * @var string
      */
-    public $ConfirmReadingTo = '';
+    public string $ConfirmReadingTo = '';
 
     /**
      * The hostname to use in the Message-ID header and as default HELO string.
@@ -248,7 +248,7 @@ class PHPMailer
      *
      * @var string
      */
-    public $Hostname = '';
+    public string $Hostname = '';
 
     /**
      * An ID to be used in the Message-ID header.
