@@ -1,2 +1,2 @@
 # BlogProject
-Le projet est donc de développer un blog professionnel
+Blog professionnel developpé avec le langage PHP dans le cadre de la formation "Développeur d'applications - PHP / Symfony" sur OpenClassrooms
