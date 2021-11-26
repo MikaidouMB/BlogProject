@@ -128,7 +128,7 @@ class POP3
      *
      * @var array
      */
-    protected $errors = [];
+    protected array $errors = [];
 
     /**
      * Line break constant.
