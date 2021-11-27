@@ -6,8 +6,8 @@ use App\DAO\CommentManager;
 use App\DAO\PostManager;
 use App\DAO\UserManager;
 use App\Model\GetValue;
+use App\Model\Input;
 use App\Model\Post;
-use App\Model\PostValue;
 use App\Session;
 use Twig\Environment;
 
@@ -16,17 +16,23 @@ class PostController extends Controller
     private PostManager  $postManager;
     private UserManager $userManager;
     private CommentManager $commentManager;
+    private Input $input;
+    private Session $session;
 
     /**
      * PostController constructor.
      * @param \Twig\Environment $twig
+     * @param \App\Model\Input $input
      */
-    public function __construct(Environment $twig)
+    public function __construct(Environment $twig, Input $input)
     {
         $this->postManager = new PostManager();
         $this->userManager = new UserManager();
         $this->commentManager = new CommentManager();
-        parent::__construct($twig);
+        $this->input = new Input();
+        $this->session = new Session();
+
+        parent::__construct($twig, $input);
     }
 
     /**
@@ -36,7 +42,7 @@ class PostController extends Controller
     public function list(): string
     {
         $posts = $this->postManager->findAll();
-        return $this->render('Post/list.html.twig',['posts'=> $posts]);
+        return $this->render('Post/list.html.twig', ['posts'=> $posts]);
     }
 
     /**
@@ -45,14 +51,14 @@ class PostController extends Controller
      */
     public function show(): string
     {
-        $post = $this->postManager->find(GetValue::findGetValue('id'));
+        $post = $this->postManager->find($this->input->get('id'));
         $postId[] = $post->getId();
         $userId[] = $post->getUserId();
 
         $user = $this->userManager->findPostAuthorByUserId($userId);
         $comments = $this->commentManager->findCommentsByPostId($postId);
 
-        return $this->render('Post/show.html.twig',[
+        return $this->render('Post/show.html.twig', [
             'post'=> $post,
             'user'=>$user,
             'comments'=>$comments,
@@ -66,13 +72,13 @@ class PostController extends Controller
     public function adminPostList(): string
     {
         $posts = $this->postManager->findAll();
-        return $this->render('Admin/postsList.html.twig',['posts'=> $posts]);
+        return $this->render('Admin/postsList.html.twig', ['posts'=> $posts]);
     }
 
     public function adminPostUsers(): string
     {
         $users = $this->userManager->findAllUsers();
-        return $this->render('Admin/usersList.html.twig',['users'=> $users]);
+        return $this->render('Admin/usersList.html.twig', ['users'=> $users]);
     }
 
     /**
@@ -83,10 +89,10 @@ class PostController extends Controller
     {
         if (!empty($postForm)) {
             $post = new Post();
-            $title = PostValue::findPostValue('title');
-            $content = PostValue::findPostValue('content');
-            $sessionUserId = Session::getSessionValue('newsession','id');
-            $sessionUsername = Session::getSessionValue('newsession','username');
+            $title = $this->input->post('title');
+            $content = $this->input->post('content');
+            $sessionUserId = $this->session->getSessionValue('newsession', 'id');
+            $sessionUsername = $this->session->getSessionValue('newsession', 'username');
             $post->setUserId($sessionUserId);
             $post->setAuthor($sessionUsername);
             $post->setTitle($title);
@@ -94,9 +100,9 @@ class PostController extends Controller
             $this->postManager->create($post);
             Session::addMsgCreatePost();
             header('Location: index.php?route=posts');
-            GetValue::exitMessage();
+            $this->input->get();
         }
-            return $this->render('Post/add.html.twig', ['post' => $postForm]);
+        return $this->render('Post/add.html.twig', ['post' => $postForm]);
     }
 
     /**
@@ -105,20 +111,20 @@ class PostController extends Controller
      */
     public function updateAdminPosts(): string
     {
-        $postId = (int) (GetValue::findGetValue('id'));
+        $postId = (int) ($this->input->get('id'));
         $post = $this->postManager->find($postId);
 
-        if (PostValue::findPostValue('title')
-            || PostValue::findPostValue('content')
-            || PostValue::findPostValue('author')) {
+        if ($this->input->post('title')
+            || $this->input->post('content')
+            || $this->input->post('author')) {
             $post->setId($postId)
-                 ->setAuthor(PostValue::findPostValue('author'))
-                 ->setTitle(PostValue::findPostValue('title'))
-                 ->setContent(PostValue::findPostValue('content'));
-                 (new PostManager())->updateAdminPost($post);
-                 Session::addMsgUpdatePost();
+                 ->setAuthor($this->input->post('author'))
+                 ->setTitle($this->input->post('title'))
+                 ->setContent($this->input->post('content'));
+            (new PostManager())->updateAdminPost($post);
+            Session::addMsgUpdatePost();
             header('Location: index.php?route=adminPostList');
-            GetValue::exitMessage();
+            Input::exitMessage();
         }
         return $this->render('Admin/editPost.html.twig', ['post' => $post]);
     }
@@ -135,7 +141,7 @@ class PostController extends Controller
     /**
      * @param $postId
      */
-    public function deleteAdminPost($postId):void
+    public function deleteAdminPost($postId): void
     {
         $this->postManager->delete($postId);
         header('Location: index.php?route=adminPostList');

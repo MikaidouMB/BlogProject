@@ -20,7 +20,7 @@ class Comment
     /**
      * @return int
      */
-    public function getId():? int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -142,5 +142,4 @@ class Comment
         $this->modifiedOn = $modifiedOn;
         return $this;
     }
-
 }

@@ -10,11 +10,11 @@ class PostManager extends DAO
      * @return array
      * @throws \Exception
      */
-    public function findAll() : array
+    public function findAll(): array
     {
         $result = $this->createQuery('SELECT * FROM post ORDER BY modifiedOn DESC');
         $posts = [];
-        foreach ($result->fetchAll() as $post){
+        foreach ($result->fetchAll() as $post) {
             $posts[]= $this->buildObject($post);
         }
         return $posts;
@@ -25,10 +25,10 @@ class PostManager extends DAO
      * @return Post|null
      * @throws \Exception
      */
-    public function find($postId): ? Post
+    public function find($postId): ?Post
     {
         $result = $this->createQuery('SELECT * FROM post WHERE post.id = ?', [$postId]);
-        if (false === $object = $result->fetchObject()){
+        if (false === $object = $result->fetchObject()) {
             return null;
         }
 
@@ -39,7 +39,7 @@ class PostManager extends DAO
      * @param Post|null $post
      * @return bool
      */
-    public function updateAdminPost(?Post $post):bool
+    public function updateAdminPost(?Post $post): bool
     {
         $result = $this->createQuery(
             'UPDATE post SET  author = ?, title = ?, user_id = ?, content = ? WHERE id = ?',
@@ -57,7 +57,8 @@ class PostManager extends DAO
     {
         $this->createQuery(
             'INSERT INTO post (author,title,user_id,content)VALUES(?,?,?,?) ',
-            $result= array_merge($this->buildValues($post)));
+            $result= array_merge($this->buildValues($post))
+        );
 
         return $result;
     }
@@ -69,8 +70,9 @@ class PostManager extends DAO
     public function delete($postId): bool
     {
         $result = $this->createQuery(
-            'DELETE FROM post WHERE id = ?', [$postId],
-    );
+            'DELETE FROM post WHERE id = ?',
+            [$postId],
+        );
 
         return 1<= $result->rowCount();
     }
@@ -94,7 +96,7 @@ class PostManager extends DAO
      * @return Post
      * @throws \Exception
      */
-    private function buildObject(object $post):Post
+    private function buildObject(object $post): Post
     {
         return (new Post())
             ->setId($post->id)
@@ -104,5 +106,4 @@ class PostManager extends DAO
             ->setContent($post->content)
             ->setModifiedOn(new \DateTimeImmutable($post->modifiedOn));
     }
-
 }

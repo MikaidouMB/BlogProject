@@ -1,5 +1,6 @@
 <?php
 
+use App\Model\Input;
 use App\Router;
 use Symfony\Component\Dotenv\Dotenv;
 use Twig\Environment;
@@ -15,9 +16,10 @@ $dotenv->load(__DIR__.'/../.env');
      $loader = new FilesystemLoader(__DIR__.'/../templates');
      $twig = new Environment($loader, ['debug' => true]);
      $twig->addExtension(new DebugExtension());
+     $input = new Input();
 
     try {
-        print_r((new Router($twig))->run()) ;
+        print_r((new Router($twig, $input))->run()) ;
     } catch (Exception $e) {}
 
     if (Session::getMessage('newsession','message','connection')) {

@@ -2,16 +2,20 @@
 
 namespace App\DAO;
 
+use App\Model\Input;
+
 abstract class DAO
 {
-     private \PDO $database;
+    private \PDO $database;
+    private Input $input;
 
-     public function __construct()
-     {
+    public function __construct()
+    {
+        $this->input = new Input();
         $this->database = new \PDO(
-            $_ENV['DSN'],
-            $_ENV['DB_USER'],
-            $_ENV['DB_PASSWORD'],
+            $this->input->getEnv('DSN'),
+            $this->input->getEnv('DB_USER'),
+            $this->input->getEnv('DB_PASSWORD'),
             [
                 \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
                 \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_OBJ,

@@ -49,10 +49,10 @@ class User
     /**
      * @return string
      */
-       public function getEmail(): string
-       {
-           return $this->email;
-       }
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
 
     /**
      * @param string $email
@@ -101,4 +101,3 @@ class User
         return $this;
     }
 }
-

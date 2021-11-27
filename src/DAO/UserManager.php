@@ -13,7 +13,7 @@ class UserManager extends DAO
     public function findPostAuthorByUserId($userId): ?User
     {
         $result = $this->createQuery('SELECT * from user WHERE user.id = ?', $userId);
-        if (!$object = $result->fetchObject()){
+        if (!$object = $result->fetchObject()) {
             return null;
         }
         return $this->buildObject($object);
@@ -27,7 +27,7 @@ class UserManager extends DAO
     {
         $result = $this->createQuery('SELECT * FROM user WHERE username = ?', [$username]);
         if ($result->rowCount() > 0) {
-        return $result->fetch(\PDO::FETCH_ASSOC);
+            return $result->fetch(\PDO::FETCH_ASSOC);
         }
     }
 
@@ -37,8 +37,10 @@ class UserManager extends DAO
      */
     public function register(User $user)
     {
-        $this->createQuery('INSERT INTO user(id, username, password,email, role)VALUES(?,?,?,?,?)',
-        $result = array_merge($this->buildValues($user)));
+        $this->createQuery(
+            'INSERT INTO user(id, username, password,email, role)VALUES(?,?,?,?,?)',
+            $result = array_merge($this->buildValues($user))
+        );
         return $result;
     }
 
@@ -49,7 +51,7 @@ class UserManager extends DAO
     {
         $result = $this->createQuery('SELECT * FROM user');
         $users = [];
-        foreach ($result->fetchAll() as $user){
+        foreach ($result->fetchAll() as $user) {
             $users[]= $this->buildObject($user);
         }
         return $users;
@@ -97,7 +99,7 @@ class UserManager extends DAO
      * @param object $user
      * @return User
      */
-    private function buildObject(object $user):User
+    private function buildObject(object $user): User
     {
         return (new User())
             ->setId($user->id)

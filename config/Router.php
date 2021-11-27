@@ -6,15 +6,17 @@ use App\Controller\AppController;
 use App\Controller\CommentController;
 use App\Controller\PostController;
 use App\Controller\UserController;
-use App\Model\GetValue;
+use App\Model\Input;
 use Twig\Environment;
 
 class Router
 {
     private Environment $twig;
+    private Input $input;
 
-    public function __construct(Environment $twig){
+    public function __construct(Environment $twig, Input $input){
         $this->twig = $twig;
+        $this->input = $input;
     }
 
     /**
@@ -22,63 +24,64 @@ class Router
      */
     public function run()
     {
-        $postController = new PostController($this->twig);
-        $appController  = new AppController($this->twig);
-        $userController = new UserController($this->twig);
-        $commentController = new CommentController($this->twig);
+        $postController = new PostController($this->twig,$this->input);
+        $appController  = new AppController($this->twig,$this->input);
+        $userController = new UserController($this->twig,$this->input);
+        $commentController = new CommentController($this->twig,$this->input);
+        $input = new Input();
 
-        if (GetValue::findGetValue('route'))
+        if ($input->get('route'))
         {
-            if (GetValue::findGetValue('route') == 'posts'){
+            if ($this->input->get('route') == 'posts'){
                 return $postController->list();
             }
-            if (GetValue::findGetValue('route') == 'addPost'){
-                return $postController->add(filter_input_array(INPUT_POST));
+            if ($this->input->get('route') == 'addPost'){
+                return $postController->add($this->input->post());
             }
-            if (GetValue::findGetValue('route') == 'signUp'){
-                return $userController->signUp(filter_input_array(INPUT_POST));
+            if ($this->input->get('route') == 'signUp'){
+                return $userController->signUp($this->input->post());
             }
-            if (GetValue::findGetValue('route') == 'login'){
-                return $userController->login(filter_input_array(INPUT_POST));
+            if ($this->input->get('route') == 'login'){
+                return $userController->login($this->input->post());
             }
-            if (GetValue::findGetValue('route') == 'signOut'){
+            if ($this->input->get('route') == 'signOut'){
                 return $userController->signOut();
             }
-            if (GetValue::findGetValue('route') == 'adminPostList'){
+            if ($this->input->get('route') == 'adminPostList'){
                 return $postController->adminPostList();
             }
-            if(GetValue::findGetValue('route') =='editAdminPost' && GetValue::findGetValue('id') > 0){
+            if ($this->input->get('route') =='editAdminPost' && $this->input->get('id') > 0){
                 return $postController->updateAdminPosts();
             }
-            if(GetValue::findGetValue('route') =='editUser' && GetValue::findGetValue('id') > 0) {
+            if ($this->input->get('route') =='editUser' && $this->input->get('id') > 0) {
                 return $userController->updateUser();
             }
-            if (GetValue::findGetValue('route') == 'deleteAdminPost' && GetValue::findGetValue('id') > 0){
-                return $postController->deleteAdminPost(GetValue::findGetValue('id'));
+            if ($this->input->get('route') == 'deleteAdminPost' && $this->input->get('id') > 0){
+                return $postController->deleteAdminPost($this->input->get('id'));
             }
-            if (GetValue::findGetValue('route') == 'adminPostcomments'){
+            if ($this->input->get('route') == 'adminPostcomments'){
                 return $commentController->adminPostcomments();
             }
-            if (GetValue::findGetValue('route') == 'deleteComment' && GetValue::findGetValue('id') > 0){
-                return $commentController->deleteAdminPostcomments(GetValue::findGetValue('id'));
+            if ($this->input->get('route') == 'deleteComment' && $this->input->get('id') > 0){
+                return $commentController->deleteAdminPostcomments($this->input->get('id'));
             }
-            if (GetValue::findGetValue('route') =='deleteUser' && GetValue::findGetValue('id') > 0){
-                return $userController->deleteUser(GetValue::findGetValue('id'));
+            if ($this->input->get('route') =='deleteUser' && $this->input->get('id') > 0){
+                return $userController->deleteUser($this->input->get('id'));
             }
-            if (GetValue::findGetValue('route') == 'adminPostUsers'){
+            if ($this->input->get('route') == 'adminPostUsers'){
                 return $postController->adminPostUsers();
             }
-            if (GetValue::findGetValue('route') == 'editComment' && GetValue::findGetValue('id') > 0){
-                return $commentController->updateComments(GetValue::findGetValue('id'));
+            if ($this->input->get('route') == 'editComment' && $this->input->get('id') > 0){
+                return $commentController->updateComments($this->input->get('id'));
             }
-            if (GetValue::findGetValue('route') == 'addComment' && GetValue::findGetValue('id') > 0){
-                return $commentController->commentPost(GetValue::findGetValue('id'));
+            if ($this->input->get('route') == 'addComment' && $this->input->get('id') > 0){
+                return $commentController->commentPost($input->get('id'));
             }
-            if (GetValue::findGetValue('id') > 0) {
+            if ($this->input->get('id') > 0) {
                 return $postController->show();
             }
-            if (GetValue::findGetValue('id') > 0) {
-                return $commentController->listComments(GetValue::findGetValue('id'));
+            if ($this->input->get('id') > 0) {
+                return $commentController->listComments($this->input->get('id'));
             }
         }
         return $appController->index();

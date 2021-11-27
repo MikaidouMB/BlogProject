@@ -14,7 +14,8 @@ class CommentManager extends DAO
     {
         $this->createQuery(
             'INSERT INTO comment (id ,user_id, postId, username, content, is_valid)VALUES(?,?,?,?,?,?) ',
-            $result = array_merge($this->buildValues($comment)));
+            $result = array_merge($this->buildValues($comment))
+        );
         return $result;
     }
 
@@ -36,10 +37,10 @@ class CommentManager extends DAO
      * @return \App\Model\Comment|null
      * @throws \Exception
      */
-    public function find($commentId): ? Comment
+    public function find($commentId): ?Comment
     {
         $result = $this->createQuery('SELECT * FROM comment WHERE comment.id = ?', [$commentId]);
-        if (false === $object = $result->fetchObject()){
+        if (false === $object = $result->fetchObject()) {
             return null;
         }
         return $this->buildObject($object);
@@ -63,7 +64,7 @@ class CommentManager extends DAO
     {
         $result = $this->createQuery('SELECT * FROM comment ORDER BY modifiedOn DESC ');
         $comments = [];
-        foreach ($result->fetchAll() as $comment){
+        foreach ($result->fetchAll() as $comment) {
             $comments[]= $this->buildObject($comment);
         }
         return $comments;
@@ -76,7 +77,8 @@ class CommentManager extends DAO
     public function deleteAdminPostcomments($commentId): bool
     {
         $result = $this->createQuery(
-            'DELETE FROM comment WHERE id = ?',[$commentId],
+            'DELETE FROM comment WHERE id = ?',
+            [$commentId],
         );
         return 1<= $result->rowCount();
     }
@@ -102,7 +104,7 @@ class CommentManager extends DAO
      * @return \App\Model\Comment
      * @throws \Exception
      */
-    private function buildObject(object $comment):Comment
+    private function buildObject(object $comment): Comment
     {
         return (new Comment())
             ->setId($comment->id)
@@ -113,5 +115,4 @@ class CommentManager extends DAO
             ->setIsValid($comment->is_valid)
             ->setModifiedOn(new \DateTimeImmutable($comment->modifiedOn));
     }
-
 }

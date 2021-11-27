@@ -74,7 +74,6 @@ $ composer install
 Dependencies should be installed in your project (check _vendor_ directory).
 
 ---
----
 ## USAGE
 
 ### __Visit your new site__
@@ -95,7 +94,7 @@ Authors have to be connected and approved to access to their back-office pages.
 | admin | Manage comments | ?route=adminPostcomments | Posts author, Admin |
 | admin | Manage comments of post #ID | ?route=editComment&id=ID | Post author, Admin |
 | admin | Manage users | ?route=adminPostUsers | Admin |
-| admin | Edit user #ID<br>Gérer mon profil | ?route=editUser&id=ID | Author #ID, Admin |
+| admin | Edit user #ID | ?route=editUser&id=ID | Author #ID, Admin |
 
 ### __Create your admin profile__
 1.  Register you as a new user via registration form (___public/index.php?route=signUp___)

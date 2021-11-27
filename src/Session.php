@@ -1,31 +1,47 @@
 <?php
 
-
 namespace App;
 
-class Session {
-
+class Session
+{
     private static bool $_sessionStarted = false;
+    /*
+     *  private static $instance;
+     *
+     * public function __construct()
+    {
+        session_start();
+        session_regenerate_id();
+
+    }
+
+     static function getInstance(): object
+    {
+        if(!self::$instance){
+            self::$instance = new Session();
+        }
+        return self::$instance;
+    }
+    */
 
     public static function start()
     {
-        if (self::$_sessionStarted == false)
-        {
+        if (self::$_sessionStarted == false) {
             session_start();
             self::$_sessionStarted = true;
         }
     }
+
     public static function getMessage($key, $secondKey, $thirdKey = false)
     {
-        if ($secondKey == true && $thirdKey == true)
-        {
-            if (isset($_SESSION[$key][$secondKey][$thirdKey]))
+        if ($secondKey == true && $thirdKey == true) {
+            if (isset($_SESSION[$key][$secondKey][$thirdKey])) {
                 return $_SESSION[$key][$secondKey][$thirdKey];
-        }
-        else
-        {
-            if (isset($_SESSION[$key]))
+            }
+        } else {
+            if (isset($_SESSION[$key])) {
                 return $_SESSION[$key];
+            }
         }
         return false;
     }
@@ -34,7 +50,7 @@ class Session {
         if ($secondKey == true && $thirdKey == true && $fourthKey == true) {
             $_SESSION[$key][$secondKey][$thirdKey] = $fourthKey;
         }
-            return false;
+        return false;
     }
 
     public static function destroyMsg()
@@ -44,64 +60,78 @@ class Session {
 
     public static function addMsgConn()
     {
-        Session::setMsg('newsession','message','connection','Vous êtes connecté');
+        Session::setMsg('newsession', 'message', 'connection', 'Vous êtes connecté');
     }
 
     public static function addMsgDeco()
     {
-        Session::setMsg('newsession','message','deconnection','Vous êtes déconnecté');
+        Session::setMsg('newsession', 'message', 'deconnection', 'Vous êtes déconnecté');
     }
 
     public static function addMsgUpdateUser()
     {
-        Session::setMsg('newsession','message','update_user', 'Utilisateur mis à jour');
+        Session::setMsg('newsession', 'message', 'update_user', 'Utilisateur mis à jour');
     }
 
     public static function addMsgModeration()
     {
-        Session::setMsg('newsession','message','moderation', 'Commentaire en attente');
+        Session::setMsg('newsession', 'message', 'moderation', 'Commentaire en attente');
     }
 
     public static function addMsgValidation()
     {
-        Session::setMsg('newsession','message','update_comment', 'Commentaire validé');
+        Session::setMsg('newsession', 'message', 'update_comment', 'Commentaire validé');
     }
 
     public static function addMsgUpdatePost()
     {
-        Session::setMsg('newsession','message','article_update', 'Article modifié');
+        Session::setMsg('newsession', 'message', 'article_update', 'Article modifié');
     }
 
     public static function addMsgCreatePost()
     {
-        Session::setMsg('newsession','message','add', 'Nouvelle article publié');
+        Session::setMsg('newsession', 'message', 'add', 'Nouvelle article publié');
     }
 
     public static function set($key, $value)
     {
-        if ($key == true && $value == true)
-        {
+        if ($key == true && $value == true) {
             $_SESSION[$key] = $value;
         }
     }
     public static function setSession($value): array
     {
-        if ($value == true)
-        {
+        if ($value == true) {
             return $_SESSION;
         }
     }
+    /*public function getSession($key = null, $default = null)
+    {
+        return $this->checkGlobalSession($this->_session, $key, $default);
+    }
+        private function checkGlobalSession($global, $key = null, $default = null)
+    {
+        if ($key) {
+            if (isset($global[$key][$default])) {
+                return $global[$key][$default];
+            } else {
+                return $default ?: null;
+            }
+        }
+        return $global;
+    }
+    */
+
     public static function getSessionValue($key, $secondKey = false)
     {
-        if ($secondKey == true)
-        {
-            if (isset($_SESSION[$key][$secondKey]))
+        if ($secondKey == true) {
+            if (isset($_SESSION[$key][$secondKey])) {
                 return $_SESSION[$key][$secondKey];
-        }
-        else
-        {
-            if (isset($_SESSION[$key]))
+            }
+        } else {
+            if (isset($_SESSION[$key])) {
                 return $_SESSION[$key];
+            }
         }
         return false;
     }
