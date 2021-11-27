@@ -40,6 +40,8 @@ class Session
         unset($_SESSION['newsession']['message']);
     }
 
+
+
     public static function addMsgConn()
     {
         Session::setMsg('newsession', 'message', 'connection', 'Vous êtes connecté');
@@ -48,6 +50,11 @@ class Session
     public static function addMsgDeco()
     {
         Session::setMsg('newsession', 'message', 'deconnection', 'Vous êtes déconnecté');
+    }
+
+    public static function addMsgField()
+    {
+        Session::setMsg('newsession', 'message', 'errorField', 'Veuillez remplir tous les champs');
     }
 
     public static function addMsgUpdateUser()

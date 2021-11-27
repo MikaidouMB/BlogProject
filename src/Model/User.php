@@ -4,7 +4,7 @@ namespace App\Model;
 
 class User
 {
-    private ?int $id = null;
+    private ?int $userId = null;
     private string $username;
     private string $password;
     private ?string $role = null;
@@ -13,18 +13,18 @@ class User
     /**
      * @return integer
      */
-    public function getId(): ?int
+    public function getUserId(): ?int
     {
-        return $this->id;
+        return $this->userId;
     }
 
     /**
-     * @param integer $id
+     * @param integer $userId
      * @return User
      */
-    public function setId(int $id): User
+    public function setUserId(int $userId): User
     {
-        $this->id = $id;
+        $this->userId = $userId;
         return $this;
     }
 

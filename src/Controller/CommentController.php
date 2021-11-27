@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\DAO\CommentManager;
 use App\DAO\PostManager;
 use App\Model\Comment;
-use App\Model\GetValue;
 use App\Model\Input;
 use App\Session;
 use Twig\Environment;

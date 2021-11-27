@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\DAO\CommentManager;
 use App\DAO\PostManager;
 use App\DAO\UserManager;
-use App\Model\GetValue;
 use App\Model\Input;
 use App\Model\Post;
 use App\Session;
@@ -52,7 +51,7 @@ class PostController extends Controller
     public function show(): string
     {
         $post = $this->postManager->find($this->input->get('id'));
-        $postId[] = $post->getId();
+        $postId[] = $post->getPostId();
         $userId[] = $post->getUserId();
 
         $user = $this->userManager->findPostAuthorByUserId($userId);
@@ -117,7 +116,7 @@ class PostController extends Controller
         if ($this->input->post('title')
             || $this->input->post('content')
             || $this->input->post('author')) {
-            $post->setId($postId)
+            $post->setPostId($postId)
                  ->setAuthor($this->input->post('author'))
                  ->setTitle($this->input->post('title'))
                  ->setContent($this->input->post('content'));

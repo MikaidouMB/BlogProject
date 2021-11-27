@@ -39,23 +39,24 @@
                         <li class="hidden">
                             <a href="#page-top"></a>
                         </li>
-                       {# {% if session.newsession is empty or session.newsession.deconnection%}
-                                               {% else %}
-                         {% endif %}
-
-                       #}
+                        {% if session.newsession is not empty%}
+                            <li class="page-scroll " >
+                                <a class="nav-link" href="index.php?route=signOut">Se déconnecter</a>
+                            </li>
+                            <li class="page-scroll">
+                                <a class="nav-link" href="index.php?route=posts">Articles</a>
+                            </li>
+                        {% else %}
                             <li class="page-scroll">
                                 <a class="nav-link" href="index.php?route=signUp">S'inscrire</a>
                             </li>
                             <li class="page-scroll">
                                 <a class="nav-link" href="index.php?route=login">Se connecter</a>
                             </li>
-                            <li class="page-scroll " >
-                                <a class="nav-link" href="index.php?route=signOut">Se déconnecter</a>
+                            <li class="page-scroll">
+                                <a class="nav-link" href="index.php?route=posts">Articles</a>
                             </li>
-                        <li class="page-scroll">
-                            <a class="nav-link" href="index.php?route=posts">Articles</a>
-                        </li>
+                        {% endif %}
                     </ul>
                 </div>
            </nav>

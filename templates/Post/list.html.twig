@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 {% block body %}
     <div class="container">
-        {% if session is not empty %}
+        {% if session.newsession is not empty %}
             <div class="btn-add">
                 <a href="index.php?route=addPost" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Ajouter un article</a>
             </div>

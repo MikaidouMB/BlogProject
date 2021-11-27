@@ -75,7 +75,7 @@ class UserManager extends DAO
     {
         $result = $this->createQuery(
             'UPDATE user SET id = ?, username = ?, password = ?, email = ?,  role = ?  WHERE id = ?',
-            array_merge($this->buildValues($user), [$user->getId()])
+            array_merge($this->buildValues($user), [$user->getUserId()])
         );
         return 1 <= $result->rowCount();
     }
@@ -87,7 +87,7 @@ class UserManager extends DAO
     private function buildValues(User $user): array
     {
         return [
-            $user->getId(),
+            $user->getUserId(),
             $user->getUsername(),
             $user->getPassword(),
             $user->getEmail(),
@@ -102,7 +102,7 @@ class UserManager extends DAO
     private function buildObject(object $user): User
     {
         return (new User())
-            ->setId($user->id)
+            ->setUserId($user->id)
             ->setUsername($user->username)
             ->setPassword($user->password)
             ->setEmail($user->email)

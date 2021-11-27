@@ -4,7 +4,7 @@ namespace App\Model;
 
 class Post
 {
-    private ?int $id = null;
+    private ?int $postId = null;
     private int $userId;
     private string $author;
     private string $title;
@@ -19,18 +19,18 @@ class Post
     /**
      * @return  integer
      */
-    public function getId(): int
+    public function getPostId(): int
     {
-        return $this->id;
+        return $this->postId;
     }
 
     /**
-     * @param integer $id
+     * @param integer $postId
      * @return Post
      */
-    public function setId(int $id): Post
+    public function setPostId(int $postId): Post
     {
-        $this->id = $id;
+        $this->postId = $postId;
         return $this;
     }
 

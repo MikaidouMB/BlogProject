@@ -43,7 +43,7 @@ class PostManager extends DAO
     {
         $result = $this->createQuery(
             'UPDATE post SET  author = ?, title = ?, user_id = ?, content = ? WHERE id = ?',
-            array_merge($this->buildValues($post), [$post->getId()])
+            array_merge($this->buildValues($post), [$post->getPostId()])
         );
 
         return 1<= $result->rowCount();
@@ -99,7 +99,7 @@ class PostManager extends DAO
     private function buildObject(object $post): Post
     {
         return (new Post())
-            ->setId($post->id)
+            ->setPostId($post->id)
             ->setUserId($post->user_id)
             ->setAuthor($post->author)
             ->setTitle($post->title)

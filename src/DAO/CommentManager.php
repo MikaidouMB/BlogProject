@@ -27,7 +27,7 @@ class CommentManager extends DAO
     {
         $result = $this->createQuery(
             'UPDATE comment SET id = ?, user_id = ? ,postId = ?, username = ?,  content = ? , is_valid = ? WHERE id = ?',
-            array_merge($this->buildValues($comment), [$comment->getId()])
+            array_merge($this->buildValues($comment), [$comment->getCommentId()])
         );
         return 1<= $result->rowCount();
     }
@@ -90,7 +90,7 @@ class CommentManager extends DAO
     private function buildValues(Comment $comment): array
     {
         return[
-            $comment->getId(),
+            $comment->getCommentId(),
             $comment->getUserId(),
             $comment->getPostId(),
             $comment->getUsername(),
@@ -107,7 +107,7 @@ class CommentManager extends DAO
     private function buildObject(object $comment): Comment
     {
         return (new Comment())
-            ->setId($comment->id)
+            ->setCommentId($comment->id)
             ->setUserId($comment->user_id)
             ->setUsername($comment->username)
             ->setPostId($comment->postId)

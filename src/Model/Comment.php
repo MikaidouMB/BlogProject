@@ -4,7 +4,7 @@ namespace App\Model;
 
 class Comment
 {
-    private ?int $id = null;
+    private ?int $commentId = null;
     private ?int $userId = null;
     private string $username;
     private int $postId;
@@ -20,18 +20,18 @@ class Comment
     /**
      * @return int
      */
-    public function getId(): ?int
+    public function getCommentId(): ?int
     {
-        return $this->id;
+        return $this->commentId;
     }
 
     /**
-     * @param int $id
+     * @param int $commentId
      * @return Comment
      */
-    public function setId(int $id): Comment
+    public function setCommentId(int $commentId): Comment
     {
-        $this->id = $id;
+        $this->commentId = $commentId;
         return $this;
     }
 

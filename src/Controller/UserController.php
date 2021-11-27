@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\DAO\UserManager;
-use App\Model\GetValue;
 use App\Model\User;
 use App\Model\Input;
 use Twig\Environment;
@@ -12,12 +11,13 @@ use App\Session;
 class UserController extends Controller
 {
     private UserManager $userManager;
-    private Input  $input;
+    private Input $input;
+
     public function __construct(Environment $twig, Input $input)
     {
         $this->userManager = new UserManager();
         $this->input = new Input();
-        parent::__construct($twig,$input);
+        parent::__construct($twig, $input);
     }
 
     /**
@@ -83,27 +83,34 @@ class UserController extends Controller
      */
     public function login($userForm): string
     {
+        $errorUsername = [];
         $errors = [];
         $validMsg = [];
+        $errorField = [];
 
-        if (!empty($this->input->post('username')) || empty($this->input->post('password'))) {
-            if (empty($this->input->post('username')) || empty($this->input->post('password'))) {
-                $errors = 'Identifiant ou mot de passe incorrect';
+        if ($this->input->post('username') === '' || $this->input->post('password') === '') {
+            $errorField = 'Vous devez remplir tous les champs';
+        }
+
+        $username = $this->input->post('username');
+        $existingUser = $this->userManager->checkIfUserExist($username);
+
+        if (!empty($this->input->post('username')) || !empty($this->input->post('password'))) {
+            if ($existingUser == null) {
+                $errorUsername = 'Cet identifiant n\'existe pas';
             }
-                $username = $this->input->post('username');
-                $existingUser = $this->userManager->checkIfUserExist($username);
-
-            if (isset($existingUser)) {
+            if ($existingUser != null) {
                 Session::set('newsession', $existingUser);
                 Session::addMsgConn();
                 header('Location:index.php?connexion');
                 Input::exitMessage();
             }
         }
-
         return $this->render(
             'Auth/login.html.twig',
             [
+                'errorUsername' => $errorUsername,
+                'errorField' => $errorField,
                 'userform' => $userForm,
                 'errors' => $errors,
                 'validation' => $validMsg,

@@ -26,6 +26,8 @@ $dotenv->load(__DIR__.'/../.env');
         Session::destroyMsg();
     } elseif (Session::getMessage('newsession','message','deconnection')) {
         Session::destroyMsg();
+    } elseif (Session::getMessage('newsession','message','errorField')) {
+        Session::destroyMsg();
     } elseif (Session::getMessage('newsession','message','update_user')) {
         Session::destroyMsg();
     } elseif (Session::getMessage('newsession','message','moderation')) {
