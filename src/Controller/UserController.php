@@ -89,10 +89,9 @@ class UserController extends Controller
         if (!empty($this->input->post('username')) || empty($this->input->post('password'))) {
             if (empty($this->input->post('username')) || empty($this->input->post('password'))) {
                 $errors = 'Identifiant ou mot de passe incorrect';
-            } else {
+            }
                 $username = $this->input->post('username');
                 $existingUser = $this->userManager->checkIfUserExist($username);
-            }
 
             if (isset($existingUser)) {
                 Session::set('newsession', $existingUser);

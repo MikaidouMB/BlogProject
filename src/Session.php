@@ -94,10 +94,9 @@ class Session
             if (isset($_SESSION[$key][$secondKey])) {
                 return $_SESSION[$key][$secondKey];
             }
-        } else {
-            if (isset($_SESSION[$key])) {
-                return $_SESSION[$key];
-            }
+        }
+        if (isset($_SESSION[$key])) {
+            return $_SESSION[$key];
         }
         return false;
     }

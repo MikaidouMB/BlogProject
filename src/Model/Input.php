@@ -6,12 +6,12 @@ class Input
 {
     private $_post;
     private $_get;
-    private $_env;
+    private array $_env;
 
     public function __construct()
     {
-        $this->_post = $_POST;
-        $this->_get = $_GET;
+        $this->_post = filter_input_array(INPUT_POST);
+        $this->_get = filter_input_array(INPUT_GET);
         $this->_env = $_ENV;
     }
 
