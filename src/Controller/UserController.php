@@ -55,9 +55,8 @@ class UserController extends Controller
                 header('Location:index.php');
                 $this->login($user);
                 Input::exitMessage();
-            } else {
-                $error_user = 'Ce nom d\'utilisateur existe déjà';
             }
+            $error_user = 'Ce nom d\'utilisateur existe déjà';
         }
         return $this->render(
             'Auth/register.html.twig',

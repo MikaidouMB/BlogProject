@@ -5,24 +5,6 @@ namespace App;
 class Session
 {
     private static bool $_sessionStarted = false;
-    /*
-     *  private static $instance;
-     *
-     * public function __construct()
-    {
-        session_start();
-        session_regenerate_id();
-
-    }
-
-     static function getInstance(): object
-    {
-        if(!self::$instance){
-            self::$instance = new Session();
-        }
-        return self::$instance;
-    }
-    */
 
     public static function start()
     {
@@ -38,11 +20,11 @@ class Session
             if (isset($_SESSION[$key][$secondKey][$thirdKey])) {
                 return $_SESSION[$key][$secondKey][$thirdKey];
             }
-        } else {
-            if (isset($_SESSION[$key])) {
-                return $_SESSION[$key];
-            }
         }
+        if (isset($_SESSION[$key])) {
+            return $_SESSION[$key];
+        }
+
         return false;
     }
     public static function setMsg($key, $secondKey, $thirdKey, $fourthKey = false): bool
@@ -105,22 +87,6 @@ class Session
             return $_SESSION;
         }
     }
-    /*public function getSession($key = null, $default = null)
-    {
-        return $this->checkGlobalSession($this->_session, $key, $default);
-    }
-        private function checkGlobalSession($global, $key = null, $default = null)
-    {
-        if ($key) {
-            if (isset($global[$key][$default])) {
-                return $global[$key][$default];
-            } else {
-                return $default ?: null;
-            }
-        }
-        return $global;
-    }
-    */
 
     public static function getSessionValue($key, $secondKey = false)
     {
