@@ -13,10 +13,13 @@ class Router
 {
     private Environment $twig;
     private Input $input;
+    private Session $session;
 
-    public function __construct(Environment $twig, Input $input){
+    public function __construct(Environment $twig, Input $input,Session $session){
         $this->twig = $twig;
         $this->input = $input;
+        $this->session = $session;
+
     }
 
     /**
@@ -24,10 +27,10 @@ class Router
      */
     public function run()
     {
-        $postController = new PostController($this->twig,$this->input);
-        $appController  = new AppController($this->twig,$this->input);
+        $postController = new PostController($this->twig,$this->input,$this->session);
+        $appController  = new AppController($this->twig,$this->input,$this->session);
         $userController = new UserController($this->twig,$this->input);
-        $commentController = new CommentController($this->twig,$this->input);
+        $commentController = new CommentController($this->twig, $this->input);
         $input = new Input();
 
         if ($input->get('route'))
@@ -70,6 +73,9 @@ class Router
             }
             if ($this->input->get('route') == 'adminPostUsers'){
                 return $postController->adminPostUsers();
+            }
+            if ($this->input->get('route') == 'adminPostViewers'){
+                return $postController->listPostAuthor();
             }
             if ($this->input->get('route') == 'editComment' && $this->input->get('id') > 0){
                 return $commentController->updateComments($this->input->get('id'));

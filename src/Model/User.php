@@ -9,6 +9,7 @@ class User
     private string $password;
     private ?string $role = null;
     private ?string $email = null;
+    private ?int $is_valid = null;
 
     /**
      * @return integer
@@ -98,6 +99,24 @@ class User
     public function setRole(string $role): User
     {
         $this->role = $role;
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getIsValid(): ?int
+    {
+        return $this->is_valid;
+    }
+
+    /**
+     * @param int|null $is_valid
+     * @return User
+     */
+    public function setIsValid(?int $is_valid): User
+    {
+        $this->is_valid = $is_valid;
         return $this;
     }
 }

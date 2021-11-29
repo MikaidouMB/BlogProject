@@ -26,49 +26,54 @@ class UserController extends Controller
      */
     public function signUp($userForm): string
     {
-        $errors = [];
         $validMsg = [];
-        $error_user = [];
+        $errorField = [];
+        $errorUsername = [];
+
+        if ($this->input->post('username') === '' ||
+            $this->input->post('password') === '' ||
+            $this->input->post('email') === '')
+        {
+            $errorField = 'Vous devez remplir tous les champs';
+        }
 
         if (!empty($this->input->post('username'))
-            || empty($this->input->post('password'))
-            || empty($this->input->post('email'))) {
-            if (empty($this->input->post('username'))
-                || empty($this->input->post('password'))
-                || empty($this->input->post('email'))) {
-                $errors = 'Les champs sont vides';
-            }
+            && !empty($this->input->post('password'))
+            && !empty($this->input->post('email')))
+        {
             $user = new User();
-            $password = $this->input->post('password');
             $username = $this->input->post('username');
+            $password = $this->input->post('password');
             $email = $this->input->post('email');
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
             $user->setUsername($username);
             $user->setPassword($hashedPassword);
             $user->setEmail($email);
             $user->setRole('viewer');
+            $user->setIsValid(0);
             $existingUser = $this->userManager->checkIfUserExist($username);
 
-            if (empty($existingUser)) {
+            if ($existingUser !== null) {
+                $errorUsername ='Ce nom d\'utilisateur existe déjà';
+            }
+            if ($existingUser === null) {
                 $this->userManager->register($user);
                 Session::set('newsession', $user);
-                header('Location:index.php');
                 $this->login($user);
+                header('Location:index.php');
                 Input::exitMessage();
             }
-            $error_user = 'Ce nom d\'utilisateur existe déjà';
         }
         return $this->render(
             'Auth/register.html.twig',
             [
                 'userform' => $userForm,
-                'errors' => $errors,
-                'errorsUser' => $error_user,
+                'errorUsername' => $errorUsername,
+                'errorField' => $errorField,
                 'validation' => $validMsg,
             ]
         );
     }
-
     public function signOut(): void
     {
         Session::destroySession();
@@ -131,6 +136,10 @@ class UserController extends Controller
                 $user->setRole('viewer');
             } elseif ($this->input->post('user_id') == 2) {
                 $user->setRole('admin');
+            }
+            if ($this->input->post('valid') !== null) {
+                $user
+                    ->setIsValid(1);
             }
             Session::addMsgUpdateUser();
             (new UserManager())->update($user);

@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 {% block body %}
     <div class="container">
-        {% if session.newsession is not empty %}
+        {% if session.newsession.is_valid == 1 %}
             <div class="btn-add">
                 <a href="index.php?route=addPost" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Ajouter un article</a>
             </div>
@@ -30,7 +30,7 @@
                     <h1>{{ post.title }} </h1>
                     <span class="badge">mis à jour le {{ post.modifiedOn|date('H:i:s d/m-Y') }}</span><br>
                     <p>'{{ post.content|length > 300 ? post.content|slice(0,300) ~ '...'}}
-                        <a href="index.php?route=post&id={{ post.id }}" tabindex="0" class="btn bg-blue-ui white read">Lire plus</a>
+                        <a href="index.php?route=post&id={{ post.postId }}" tabindex="0" class="btn bg-blue-ui white read">Lire plus</a>
                     </p><hr>
                 {% endfor %}
             </div>
@@ -51,8 +51,11 @@
                 </a>
             </div>
             <div class="footer-col col-md-4">
-                {% if session is not empty %}
+                {% if session.newsession.role == ('admin')%}
                     <h3><a href="index.php?route=adminPostList">Administration</a></h3>
+                {% endif %}
+                {% if session.newsession.role == ('viewer') %}
+                    <h3><a href="index.php?route=adminPostViewers">Administration</a></h3>
                 {% endif %}
             </div>
         </div>

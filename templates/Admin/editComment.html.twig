@@ -2,7 +2,7 @@
     {% block body %}
         <div class="container">
             <div class="main-form">
-                <form action="index.php?route=editComment&id={{ comment.id }}" method="post">
+                <form action="index.php?route=editComment&id={{ comment.commentId }}" method="post">
                     <div class="form-group">
                         <textarea class="form-control" name="content" id="content" rows="3" placeholder="Contenu de l'article">{{ comment.content }}</textarea>
                     </div>
@@ -37,9 +37,7 @@
                     </a>
                 </div>
                 <div class="footer-col col-md-4">
-                    {% if session is not empty %}
-                        <h3><a href="index.php?route=adminPostList">Administration</a></h3>
-                    {% endif %}
+                    <h3><a href="index.php?route=adminPostList">Administration</a></h3>
                 </div>
             </div>
             <div class="text-center">

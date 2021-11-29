@@ -2,9 +2,14 @@
 {% block body %}
     <button class="openbtn" onclick="openNav()">&#9776;</button>
     <div id="mySidebar" class="sidebar" >
-        <a href="index.php?route=adminPostList">Articles</a>
-        <a href="index.php?route=adminPostcomments">Commentaires</a>
-        <a href="index.php?route=adminPostUsers">Utilisateurs</a>
+        {% if session.newsession.role == ('admin') %}
+            <a href="index.php?route=adminPostList">Articles</a>
+            <a href="index.php?route=adminPostcomments">Commentaires</a>
+            <a href="index.php?route=adminPostUsers">Utilisateurs</a>
+        {% endif %}
+        {% if session.newsession.role == ('viewer') %}
+            <a href="index.php?route=adminPostViewers">Vos Articles</a>
+        {% endif %}
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">x</a>
     </div>
         <div class="container">
@@ -29,22 +34,23 @@
              </thead>
            <tbody>
            {% for post in posts %}
-                   <td>{{ post.title }}</td>
+           <td>{{ post.title }}</td>
                    <td>{{ post.author }}</td>
                    <td>{{ post.content|length > 300 ? post.content|slice(0,200) ~ '...'}}
-                       <a href="index.php?route=editAdminPost&id={{ post.id }}" tabindex="0" class="btn bg-blue-ui white read">Lire plus</a>
+                       <a href="index.php?route=editAdminPost&id={{ post.postId }}" tabindex="0" class="btn bg-blue-ui white read">Lire plus</a>
                    </td>
                    <td class="col-md-3">
                        <div class="btn-group" role="group" aria-label="Basic example">
-                       <a href="index.php?route=editAdminPost&id={{ post.id }}"
+                       <a href="index.php?route=editAdminPost&id={{ post.postId }}"
                           class="btn btn-warning btn-lg active" role="button" aria-pressed="true">Modifier</a>
-                       <a href="index.php?route=deleteAdminPost&id={{ post.id }}"
+                       <a href="index.php?route=deleteAdminPost&id={{ post.postId }}"
                           onclick="return confirm('Voulez-vous effacer l\'article n°{{ post.title }} ?')"
                           class="btn btn-danger btn-lg active" role="button" aria-pressed="true">Supprimer</a>
                        </div>
                    </td>
            </tbody>
            {% endfor %}
+               <tbody>
        </table>
        </div>
         </div>
@@ -63,7 +69,7 @@
                         </a>
                     </div>
                     <div class="footer-col col-md-4">
-                        {% if session is not empty %}
+                        {% if session.newsession.is_valid == 1 %}
                             <h3><a href="index.php?route=adminPostList">Administration</a></h3>
                         {% endif %}
                     </div>

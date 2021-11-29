@@ -41,9 +41,9 @@
                         {% endif %}
                         <td>
                             <div class="btn-group" role="group" aria-label="Basic example">
-                                <a href="index.php?route=editComment&id={{ comment.id }}" class="btn btn-warning btn-lg active" role="button" aria-pressed="true">Modifier</a>
-                                <a href="index.php?route=deleteComment&id={{ comment.id }}"
-                                   onclick="return confirm('Voulez-vous effacer le commentaire n°{{ comment.id }} ?')"
+                                <a href="index.php?route=editComment&id={{ comment.commentId }}" class="btn btn-warning btn-lg active" role="button" aria-pressed="true">Modifier</a>
+                                <a href="index.php?route=deleteComment&id={{ comment.commentId }}"
+                                   onclick="return confirm('Voulez-vous effacer le commentaire n°{{ comment.commentId }} ?')"
                                    class="btn btn-danger btn-lg active" role="button" aria-pressed="true">Supprimer</a>
                             </div>
                         </td>
@@ -68,9 +68,7 @@
                 </a>
             </div>
             <div class="footer-col col-md-4">
-                {% if session is not empty %}
-                    <h3><a href="index.php?route=adminPostList">Administration</a></h3>
-                {% endif %}
+                <h3><a href="index.php?route=adminPostList">Administration</a></h3>
             </div>
         </div>
         <div class="text-center">

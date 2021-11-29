@@ -34,8 +34,11 @@
                     </a>
                 </div>
                 <div class="footer-col col-md-4">
-                    {% if session is not empty %}
+                    {% if session.newsession.role == ('admin')%}
                         <h3><a href="index.php?route=adminPostList">Administration</a></h3>
+                    {% endif %}
+                    {% if session.newsession.role == ('viewer') %}
+                        <h3><a href="index.php?route=adminPostViewers">Administration</a></h3>
                     {% endif %}
                 </div>
             </div>

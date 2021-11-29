@@ -5,7 +5,6 @@
         <div class="main-form">
             <form action="index.php?route=login" method="post">
                 <h1 class="h3 mb-3 font-weight-normal">Se connecter</h1>
-                {{ dump() }}
                 {% if errorUsername %}
                     <div class="errors" style="color: red">Cet identifiant n'existe pas</div>
                 {% endif %}
@@ -38,8 +37,11 @@
                 </a>
             </div>
             <div class="footer-col col-md-4">
-                {% if session is not empty %}
+                {% if session.newsession.role == ('admin')%}
                     <h3><a href="index.php?route=adminPostList">Administration</a></h3>
+                {% endif %}
+                {% if session.newsession.role == ('viewer') %}
+                    <h3><a href="index.php?route=adminPostViewers">Administration</a></h3>
                 {% endif %}
             </div>
         </div>

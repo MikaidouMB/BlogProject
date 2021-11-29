@@ -3,9 +3,19 @@
 namespace App\DAO;
 
 use App\Model\Post;
+use App\Session;
 
 class PostManager extends DAO
 {
+    private Session $session;
+
+    public function __construct()
+    {
+        $this->session = new Session();
+        parent::__construct();
+
+    }
+
     /**
      * @return array
      * @throws \Exception
@@ -33,6 +43,21 @@ class PostManager extends DAO
         }
 
         return $this->buildObject($object);
+    }
+
+    /**
+     * @param $sessionUserId
+     * @return array
+     * @throws \Exception
+     */
+    public function findPostFromUserId($sessionUserId): array
+    {
+        $result = $this->createQuery('SELECT * FROM post WHERE post.user_id = ?', [$sessionUserId]);
+        $posts = [];
+        foreach ($result->fetchAll() as $post) {
+            $posts[]= $this->buildObject($post);
+        }
+        return $posts;
     }
 
     /**

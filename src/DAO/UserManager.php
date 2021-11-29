@@ -38,7 +38,7 @@ class UserManager extends DAO
     public function register(User $user)
     {
         $this->createQuery(
-            'INSERT INTO user(id, username, password,email, role)VALUES(?,?,?,?,?)',
+            'INSERT INTO user(id, username, password,email, role, is_valid)VALUES(?,?,?,?,?,?)',
             $result = array_merge($this->buildValues($user))
         );
         return $result;
@@ -74,7 +74,7 @@ class UserManager extends DAO
     public function update(User $user): bool
     {
         $result = $this->createQuery(
-            'UPDATE user SET id = ?, username = ?, password = ?, email = ?,  role = ?  WHERE id = ?',
+            'UPDATE user SET id = ?, username = ?, password = ?, email = ?, role = ?, is_valid = ?  WHERE id = ?',
             array_merge($this->buildValues($user), [$user->getUserId()])
         );
         return 1 <= $result->rowCount();
@@ -92,6 +92,7 @@ class UserManager extends DAO
             $user->getPassword(),
             $user->getEmail(),
             $user->getRole(),
+            $user->getIsValid()
         ];
     }
 
@@ -106,6 +107,7 @@ class UserManager extends DAO
             ->setUsername($user->username)
             ->setPassword($user->password)
             ->setEmail($user->email)
-            ->setRole($user->role);
+            ->setRole($user->role)
+            ->setIsValid($user->is_valid);
     }
 }

@@ -2,7 +2,7 @@
     {% block body %}
         <div class="container">
           <div class="main-form">
-              <form action="index.php?route=editAdminPost&id={{ post.id }}" method="post">
+              <form action="index.php?route=editAdminPost&id={{ post.postId }}" method="post">
                 <div class="input-field col s12 m6 l6">
                   <input type="text" name="title" id="title" class="form-control" placeholder="Titre de l'article" value="{{ post.title }}">
                 </div><br>
@@ -18,9 +18,16 @@
               </form>
           </div>
         </div>
-        <div class="text-left">
-            <a href="index.php?route=adminPostList" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">précedent</a>
-        </div>
+        {% if session.newsession.role == ('admin')%}
+            <div class="text-left">
+                <a href="index.php?route=adminPostList" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">précedent</a>
+            </div>
+        {% endif %}
+        {% if session.newsession.role == ('viewer') %}
+            <div class="text-left">
+            <a href="index.php?route=adminPostViewers" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">précedent</a>
+            </div>
+        {% endif %}
         <br>
         <footer id="footer">
             <div class="row">
@@ -37,8 +44,11 @@
                     </a>
                 </div>
                 <div class="footer-col col-md-4">
-                    {% if session is not empty %}
-                      <h3><a href="index.php?route=adminPostList">Administration</a></h3>
+                    {% if session.newsession.role == ('admin')%}
+                        <h3><a href="index.php?route=adminPostList">Administration</a></h3>
+                    {% endif %}
+                    {% if session.newsession.role == ('viewer') and session.newsession.is_valid == ('1') %}
+                        <h3><a href="index.php?route=adminPostViewers">Administration</a></h3>
                     {% endif %}
                 </div>
             </div>

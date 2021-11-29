@@ -17,16 +17,14 @@ $dotenv->load(__DIR__.'/../.env');
      $twig = new Environment($loader, ['debug' => true]);
      $twig->addExtension(new DebugExtension());
      $input = new Input();
-
+     $session = new Session();
     try {
-        print_r((new Router($twig, $input))->run()) ;
+        print_r((new Router($twig, $input, $session))->run()) ;
     } catch (Exception $e) {}
 
     if (Session::getMessage('newsession','message','connection')) {
         Session::destroyMsg();
     } elseif (Session::getMessage('newsession','message','deconnection')) {
-        Session::destroyMsg();
-    } elseif (Session::getMessage('newsession','message','errorField')) {
         Session::destroyMsg();
     } elseif (Session::getMessage('newsession','message','update_user')) {
         Session::destroyMsg();

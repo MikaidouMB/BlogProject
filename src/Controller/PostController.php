@@ -48,6 +48,17 @@ class PostController extends Controller
      * @return string
      * @throws \Exception
      */
+    public function listPostAuthor(): string
+    {
+        $posts = $this->postManager->findPostFromUserId($this->session->getSessionValue('newsession', 'id'));
+        return $this->render('Admin/viewerPostList.html.twig', ['posts'=> $posts]);
+    }
+
+
+    /**
+     * @return string
+     * @throws \Exception
+     */
     public function show(): string
     {
         $post = $this->postManager->find($this->input->get('id'));
@@ -120,9 +131,13 @@ class PostController extends Controller
                  ->setAuthor($this->input->post('author'))
                  ->setTitle($this->input->post('title'))
                  ->setContent($this->input->post('content'));
-            (new PostManager())->updateAdminPost($post);
+            (new PostManager)->updateAdminPost($post);
             Session::addMsgUpdatePost();
-            header('Location: index.php?route=adminPostList');
+            if ($this->session->getSessionValue('newsession','role') == ('viewer')){
+                header('Location: index.php?route=adminPostViewers');
+            }else{
+                header('Location: index.php?route=adminPostList');
+            }
             Input::exitMessage();
         }
         return $this->render('Admin/editPost.html.twig', ['post' => $post]);
@@ -131,18 +146,12 @@ class PostController extends Controller
     /**
      * @param $postId
      */
-    public function delete($postId)
-    {
-        $this->postManager->delete($postId);
-        header('Location: index.php?route=post&id='.$postId);
-    }
-
-    /**
-     * @param $postId
-     */
     public function deleteAdminPost($postId): void
     {
         $this->postManager->delete($postId);
-        header('Location: index.php?route=adminPostList');
-    }
+        if ($this->session->getSessionValue('newsession','role') == ('viewer')){
+            header('Location: index.php?route=adminPostViewers');
+        }else{
+            header('Location: index.php?route=adminPostList');
+        }    }
 }

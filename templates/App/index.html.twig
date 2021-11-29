@@ -3,21 +3,11 @@
 {% block body %}
     <header>
         <div class="container">
-            {{ dump(session.newsession) }}
-
             <div class="row">
                 <div class="col-lg-12">
                     {% if session.newsession.message.connection %}
                         <div class="alert alert-success alert-dismissible show" id="" role="alert">
                             <strong>Vous êtes connecté</strong>
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    {% endif %}
-                    {% if session.newsession.message.inscription %}
-                        <div class="alert alert-success alert-dismissible show" id="" role="alert">
-                            <strong>Bienvenue{{ session.newsession.username }}!</strong>
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -210,8 +200,11 @@
                 </a>
             </div>
             <div class="footer-col col-md-4">
-                {% if session.newsession is not empty %}
+                {% if session.newsession.role == ('admin')%}
                     <h3><a href="index.php?route=adminPostList">Administration</a></h3>
+                {% endif %}
+                {% if session.newsession.role == ('viewer') and session.newsession.is_valid == ('1') %}
+                    <h3><a href="index.php?route=adminPostViewers">Administration</a></h3>
                 {% endif %}
             </div>
         </div>
