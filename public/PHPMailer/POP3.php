@@ -128,7 +128,7 @@ class POP3
      *
      * @var array
      */
-    protected $errors = [];
+    protected array $errors = [];
 
     /**
      * Line break constant.
@@ -160,7 +160,7 @@ class POP3
     /**
      * Simple static wrapper for all-in-one POP before SMTP.
      *
-     * @param string   $host        The hostname to connect to
+     * @param string $host        The hostname to connect to
      * @param int|bool $port        The port number to connect to
      * @param int|bool $timeout     The timeout value
      * @param string   $username
@@ -170,13 +170,14 @@ class POP3
      * @return bool
      */
     public static function popBeforeSmtp(
-        $host,
+        string $host,
         $port = false,
         $timeout = false,
         $username = '',
         $password = '',
         $debug_level = 0
-    ) {
+    ): bool
+    {
         $pop = new self();
 
         return $pop->authorise($host, $port, $timeout, $username, $password, $debug_level);
@@ -187,7 +188,7 @@ class POP3
      * A connect, login, disconnect sequence
      * appropriate for POP-before SMTP authorisation.
      *
-     * @param string   $host        The hostname to connect to
+     * @param string $host        The hostname to connect to
      * @param int|bool $port        The port number to connect to
      * @param int|bool $timeout     The timeout value
      * @param string   $username
@@ -196,7 +197,7 @@ class POP3
      *
      * @return bool
      */
-    public function authorise($host, $port = false, $timeout = false, $username = '', $password = '', $debug_level = 0)
+    public function authorise(string $host, $port = false, $timeout = false, $username = '', $password = '', $debug_level = 0): bool
     {
         $this->host = $host;
         //If no port value provided, use default
@@ -208,9 +209,8 @@ class POP3
         //If no timeout value provided, use default
         if (false === $timeout) {
             $this->tval = static::DEFAULT_TIMEOUT;
-        } else {
-            $this->tval = (int) $timeout;
         }
+        $this->tval = (int) $timeout;
         $this->do_debug = $debug_level;
         $this->username = $username;
         $this->password = $password;
@@ -367,13 +367,12 @@ class POP3
      *
      * @return string
      */
-    protected function getResponse($size = 128)
+    protected function getResponse($size = 128): string
     {
         $response = fgets($this->pop_conn, $size);
         if ($this->do_debug >= self::DEBUG_SERVER) {
-            echo 'Server -> Client: ', $response;
+            print_r('Server -> Client: ', $response) ;
         }
-
         return $response;
     }
 
@@ -388,7 +387,7 @@ class POP3
     {
         if ($this->pop_conn) {
             if ($this->do_debug >= self::DEBUG_CLIENT) { //Show client messages when debug >= 2
-                echo 'Client -> Server: ', $string;
+                print_r('Client -> Server: ', $string) ;
             }
 
             return fwrite($this->pop_conn, $string, strlen($string));
@@ -426,11 +425,11 @@ class POP3
     {
         $this->errors[] = $error;
         if ($this->do_debug >= self::DEBUG_SERVER) {
-            echo '<pre>';
+            print_r('<pre>') ;
             foreach ($this->errors as $e) {
                 print_r($e);
             }
-            echo '</pre>';
+            print_r('</pre>') ;
         }
     }
 

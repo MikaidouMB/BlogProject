@@ -1,99 +1,118 @@
 <?php
 
-
 namespace App\DAO;
 
 use App\Model\Comment;
-use App\Model\Post;
 
 class CommentManager extends DAO
 {
+    /**
+     * @param \App\Model\Comment $comment
+     * @return mixed
+     */
     public function createComment(Comment $comment)
     {
         $this->createQuery(
-            'INSERT INTO comment (id ,user_id, postId, username, content)VALUES(?,?,?,?,?) ',
-            $result = array_merge($this->buildValues($comment)));
+            'INSERT INTO comment (id ,user_id, postId, username, content, is_valid)VALUES(?,?,?,?,?,?) ',
+            $result = array_merge($this->buildValues($comment))
+        );
         return $result;
     }
 
+    /**
+     * @param \App\Model\Comment $comment
+     * @return bool
+     */
     public function update(Comment $comment): bool
     {
         $result = $this->createQuery(
-            'UPDATE comment SET id = ?, user_id = ? ,postId = ?, username = ?,  content = ? 
-                WHERE id = ?',
-            array_merge($this->buildValues($comment), [$comment->getId()])
+            'UPDATE comment SET id = ?, user_id = ? ,postId = ?, username = ?,  content = ? , is_valid = ? WHERE id = ?',
+            array_merge($this->buildValues($comment), [$comment->getCommentId()])
         );
-
         return 1<= $result->rowCount();
     }
 
-
-    public function find($commentId): ? Comment
+    /**
+     * @param $commentId
+     * @return \App\Model\Comment|null
+     * @throws \Exception
+     */
+    public function find($commentId): ?Comment
     {
         $result = $this->createQuery('SELECT * FROM comment WHERE comment.id = ?', [$commentId]);
-        if (false === $object = $result->fetchObject()){
+        if (false === $object = $result->fetchObject()) {
             return null;
         }
         return $this->buildObject($object);
     }
 
-    public function findCommentsBypostId($postId): array
+    /**
+     * @param $postId
+     * @return array
+     */
+    public function findCommentsByPostId($postId): array
     {
-        $result = $this->createQuery('SELECT * FROM comment WHERE comment.postId = ? ORDER BY createdAt DESC  ', $postId  );
+        $result = $this->createQuery('SELECT * FROM comment WHERE comment.postId = ? ORDER BY modifiedOn DESC  ', $postId);
         return $result->fetchAll();
-
     }
 
+    /**
+     * @return array
+     * @throws \Exception
+     */
     public function findAllComments(): array
     {
-        $result = $this->createQuery('SELECT * FROM comment ORDER BY createdAt DESC ');
-        $comments =[];
-        foreach ($result->fetchAll() as $comment){
+        $result = $this->createQuery('SELECT * FROM comment ORDER BY modifiedOn DESC ');
+        $comments = [];
+        foreach ($result->fetchAll() as $comment) {
             $comments[]= $this->buildObject($comment);
         }
         return $comments;
     }
 
-    public function findCommentAuthorsByUserId($comment): array
-    {
-        $result = $this->createQuery('SELECT * from comment');
-        $comments = [];
-        foreach ($result->fetchAll() as $comment) {
-            $comments[] = $this->buildObject($comment);
-        }
-        return $comments;
-    }
+    /**
+     * @param $commentId
+     * @return bool
+     */
     public function deleteAdminPostcomments($commentId): bool
     {
         $result = $this->createQuery(
-            'DELETE FROM comment WHERE id = ?',[$commentId],
+            'DELETE FROM comment WHERE id = ?',
+            [$commentId],
         );
         return 1<= $result->rowCount();
     }
 
+    /**
+     * @param \App\Model\Comment $comment
+     * @return array
+     */
     private function buildValues(Comment $comment): array
     {
         return[
-            $comment->getId(),
+            $comment->getCommentId(),
             $comment->getUserId(),
             $comment->getPostId(),
             $comment->getUsername(),
             $comment->getContent(),
+            $comment->getIsValid()
         ];
     }
 
-    private function buildObject(object $comment):Comment
+    /**
+     * @param object $comment
+     * @return \App\Model\Comment
+     * @throws \Exception
+     */
+    private function buildObject(object $comment): Comment
     {
         return (new Comment())
-            ->setId($comment->id)
+            ->setCommentId($comment->id)
             ->setUserId($comment->user_id)
             ->setUsername($comment->username)
             ->setPostId($comment->postId)
             ->setContent($comment->content)
-            ->setCreatedAt(new \DateTimeImmutable($comment->createdAt));
-        return $comment;
-
+            ->setIsValid($comment->is_valid)
+            ->setModifiedOn(new \DateTimeImmutable($comment->modifiedOn));
     }
-
-
 }

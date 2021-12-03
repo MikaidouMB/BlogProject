@@ -4,33 +4,33 @@ namespace App\Model;
 
 class Post
 {
-    private ?int $id = null;
+    private ?int $postId = null;
     private int $userId;
     private string $author;
     private string $title;
     private string $content;
-    private \DateTimeImmutable  $createdAt;
+    private \DateTimeImmutable  $modifiedOn;
 
     public function __construct()
     {
-        $this->createdAt = new \DateTimeImmutable();
+        $this->modifiedOn = new \DateTimeImmutable();
     }
 
     /**
      * @return  integer
      */
-    public function getId(): int
+    public function getPostId(): int
     {
-        return $this->id;
+        return $this->postId;
     }
 
     /**
-     * @param integer $id
+     * @param integer $postId
      * @return Post
      */
-    public function setId(int $id): Post
+    public function setPostId(int $postId): Post
     {
-        $this->id = $id;
+        $this->postId = $postId;
         return $this;
     }
 
@@ -91,18 +91,18 @@ class Post
     /**
      * @return \DateTimeImmutable
      */
-    public function getCreatedAt(): \DateTimeImmutable
+    public function getModifiedOn(): \DateTimeImmutable
     {
-        return $this->createdAt;
+        return $this->modifiedOn;
     }
 
     /**
-     * @param \DateTimeImmutable $createdAt
+     * @param \DateTimeImmutable $modifiedOn
      * @return Post
      */
-    public function setCreatedAt(\DateTimeImmutable $createdAt): Post
+    public function setModifiedOn(\DateTimeImmutable $modifiedOn): Post
     {
-        $this->createdAt = $createdAt;
+        $this->modifiedOn = $modifiedOn;
         return $this;
     }
 
@@ -123,5 +123,4 @@ class Post
         $this->author = $author;
         return $this;
     }
-
 }

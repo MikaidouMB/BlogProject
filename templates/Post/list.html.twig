@@ -1,44 +1,72 @@
 {% extends 'base.html.twig' %}
-
 {% block body %}
-    <div class="container cta-100 ">
     <div class="container">
-        <div class="row blog">
-            <div class="col-md-12">
-                <div id="blogCarousel" class="carousel slide container-blog" data-ride="carousel">
-                    <ol class="carousel-indicators">
-                        <li data-target="#blogCarousel" data-slide-to="0" class="active"></li>
-                        <li data-target="#blogCarousel" data-slide-to="1"></li>
-                    </ol>
-                    {% if session is not empty %}
-                    <a href="index.php?route=addPost" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Ajouter un article</a>
-                    {% endif %}
-                    <hr>
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <div class="row">
-                                {% for post in posts %}
-                                    <div class="col-md-3" >
-                                    <div class="item-box-blog">
-                                        <div class="item-box-blog-image">
-                                            <div class="item-box-blog-date bg-blue-ui white"> {{ post.createdAt|date('H:i:s d/m-Y') }}</div>
-                                            <figure> <img alt="" src="https://cdn.pixabay.com/photo/2017/02/08/14/25/computer-2048983_960_720.jpg" style="width: 150px"> </figure>
-                                        </div>
-                                        <div class="item-box-blog-body">
-                                            <div class="item-box-blog-heading">{{ post.title }}</div>
-                                            <div class="item-box-blog-text">{{ post.author }}</div>
-                                            <div class="mt"><a href="index.php?route=post&id={{ post.id }}" tabindex="0" class="btn bg-blue-ui white read"> Lire plus</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                {% endfor %}
-                            </div>
-                        </div>
+        {% if session.newsession.is_valid == 1 %}
+            <div class="btn-add">
+                <a href="index.php?route=addPost" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Ajouter un article</a>
+            </div>
+        {% endif %}
+        <div id="main">
+            {% if session.newsession.message.add %}
+                <div class="alert alert-success alert-dismissible show" id="" role="alert">
+                    <strong>Votre article a bien été publié</strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endif %}
+            {% if session.newsession.message.moderation %}
+                <div class="alert alert-warning alert-dismissible show" role="alert">
+                    <strong>Merci d'avoir publié !</strong>
+                    Votre commentaire est en attente de validation auprès de notre modérateur.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endif %}
+            <div class="row-blog">
+                <hr>
+                {% for post in posts %}
+                    <h1>{{ post.title }} </h1>
+                    <span class="badge">mis à jour le {{ post.modifiedOn|date('H:i:s d/m-Y') }}</span><br>
+                    <p>'{{ post.content|length > 300 ? post.content|slice(0,300) ~ '...'}}
+                        <a href="index.php?route=post&id={{ post.postId }}" tabindex="0" class="btn bg-blue-ui white read">Lire plus</a>
+                    </p><hr>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <footer id="footer">
+        <div class="row">
+            <div class="footer-col col-md-4">
+                <h3>Localisation</h3>
+                <p> Rue Louis Pasteur, 92100<br>Boulogne-Billancourt</p>
+            </div>
+            <div class="footer-col col-md-4">
+                <a href="https://www.linkedin.com/in/mika%C3%AFdou-m%E2%80%99bo-b86892173/" target="_blank" class="btn-social btn-outline">
+                    <i class="fa fa-linkedin" aria-hidden="true"></i>
+                </a>
+                <a href="https://github.com/MikaidouMB" target="_blank" class="btn-social btn-outline">
+                    <i class="fab fa-github"></i>
+                </a>
+            </div>
+            <div class="footer-col col-md-4">
+                {% if session.newsession.role == ('admin')%}
+                    <h3><a href="index.php?route=adminPostList">Administration</a></h3>
+                {% endif %}
+                {% if session.newsession.role == ('viewer') %}
+                    <h3><a href="index.php?route=adminPostViewers">Administration</a></h3>
+                {% endif %}
+            </div>
+        </div>
+        <div class="text-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        Copyright &copy; PortfolioMikaidou 2022
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
+    </footer>
 {% endblock %}

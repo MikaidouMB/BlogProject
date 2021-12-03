@@ -1,39 +1,37 @@
 <?php
 
-
 namespace App\Model;
-
-
-use phpDocumentor\Reflection\Types\Integer;
 
 class Comment
 {
-    private ?int $id = null;
+    private ?int $commentId = null;
     private ?int $userId = null;
     private string $username;
     private int $postId;
     private string $content;
-    private \DateTimeImmutable  $createdAt;
+    private ?int $is_valid = null;
+    private \DateTimeImmutable $modifiedOn;
 
     public function __construct()
     {
-        $this->createdAt = new \DateTimeImmutable();
-    }
-    /**
-     * @return int
-     */
-    public function getId():? int
-    {
-        return $this->id;
+        $this->modifiedOn = new \DateTimeImmutable();
     }
 
     /**
-     * @param int $id
+     * @return int
+     */
+    public function getCommentId(): ?int
+    {
+        return $this->commentId;
+    }
+
+    /**
+     * @param int $commentId
      * @return Comment
      */
-    public function setId(int $id): Comment
+    public function setCommentId(int $commentId): Comment
     {
-        $this->id = $id;
+        $this->commentId = $commentId;
         return $this;
     }
 
@@ -110,21 +108,38 @@ class Comment
     }
 
     /**
-     * @return \DateTimeImmutable
+     * @return int|null
      */
-    public function getCreatedAt(): \DateTimeImmutable
+    public function getIsValid(): ?int
     {
-        return $this->createdAt;
+        return $this->is_valid;
     }
 
     /**
-     * @param \DateTimeImmutable $createdAt
+     * @param int|null $is_valid
      * @return Comment
      */
-    public function setCreatedAt(\DateTimeImmutable $createdAt): Comment
+    public function setIsValid(?int $is_valid): Comment
     {
-        $this->createdAt = $createdAt;
+        $this->is_valid = $is_valid;
         return $this;
     }
 
+    /**
+     * @return \DateTimeImmutable
+     */
+    public function getModifiedOn(): \DateTimeImmutable
+    {
+        return $this->modifiedOn;
+    }
+
+    /**
+     * @param \DateTimeImmutable $modifiedOn
+     * @return Comment
+     */
+    public function setModifiedOn(\DateTimeImmutable $modifiedOn): Comment
+    {
+        $this->modifiedOn = $modifiedOn;
+        return $this;
+    }
 }

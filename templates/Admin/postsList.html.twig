@@ -1,40 +1,87 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-    <div id="wrapper">
-        <div id="sidebar-wrapper">
-            <ul class="nav flex-column mb-2" >
-                <li><a href="index.php?route=adminPostList">Articles</a></li>
-                <li><a href="index.php?route=adminPostcomments">Commentaires</a></li>
-                <li><a href="index.php?route=adminPostUsers">Utilisateurs</a></li>
-            </ul>
-        </div>
+    <button class="openbtn" onclick="openNav()">&#9776;</button>
+    <div id="mySidebar" class="sidebar" >
+        {% if session.newsession.role == ('admin') %}
+            <a href="index.php?route=adminPostList">Articles</a>
+            <a href="index.php?route=adminPostcomments">Commentaires</a>
+            <a href="index.php?route=adminPostUsers">Utilisateurs</a>
+        {% endif %}
+        {% if session.newsession.role == ('viewer') %}
+            <a href="index.php?route=adminPostViewers">Vos Articles</a>
+        {% endif %}
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">x</a>
     </div>
-<!-- Page content-->
-   <div class="container mt-6">
-
-       <h1>Gérer les articles</h1>
-
-       <table class="table table-striped">
+        <div class="container">
+            <div id="main-tab">
+                {% if session.newsession.message.article_update %}
+                    <div class="alert alert-success alert-dismissible show" id="" role="alert">
+                        <strong>Votre article a bien été modifié</strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endif %}
+            <h1>Gérer les articles</h1>
+           <table class="table table-striped">
            <thead>
                <tr>
-                   <th>Titre</th>
+                   <th class="col-md-2">Titre</th>
                    <th>Auteur</th>
                    <th>Contenu</th>
                    <th>Actions</th>
-           </thead>
+               </tr>
+             </thead>
+           <tbody>
            {% for post in posts %}
-                   <td>{{ post.title }}</td>
+           <td>{{ post.title }}</td>
                    <td>{{ post.author }}</td>
-                   <td>{{ post.content }}</td>
-                   <td>
-                       <a href="index.php?route=editAdminPost&id={{ post.id }}" class="btn btn-warning btn-lg active" role="button" aria-pressed="true">Modifier</a>
-                       <a href="index.php?route=deleteAdminPost&id={{ post.id }}"
+                   <td>{{ post.content|length > 300 ? post.content|slice(0,200) ~ '...'}}
+                       <a href="index.php?route=editAdminPost&id={{ post.postId }}" tabindex="0" class="btn bg-blue-ui white read">Lire plus</a>
+                   </td>
+                   <td class="col-md-3">
+                       <div class="btn-group" role="group" aria-label="Basic example">
+                       <a href="index.php?route=editAdminPost&id={{ post.postId }}"
+                          class="btn btn-warning btn-lg active" role="button" aria-pressed="true">Modifier</a>
+                       <a href="index.php?route=deleteAdminPost&id={{ post.postId }}"
                           onclick="return confirm('Voulez-vous effacer l\'article n°{{ post.title }} ?')"
                           class="btn btn-danger btn-lg active" role="button" aria-pressed="true">Supprimer</a>
+                       </div>
                    </td>
-
-               </tr>
+           </tbody>
            {% endfor %}
+               <tbody>
        </table>
-   </div>
+       </div>
+        </div>
+            <footer id="footer">
+                <div class="row">
+                    <div class="footer-col col-md-4">
+                        <h3>Localisation</h3>
+                        <p> Rue Louis Pasteur, 92100<br>Boulogne-Billancourt</p>
+                    </div>
+                    <div class="footer-col col-md-4">
+                        <a href="https://www.linkedin.com/in/mika%C3%AFdou-m%E2%80%99bo-b86892173/" target="_blank" class="btn-social btn-outline">
+                            <i class="fa fa-linkedin" aria-hidden="true"></i>
+                        </a>
+                        <a href="https://github.com/MikaidouMB" target="_blank" class="btn-social btn-outline">
+                            <i class="fab fa-github"></i>
+                        </a>
+                    </div>
+                    <div class="footer-col col-md-4">
+                        {% if session.newsession.is_valid == 1 %}
+                            <h3><a href="index.php?route=adminPostList">Administration</a></h3>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="text-center">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                Copyright &copy; PortfolioMikaidou 2022
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
 {% endblock %}

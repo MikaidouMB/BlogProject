@@ -2,97 +2,120 @@
 
 namespace App\Controller;
 
-use App\DAO\DAO;
 use App\DAO\UserManager;
 use App\Model\User;
-use App\services\Session;
+use App\Model\Input;
 use Twig\Environment;
+use App\Session;
 
 class UserController extends Controller
 {
     private UserManager $userManager;
-    private Session $session;
+    private Input $input;
 
-    public function __construct(Environment $twig)
+    public function __construct(Environment $twig, Input $input)
     {
         $this->userManager = new UserManager();
-        $this->session = new Session();
-        parent::__construct($twig);
+        $this->input = new Input();
+        parent::__construct($twig, $input);
     }
 
+    /**
+     * @param $userForm
+     * @return string
+     */
     public function signUp($userForm): string
     {
-        $errors = [];
         $validMsg = [];
+        $errorField = [];
+        $errorUsername = [];
 
-        if (!empty($_POST)) {
-            if (empty($_POST['username']) || empty($_POST['password'])) {
-                $errors = 'Les champs sont vides';
-            } else {
-                $user = new User();
-                $password = $_POST['password'];
-                $username = $_POST['username'];
-                $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-                $user->setUsername($username);
-                $user->setPassword($hashedPassword);
-                $user->setRole('viewer');
-                $existingUser = $this->userManager->checkIfUserExist($username);
-                if (empty($existingUser)) {
-                    $this->userManager->register($user);
-                    $_SESSION['newsession'] = $user;
-                    header('Location:index.php');
-
-                    $validMsg = 'Utilisateur enregistré';
-                } else {
-                    echo "L'utilisateur existe déjà";
-                }
-            }
+        if ($this->input->post('username') === '' ||
+            $this->input->post('password') === '' ||
+            $this->input->post('email') === '')
+        {
+            $errorField = 'Vous devez remplir tous les champs';
         }
 
-        return $this->render('Auth/register.html.twig',
+        if (!empty($this->input->post('username'))
+            && !empty($this->input->post('password'))
+            && !empty($this->input->post('email')))
+        {
+            $user = new User();
+            $username = $this->input->post('username');
+            $password = $this->input->post('password');
+            $email = $this->input->post('email');
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+            $user->setUsername($username);
+            $user->setPassword($hashedPassword);
+            $user->setEmail($email);
+            $user->setRole('viewer');
+            $user->setIsValid(0);
+            $existingUser = $this->userManager->checkIfUserExist($username);
+
+            if ($existingUser !== null) {
+                $errorUsername ='Ce nom d\'utilisateur existe déjà';
+            }
+            if ($existingUser === null) {
+                $this->userManager->register($user);
+                Session::set('newsession', $user);
+                $this->login($user);
+                header('Location:index.php');
+                Input::exitMessage();
+            }
+        }
+        return $this->render(
+            'Auth/register.html.twig',
             [
                 'userform' => $userForm,
-                'errors' => $errors,
+                'errorUsername' => $errorUsername,
+                'errorField' => $errorField,
                 'validation' => $validMsg,
             ]
         );
     }
-
-    public function signOut()
+    public function signOut(): void
     {
-        if (session_id()) {
-            echo 'il ya une session';
-            unset($_SESSION['newsession']);
-            if (empty($_SESSION)) {
-                header('Location:index.php');
-                echo 'la session est vide';
-            }
-        }
+        Session::destroySession();
+        Session::addMsgDeco();
+        header('Location:index.php');
+        Input::exitMessage();
     }
+
+    /**
+     * @param $userForm
+     * @return string
+     */
     public function login($userForm): string
     {
+        $errorUsername = [];
         $errors = [];
         $validMsg = [];
+        $errorField = [];
 
-        if (!empty($_POST)) {
-            if (empty($_POST['username']) || empty($_POST['password'])) {
-                echo 'Identifiant ou mot de passe incorrect';
-            } else {
-                $username = $_POST['username'];
-                $existingUser = $this->userManager->checkIfUserExist($username);
-            }
-
-            if (session_id() && $existingUser !== null) {
-                $_SESSION['newsession'] = $existingUser;
-                header('Location:index.php');
-                $validMsg = 'Utilisateur connecté';
-            } else {
-                $errors = 'Identifiant ou mot de passe inéxistant';
-            }
+        if ($this->input->post('username') === '' || $this->input->post('password') === '') {
+            $errorField = 'Vous devez remplir tous les champs';
         }
 
-        return $this->render('Auth/login.html.twig',
+        $username = $this->input->post('username');
+        $existingUser = $this->userManager->checkIfUserExist($username);
+
+        if (!empty($this->input->post('username')) || !empty($this->input->post('password'))) {
+            if ($existingUser == null) {
+                $errorUsername = 'Cet identifiant n\'existe pas';
+            }
+            if ($existingUser != null) {
+                Session::set('newsession', $existingUser);
+                Session::addMsgConn();
+                header('Location:index.php?connexion');
+                Input::exitMessage();
+            }
+        }
+        return $this->render(
+            'Auth/login.html.twig',
             [
+                'errorUsername' => $errorUsername,
+                'errorField' => $errorField,
                 'userform' => $userForm,
                 'errors' => $errors,
                 'validation' => $validMsg,
@@ -100,31 +123,38 @@ class UserController extends Controller
         );
     }
 
-    public function updateUser($userId)
+    /**
+     * @return string
+     */
+    public function updateUser(): string
     {
-        $userId =  array($_GET['id']);
+        $userId =  array($this->input->get('id'));
         $user = $this->userManager->findPostAuthorByUserId($userId);
 
-        if (isset($_POST['user_id'])){
-            if ($_POST['user_id'] == 1) {
-                $user->setRole('viewver');
-
-            } elseif ($_POST['user_id'] == 2) {
+        if ($this->input->post('user_id')) {
+            if ($this->input->post('user_id') == 1) {
+                $user->setRole('viewer');
+            } elseif ($this->input->post('user_id') == 2) {
                 $user->setRole('admin');
             }
-
+            if ($this->input->post('valid') !== null) {
+                $user
+                    ->setIsValid(1);
+            }
+            Session::addMsgUpdateUser();
             (new UserManager())->update($user);
             header('Location: index.php?route=adminPostUsers');
+            Input::exitMessage();
         }
-
         return $this->render('Admin/editUser.html.twig', ['user' => $user]);
     }
 
-    public function deleteUser($userId)
+    /**
+     * @param $userId
+     */
+    public function deleteUser($userId): void
     {
         $this->userManager->delete($userId);
         header('Location: index.php?route=adminPostUsers');
-        echo 'post supprimé';
     }
-
 }

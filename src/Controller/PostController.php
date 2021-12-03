@@ -5,8 +5,9 @@ namespace App\Controller;
 use App\DAO\CommentManager;
 use App\DAO\PostManager;
 use App\DAO\UserManager;
+use App\Model\Input;
 use App\Model\Post;
-use App\services\Session;
+use App\Session;
 use Twig\Environment;
 
 class PostController extends Controller
@@ -14,138 +15,143 @@ class PostController extends Controller
     private PostManager  $postManager;
     private UserManager $userManager;
     private CommentManager $commentManager;
+    private Input $input;
+    private Session $session;
 
-    public function __construct(Environment $twig)
+    /**
+     * PostController constructor.
+     * @param \Twig\Environment $twig
+     * @param \App\Model\Input $input
+     */
+    public function __construct(Environment $twig, Input $input)
     {
         $this->postManager = new PostManager();
         $this->userManager = new UserManager();
         $this->commentManager = new CommentManager();
+        $this->input = new Input();
         $this->session = new Session();
 
-        parent::__construct($twig);
+        parent::__construct($twig, $input);
     }
 
-    public function index()
-    {
-        $posts = $this->postManager->findAll();
-        return $this->render('Post/index.html.twig', ['posts' =>$posts]);
-
-    }
-
+    /**
+     * @return string
+     * @throws \Exception
+     */
     public function list(): string
     {
         $posts = $this->postManager->findAll();
-        return $this->render('Post/list.html.twig',['posts'=> $posts]);
+        return $this->render('Post/list.html.twig', ['posts'=> $posts]);
     }
 
-    public function showPostAdmin()
+    /**
+     * @return string
+     * @throws \Exception
+     */
+    public function listPostAuthor(): string
     {
-        $post = $this->postManager->find($_GET['id']);
-        $userId[] = $post->getUserId();
-        $user = $this->userManager->findPostAuthorByUserId($userId);
-
-        return $this->render('Admin/postsList.html.twig',[
-            'post'=> $post,
-            'user'=>$user,
-        ]);
+        $posts = $this->postManager->findPostFromUserId($this->session->getSessionValue('newsession', 'id'));
+        return $this->render('Admin/viewerPostList.html.twig', ['posts'=> $posts]);
     }
 
+
+    /**
+     * @return string
+     * @throws \Exception
+     */
     public function show(): string
     {
-        $post = $this->postManager->find($_GET['id']);
-        $postId[] =$post->getId();
+        $post = $this->postManager->find($this->input->get('id'));
+        $postId[] = $post->getPostId();
         $userId[] = $post->getUserId();
 
         $user = $this->userManager->findPostAuthorByUserId($userId);
-        $comments = $this->commentManager->findCommentsBypostId($postId);
+        $comments = $this->commentManager->findCommentsByPostId($postId);
 
-
-        return $this->render('Post/show.html.twig',[
+        return $this->render('Post/show.html.twig', [
             'post'=> $post,
             'user'=>$user,
             'comments'=>$comments,
             ]);
     }
+
+    /**
+     * @return string
+     * @throws \Exception
+     */
     public function adminPostList(): string
     {
         $posts = $this->postManager->findAll();
-        return $this->render('Admin/postsList.html.twig',['posts'=> $posts]);
-    }
-
-    public function showAdminPost(): string
-    {
-        $post = $this->postManager->find($_GET['id']);
-        $postId[] =$post->getId();
-        $userId[] = $post->getUserId();
-
-        $user = $this->userManager->findPostAuthorByUserId($userId);
-        $comments = $this->commentManager->findCommentsBypostId($postId);
-
-        return $this->render('Post/show.html.twig',[
-            'post'=> $post,
-            'user'=>$user,
-            'comments'=>$comments,
-        ]);
+        return $this->render('Admin/postsList.html.twig', ['posts'=> $posts]);
     }
 
     public function adminPostUsers(): string
     {
         $users = $this->userManager->findAllUsers();
-        return $this->render('Admin/usersList.html.twig',['users'=> $users]);
+        return $this->render('Admin/usersList.html.twig', ['users'=> $users]);
     }
 
-    public function add($postForm)
+    /**
+     * @param $postForm
+     * @return string
+     */
+    public function add($postForm): string
     {
         if (!empty($postForm)) {
             $post = new Post();
-            $title = $_POST['title'];
-            $content = $_POST['content'];
-            $session =  $_SESSION['newsession'];
-            $userId = $session->id;
-            $post->setUserId($userId);
-            $username = $session->username;
-            $post->setAuthor($username);
+            $title = $this->input->post('title');
+            $content = $this->input->post('content');
+            $sessionUserId = $this->session->getSessionValue('newsession', 'id');
+            $sessionUsername = $this->session->getSessionValue('newsession', 'username');
+            $post->setUserId($sessionUserId);
+            $post->setAuthor($sessionUsername);
             $post->setTitle($title);
             $post->setContent($content);
-            $postForm = $this->postManager->create($post);
-            echo 'post enregistré';
+            $this->postManager->create($post);
+            Session::addMsgCreatePost();
             header('Location: index.php?route=posts');
+            $this->input->get();
         }
-            echo 'post pas enregistré';
-            return $this->render('Post/add.html.twig', ['post' => $postForm]);
+        return $this->render('Post/add.html.twig', ['post' => $postForm]);
     }
 
-    public function updateAdminPosts($postId)
+    /**
+     * @return string
+     * @throws \Exception
+     */
+    public function updateAdminPosts(): string
     {
-        $postId = (int) ($_GET['id']);
+        $postId = (int) ($this->input->get('id'));
         $post = $this->postManager->find($postId);
 
-        if ($_POST) {
-            $post
-                ->setId($postId)
-                ->setTitle($_POST['title'])
-                ->setContent($_POST['content']);
-            (new PostManager())->updateAdminPost($post);
-
-            header('Location: index.php?route=adminPostList');
+        if ($this->input->post('title')
+            || $this->input->post('content')
+            || $this->input->post('author')) {
+            $post->setPostId($postId)
+                 ->setAuthor($this->input->post('author'))
+                 ->setTitle($this->input->post('title'))
+                 ->setContent($this->input->post('content'));
+            (new PostManager)->updateAdminPost($post);
+            Session::addMsgUpdatePost();
+            if ($this->session->getSessionValue('newsession','role') == ('viewer')){
+                header('Location: index.php?route=adminPostViewers');
+            }else{
+                header('Location: index.php?route=adminPostList');
+            }
+            Input::exitMessage();
         }
-
         return $this->render('Admin/editPost.html.twig', ['post' => $post]);
     }
 
-    public function delete($id)
+    /**
+     * @param $postId
+     */
+    public function deleteAdminPost($postId): void
     {
-        $this->postManager->delete($id);
-        header('Location: index.php?route=post&id='.$id);
-        echo 'post supprimé';
-        header('Location: index.php?route=posts');
-    }
-
-    public function deleteAdminPost($id)
-    {
-        $this->postManager->delete($id);
-        header('Location: index.php?route=adminPostList');
-        echo 'post supprimé';
-    }
-
+        $this->postManager->delete($postId);
+        if ($this->session->getSessionValue('newsession','role') == ('viewer')){
+            header('Location: index.php?route=adminPostViewers');
+        }else{
+            header('Location: index.php?route=adminPostList');
+        }    }
 }

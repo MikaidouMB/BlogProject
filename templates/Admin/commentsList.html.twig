@@ -1,38 +1,84 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-    <div id="wrapper">
-        <div id="sidebar-wrapper">
-            <ul class="nav flex-column mb-2" >
-                <li><a href="index.php?route=adminPostList">Articles</a></li>
-                <li><a href="index.php?route=adminPostcomments">Commentaires</a></li>
-                <li><a href="index.php?route=adminPostUsers">Utilisateurs</a></li>
-            </ul>
-        </div>
+    <div id="mySidebar" class="sidebar" >
+        <a href="index.php?route=adminPostList">Articles</a>
+        <a class="comments" href="index.php?route=adminPostcomments">Commentaires</a>
+        <a href="index.php?route=adminPostUsers">Utilisateurs</a>
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">x</a>
     </div>
+    <button class="openbtn" onclick="openNav()">&#9776;</button>
     <div class="container">
-        <div class="container mt-6">
-
+        <div id="main-tab">
             <h1>Gérer les commentaires</h1>
-
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th>auteur</th>
-                    <th>Contenu</th>
-                </thead>
+            {% if session.newsession.message.update_comment %}
+                <div class="alert alert-success alert-dismissible show" id="" role="alert">
+                    <strong>Le commentaire a été validé</strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endif %}
+            <table class="table table-striped table-sm text-nowrap">
+                    <thead>
+                        <tr>
+                            <th>Auteur</th>
+                            <th>Mis à jour le</th>
+                            <th>Contenu</th>
+                            <th>Statut</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                         {% for comment in comments %}
-                    <td>{{ comment.username }}</td>
-                    <td>{{ comment.content }}</td>
-                    <td>
-                        <a href="index.php?route=editComment&id={{ comment.id }}" class="btn btn-warning btn-lg active" role="button" aria-pressed="true">Modifier</a>
-                        <a href="index.php?route=deleteComment&id={{ comment.id }}"
-                           onclick="return confirm('Voulez-vous effacer le commentaire n°{{ comment.id }} ?')"
-                           class="btn btn-danger btn-lg active" role="button" aria-pressed="true">Supprimer</a>
-                    </td>
-
-                    </tr>
-                {% endfor %}
-            </table>
+                        <td>{{ comment.username }}</td>
+                        <td>{{ comment.modifiedOn|date('d/m/Y') }} à {{ comment.modifiedOn|date('H:m:s') }}</td>
+                        <td>{{ comment.content }}</td>
+                        {% if (comment.isvalid == 1) %}
+                            <td>Validé</td>
+                            {% endif %}
+                        {% if (comment.isvalid == 0) %}
+                            <td>En attente de validation</td>
+                        {% endif %}
+                        <td>
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <a href="index.php?route=editComment&id={{ comment.commentId }}" class="btn btn-warning btn-lg active" role="button" aria-pressed="true">Modifier</a>
+                                <a href="index.php?route=deleteComment&id={{ comment.commentId }}"
+                                   onclick="return confirm('Voulez-vous effacer le commentaire n°{{ comment.commentId }} ?')"
+                                   class="btn btn-danger btn-lg active" role="button" aria-pressed="true">Supprimer</a>
+                            </div>
+                        </td>
+                    </tbody>
+                    {% endfor %}
+                </table>
+            </div>
         </div>
-    </div>
+    <footer id="footer">
+        <div class="row">
+            <div class="footer-col col-md-4">
+                <h3>Localisation</h3>
+                <p> Rue Louis Pasteur, 92100
+                    <br>Boulogne-Billancourt</p>
+            </div>
+            <div class="footer-col col-md-4">
+                <a href="https://www.linkedin.com/in/mika%C3%AFdou-m%E2%80%99bo-b86892173/" target="_blank" class="btn-social btn-outline">
+                    <i class="fa fa-linkedin" aria-hidden="true"></i>
+                </a>
+                <a href="https://github.com/MikaidouMB" target="_blank" class="btn-social btn-outline">
+                    <i class="fab fa-github"></i>
+                </a>
+            </div>
+            <div class="footer-col col-md-4">
+                <h3><a href="index.php?route=adminPostList">Administration</a></h3>
+            </div>
+        </div>
+        <div class="text-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        Copyright &copy; PortfolioMikaidou 2022
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
 {% endblock %}

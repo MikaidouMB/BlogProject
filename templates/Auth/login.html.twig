@@ -1,24 +1,58 @@
-{# templates/security/register.html.twig #}
 {% extends 'base.html.twig' %}
-{% block title %}Log in!{% endblock %}
-{% block body %}
+{% block title %}Connectez vous !{% endblock %}
+    {% block body %}
     <div class="container">
-        <form action="index.php?route=login" method="post">
-            <h1 class="h3 mb-3 font-weight-normal">Se connecter</h1>
-            {% if errors %}
-                <div class="error" style="color: red">Identifiant ou mot de passe incorrect</div>
-            {% endif %}
-            {% if validation %}
-                <div class="valid" style="color: green">Vous êtes connecté</div>
-            {% endif %}
-            <div class="input-field col s12 m6 l6">
-                <input type="text" name="username" id="username" class="form-control" placeholder="username"><br>
-                <input type="password" name="password" id="password" class="form-control" placeholder="Mot de passe" >
-            </div><br>
-            <div class="col-auto my-1">
-                <button class="btn btn-lg btn-primary" type="submit">Valider</button>
-            </div>
-            <br>
-        </form>
+        <div class="main-form">
+            <form action="index.php?route=login" method="post">
+                <h1 class="h3 mb-3 font-weight-normal">Se connecter</h1>
+                {% if errorUsername %}
+                    <div class="errors" style="color: red">Cet identifiant n'existe pas</div>
+                {% endif %}
+                {% if errorField %}
+                    <div class="errors" style="color: red">Veuillez remplir tous les champs</div>
+                {% endif %}
+                <div class="input-field col s12 m6 l6">
+                    <input type="text" name="username" id="username" class="form-control" placeholder="username"><br>
+                    <input type="password" name="password" id="password" class="form-control" placeholder="Mot de passe" >
+                </div><br>
+                <div class="text-center">
+                    <button class="btn btn-lg btn-success" type="submit">Valider</button>
+                </div>
+                <br>
+            </form>
+        </div>
     </div>
+    <footer id="footer">
+        <div class="row">
+            <div class="footer-col col-md-4">
+                <h3>Localisation</h3>
+                <p> Rue Louis Pasteur, 92100<br>Boulogne-Billancourt</p>
+            </div>
+            <div class="footer-col col-md-4">
+                <a href="https://www.linkedin.com/in/mika%C3%AFdou-m%E2%80%99bo-b86892173/" target="_blank" class="btn-social btn-outline">
+                    <i class="fa fa-linkedin" aria-hidden="true"></i>
+                </a>
+                <a href="https://github.com/MikaidouMB" target="_blank" class="btn-social btn-outline">
+                    <i class="fab fa-github"></i>
+                </a>
+            </div>
+            <div class="footer-col col-md-4">
+                {% if session.newsession.role == ('admin')%}
+                    <h3><a href="index.php?route=adminPostList">Administration</a></h3>
+                {% endif %}
+                {% if session.newsession.role == ('viewer') %}
+                    <h3><a href="index.php?route=adminPostViewers">Administration</a></h3>
+                {% endif %}
+            </div>
+        </div>
+        <div class="text-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        Copyright &copy; PortfolioMikaidou 2022
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
 {% endblock %}

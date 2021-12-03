@@ -6,81 +6,90 @@ use App\Controller\AppController;
 use App\Controller\CommentController;
 use App\Controller\PostController;
 use App\Controller\UserController;
-use App\Model\Comment;
+use App\Model\Input;
 use Twig\Environment;
 
 class Router
 {
-    private $twig;
+    private Environment $twig;
+    private Input $input;
+    private Session $session;
 
-    public function __construct(Environment $twig){
+    public function __construct(Environment $twig, Input $input,Session $session){
         $this->twig = $twig;
+        $this->input = $input;
+        $this->session = $session;
+
     }
+
+    /**
+     * @throws \Exception
+     */
     public function run()
     {
-        $postController = new PostController($this->twig);
-        $appController  = new AppController($this->twig);
-        $userController = new UserController($this->twig);
-        $commentController = new CommentController($this->twig);
+        $postController = new PostController($this->twig,$this->input,$this->session);
+        $appController  = new AppController($this->twig,$this->input,$this->session);
+        $userController = new UserController($this->twig,$this->input);
+        $commentController = new CommentController($this->twig, $this->input);
+        $input = new Input();
 
-
-        if (isset($_GET['route']))
+        if ($input->get('route'))
         {
-            if ('posts' === $_GET['route']) {
+            if ($this->input->get('route') == 'posts'){
                 return $postController->list();
             }
-            if ('addPost' === $_GET['route']) {
-                return $postController->add($_POST);
+            if ($this->input->get('route') == 'addPost'){
+                return $postController->add($this->input->post());
             }
-            if ('signUp'=== $_GET['route']){
-                return $userController->signUp($_POST);
+            if ($this->input->get('route') == 'signUp'){
+                return $userController->signUp($this->input->post());
             }
-            if ('login'=== $_GET['route']){
-                return $userController->login($_POST);
+            if ($this->input->get('route') == 'login'){
+                return $userController->login($this->input->post());
             }
-            if ('signOut'=== $_GET['route']){
-                return $userController->signOut($_POST);
+            if ($this->input->get('route') == 'signOut'){
+                return $userController->signOut();
             }
-            if ('adminPostList'=== $_GET['route']){
-                return $postController->adminPostList($_POST);
+            if ($this->input->get('route') == 'adminPostList'){
+                return $postController->adminPostList();
             }
-            if ('editAdminPost' == $_GET['route']&& (isset($_GET['id']) && $_GET['id'] > 0 )) {
-                return $postController->updateAdminPosts($_GET['id']);
+            if ($this->input->get('route') =='editAdminPost' && $this->input->get('id') > 0){
+                return $postController->updateAdminPosts();
             }
-            if ($_GET['route']== 'editUser' && (isset($_GET['id']) && $_GET['id'] > 0 )){
-                return $userController->updateUser($_POST);
+            if ($this->input->get('route') =='editUser' && $this->input->get('id') > 0) {
+                return $userController->updateUser();
             }
-            if ($_GET['route'] === 'deleteAdminPost' && (isset($_GET['id']) && $_GET['id'] > 0)){
-                return $postController->deleteAdminPost($_GET['id']);
+            if ($this->input->get('route') == 'deleteAdminPost' && $this->input->get('id') > 0){
+                return $postController->deleteAdminPost($this->input->get('id'));
             }
-            if ('adminPostcomments'=== $_GET['route']){
-                return $commentController->adminPostcomments($_POST);
+            if ($this->input->get('route') == 'adminPostcomments'){
+                return $commentController->adminPostcomments();
             }
-            if ($_GET['route'] === 'deleteComment' && (isset($_GET['id']) && $_GET['id'] > 0)){
-                return $commentController->deleteAdminPostcomments($_GET['id']);
+            if ($this->input->get('route') == 'deleteComment' && $this->input->get('id') > 0){
+                return $commentController->deleteAdminPostcomments($this->input->get('id'));
             }
-            if ($_GET['route']=='deleteUser' && (isset($_GET['id']) && $_GET['id'] > 0)){
-                return $userController->deleteUser($_GET['id']);
+            if ($this->input->get('route') =='deleteUser' && $this->input->get('id') > 0){
+                return $userController->deleteUser($this->input->get('id'));
             }
-            if ('adminPostUsers'=== $_GET['route']){
+            if ($this->input->get('route') == 'adminPostUsers'){
                 return $postController->adminPostUsers();
             }
-            if ($_GET['route']== 'editComment' && (isset($_GET['id']) && $_GET['id'] > 0 )){
-                return $commentController->updateComments($_GET['id']);
+            if ($this->input->get('route') == 'adminPostViewers'){
+                return $postController->listPostAuthor();
             }
-            if ($_GET['route']== 'addComment' && (isset($_GET['id']) && $_GET['id'] > 0 )){
-                return $commentController->commentPost($_GET['id']);
+            if ($this->input->get('route') == 'editComment' && $this->input->get('id') > 0){
+                return $commentController->updateComments($this->input->get('id'));
             }
-            if (isset($_GET['id']) && $_GET['id'] > 0 ) {
-                return $postController->show($_POST);
+            if ($this->input->get('route') == 'addComment' && $this->input->get('id') > 0){
+                return $commentController->commentPost($input->get('id'));
             }
-            if (isset($_GET['id']) && $_GET['id'] > 0 ) {
-                return $commentController->listComments();
+            if ($this->input->get('id') > 0) {
+                return $postController->show();
             }
-
-
-
+            if ($this->input->get('id') > 0) {
+                return $commentController->listComments($this->input->get('id'));
+            }
         }
-                return $appController->index();
+        return $appController->index();
     }
 }

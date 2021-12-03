@@ -1,31 +1,31 @@
 <?php
 
-
 namespace App\Model;
-
 
 class User
 {
-    private ?int $id = null;
+    private ?int $userId = null;
     private string $username;
     private string $password;
     private ?string $role = null;
+    private ?string $email = null;
+    private ?int $is_valid = null;
 
     /**
      * @return integer
      */
-    public function getId(): ?int
+    public function getUserId(): ?int
     {
-        return $this->id;
+        return $this->userId;
     }
 
     /**
-     * @param integer $id
+     * @param integer $userId
      * @return User
      */
-    public function setId(int $id): User
+    public function setUserId(int $userId): User
     {
-        $this->id = $id;
+        $this->userId = $userId;
         return $this;
     }
 
@@ -50,22 +50,21 @@ class User
     /**
      * @return string
      */
-    /*   public function getEmail(): string
-       {
-           return $this->email;
-       }*/
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
 
     /**
      * @param string $email
      * @return User
      */
-    /*
     public function setEmail(string $email): User
     {
         $this->email = $email;
         return $this;
     }
-*/
+
     /**
      * @return string
      */
@@ -75,7 +74,7 @@ class User
     }
 
     /**
-     * @param string $password
+     * @param string $hashedPassword
      * @return User
      */
     public function setPassword(string $hashedPassword): User
@@ -85,7 +84,7 @@ class User
     }
 
     /**
-     * @return bool
+     * @return string|null
      */
     public function getRole(): ?string
     {
@@ -93,7 +92,7 @@ class User
     }
 
     /**
-     * @param bool $role
+     * @param string $role
      * @return User
      */
 
@@ -103,5 +102,21 @@ class User
         return $this;
     }
 
-}
+    /**
+     * @return int|null
+     */
+    public function getIsValid(): ?int
+    {
+        return $this->is_valid;
+    }
 
+    /**
+     * @param int|null $is_valid
+     * @return User
+     */
+    public function setIsValid(?int $is_valid): User
+    {
+        $this->is_valid = $is_valid;
+        return $this;
+    }
+}

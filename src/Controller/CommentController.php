@@ -1,89 +1,99 @@
 <?php
 
-
 namespace App\Controller;
 
 use App\DAO\CommentManager;
 use App\DAO\PostManager;
-use App\DAO\UserManager;
 use App\Model\Comment;
-use App\Model\Post;
-use App\services\Session;
+use App\Model\Input;
+use App\Session;
 use Twig\Environment;
 
 class CommentController extends Controller
 {
     private PostManager  $postManager;
-    private UserManager $userManager;
     private CommentManager $commentManager;
+    private Session $session;
+    private Input  $input;
 
-    public function __construct(Environment $twig)
+    public function __construct(Environment $twig, Input $input)
     {
         $this->postManager = new PostManager();
-        $this->userManager = new UserManager();
         $this->commentManager = new CommentManager();
         $this->session = new Session();
+        $this->input = new Input();
 
-        parent::__construct($twig);
+        parent::__construct($twig,$input);
     }
 
     public function listComments($postId): string
     {
-        $comments = $this->commentManager->findCommentsBypostId($postId);
-        return $this->render('Post/postsList.html.twig',['comments'=> $comments]);
+        $comments = $this->commentManager->findCommentsByPostId($postId);
+        return $this->render('Post/postsList.html.twig', ['comments'=> $comments]);
     }
 
-    public function adminPostcomments(): string
+    /**
+     * @throws \Exception
+     */
+    public function adminPostComments(): string
     {
         $comments = $this->commentManager->findAllComments();
-        return $this->render('Admin/commentsList.html.twig',['comments'=> $comments]);
+        return $this->render('Admin/commentsList.html.twig', ['comments'=> $comments]);
     }
 
-    public function commentPost($commentForm)
+    /**
+     * @throws \Exception
+     */
+    public function commentPost($commentForm): string
     {
         if (!empty($commentForm)) {
             $comment = new Comment();
-            $content = $_POST['content'];
-            $session = new Session();
-            $session =  $_SESSION['newsession'];
-            $userId = $session->id;
-            $username = $session->username;
-            $comment->setUserId($userId);
-            $comment->setUsername($username);
+            $content = $this->input->post('content');
+            $sessionUserId = $this->session->getSessionValue('newsession', 'id');
+            $sessionUsername =$this->session->getSessionValue('newsession', 'username');
+            $postId = $this->input->get('id');
+
+            $comment->setUserId($sessionUserId);
+            $comment->setUsername($sessionUsername);
             $comment->setContent($content);
-            $comment->setPostId($_GET['id']);
+            $comment->setPostId($postId);
+            $comment->setIsValid(0);
 
-            $post = $this->postManager->find($_GET['id']);
-            $postId = $post->getId();
-            $commentForm = $this->commentManager->createComment($comment);
-
-            echo 'commentaire enregistré';
-            header('Location: index.php?route=post&id='.$postId);
+            $this->postManager->find($postId);
+            $this->commentManager->createComment($comment);
+            Session::addMsgModeration();
+            header('Location: index.php?route=posts');
+            Input::exitMessage();
         }
         return $this->render('Post/show.html.twig', [
             'post' => $commentForm,
-        ]);
-        echo 'commentaire pas enregistré';
+            ]);
     }
 
-    public function updateComments($id)
+    /**
+     * @throws \Exception
+     */
+    public function updateComments($commentId): string
     {
-        $comment = $this->commentManager->find($id);
-        if ($_POST) {
+        $comment = $this->commentManager->find($commentId);
+        if ($this->input->post('content') || $this->input->post('valid')) {
             $comment
-                ->setContent($_POST['content']);
+                ->setContent($this->input->post('content'));
+            if ($this->input->post('valid') !== null) {
+                $comment
+                 ->setIsValid(1);
+            }
             (new CommentManager())->update($comment);
+            Session::addMsgValidation();
             header('Location: index.php?route=adminPostcomments');
+            Input::exitMessage();
         }
         return $this->render('Admin/editComment.html.twig', ['comment' => $comment]);
     }
 
-    public function deleteAdminPostcomments($id)
+    public function deleteAdminPostcomments($postCommentId): void
     {
-        $comment = $this->commentManager->deleteAdminPostcomments($id);
+        $this->commentManager->deleteAdminPostcomments($postCommentId);
         header('Location: index.php?route=adminPostcomments');
-        echo 'post supprimé';
-
     }
-
 }
