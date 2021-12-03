@@ -27,8 +27,8 @@ class Router
      */
     public function run()
     {
-        $postController = new PostController($this->twig,$this->input,$this->session);
-        $appController  = new AppController($this->twig,$this->input,$this->session);
+        $postController = new PostController($this->twig,$this->input);
+        $appController  = new AppController($this->twig,$this->input);
         $userController = new UserController($this->twig,$this->input);
         $commentController = new CommentController($this->twig, $this->input);
         $input = new Input();
