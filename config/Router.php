@@ -19,7 +19,6 @@ class Router
         $this->twig = $twig;
         $this->input = $input;
         $this->session = $session;
-
     }
 
     /**
@@ -33,54 +32,53 @@ class Router
         $commentController = new CommentController($this->twig, $this->input);
         $input = new Input();
 
-        if ($input->get('route'))
-        {
-            if ($this->input->get('route') == 'posts'){
+        if ($input->get('route')) {
+            if ($this->input->get('route') == 'posts') {
                 return $postController->list();
             }
-            if ($this->input->get('route') == 'addPost'){
+            if ($this->input->get('route') == 'addPost') {
                 return $postController->add($this->input->post());
             }
-            if ($this->input->get('route') == 'signUp'){
+            if ($this->input->get('route') == 'signUp') {
                 return $userController->signUp($this->input->post());
             }
-            if ($this->input->get('route') == 'login'){
+            if ($this->input->get('route') == 'login') {
                 return $userController->login($this->input->post());
             }
-            if ($this->input->get('route') == 'signOut'){
+            if ($this->input->get('route') == 'signOut') {
                 return $userController->signOut();
             }
-            if ($this->input->get('route') == 'adminPostList'){
+            if ($this->input->get('route') == 'adminPostList') {
                 return $postController->adminPostList();
             }
-            if ($this->input->get('route') =='editAdminPost' && $this->input->get('id') > 0){
+            if ($this->input->get('route') =='editAdminPost' && $this->input->get('id') > 0) {
                 return $postController->updateAdminPosts();
             }
             if ($this->input->get('route') =='editUser' && $this->input->get('id') > 0) {
                 return $userController->updateUser();
             }
-            if ($this->input->get('route') == 'deleteAdminPost' && $this->input->get('id') > 0){
+            if ($this->input->get('route') == 'deleteAdminPost' && $this->input->get('id') > 0) {
                 return $postController->deleteAdminPost($this->input->get('id'));
             }
             if ($this->input->get('route') == 'adminPostcomments'){
                 return $commentController->adminPostcomments();
             }
-            if ($this->input->get('route') == 'deleteComment' && $this->input->get('id') > 0){
+            if ($this->input->get('route') == 'deleteComment' && $this->input->get('id') > 0) {
                 return $commentController->deleteAdminPostcomments($this->input->get('id'));
             }
-            if ($this->input->get('route') =='deleteUser' && $this->input->get('id') > 0){
+            if ($this->input->get('route') =='deleteUser' && $this->input->get('id') > 0) {
                 return $userController->deleteUser($this->input->get('id'));
             }
-            if ($this->input->get('route') == 'adminPostUsers'){
+            if ($this->input->get('route') == 'adminPostUsers') {
                 return $postController->adminPostUsers();
             }
-            if ($this->input->get('route') == 'adminPostViewers'){
+            if ($this->input->get('route') == 'adminPostViewers') {
                 return $postController->listPostAuthor();
             }
-            if ($this->input->get('route') == 'editComment' && $this->input->get('id') > 0){
+            if ($this->input->get('route') == 'editComment' && $this->input->get('id') > 0) {
                 return $commentController->updateComments($this->input->get('id'));
             }
-            if ($this->input->get('route') == 'addComment' && $this->input->get('id') > 0){
+            if ($this->input->get('route') == 'addComment' && $this->input->get('id') > 0) {
                 return $commentController->commentPost($input->get('id'));
             }
             if ($this->input->get('id') > 0) {
