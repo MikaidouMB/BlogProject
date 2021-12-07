@@ -54,7 +54,7 @@ ADMIN_NAME=yourname
 2.  Import ___blog.sql___ file
 
 #### ___DB schema___
-![Templates tree](diagrams/database_model.png)
+![Templates tree](diagrammes/database_model.png)
 
 * Clone :
 ```bash
