@@ -88,6 +88,7 @@ Authors have to be connected and approved to access to their back-office pages.
 | front | Article #ID | ?route=post&id=ID | All |
 | front | Inscription | ?route=signUp | All |
 | front | Connection | ?route=login | All |
+| viewer| Manage his articles | ?route=adminPostViewers| Posts author |
 | admin | Manage the articles | ?route=adminPostList | Posts author, Admin |
 | admin | Add article | ?route=addPost | Authors, Admin |
 | admin | Edit article #ID | ?route=editAdminPost&id=ID | Post author, Admin |
