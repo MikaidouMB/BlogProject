@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controller;
 
 use App\DAO\CommentManager;
@@ -103,14 +102,16 @@ class PostController extends Controller
             $content = $this->input->post('content');
             $sessionUserId = $this->session->getSessionValue('newsession', 'id');
             $sessionUsername = $this->session->getSessionValue('newsession', 'username');
+
             $post->setUserId($sessionUserId);
             $post->setAuthor($sessionUsername);
             $post->setTitle($title);
             $post->setContent($content);
+
             $this->postManager->create($post);
             Session::addMsgCreatePost();
             header('Location: index.php?route=posts');
-            $this->input->get();
+            Input::exitMessage();
         }
         return $this->render('Post/add.html.twig', ['post' => $postForm]);
     }
@@ -124,18 +125,19 @@ class PostController extends Controller
         $postId = (int) ($this->input->get('id'));
         $post = $this->postManager->find($postId);
 
-        if ($this->input->post('title')
-            || $this->input->post('content')
-            || $this->input->post('author')) {
+        if ($this->input->post('title') ||
+            $this->input->post('content') ||
+            $this->input->post('author')) {
             $post->setPostId($postId)
                  ->setAuthor($this->input->post('author'))
                  ->setTitle($this->input->post('title'))
                  ->setContent($this->input->post('content'));
+
             (new PostManager)->updateAdminPost($post);
             Session::addMsgUpdatePost();
-            if ($this->session->getSessionValue('newsession','role') == ('viewer')){
+            if ($this->session->getSessionValue('newsession','role') == ('viewer')) {
                 header('Location: index.php?route=adminPostViewers');
-            }else{
+            } else {
                 header('Location: index.php?route=adminPostList');
             }
             Input::exitMessage();
@@ -149,9 +151,10 @@ class PostController extends Controller
     public function deleteAdminPost($postId): void
     {
         $this->postManager->delete($postId);
-        if ($this->session->getSessionValue('newsession','role') == ('viewer')){
+        if ($this->session->getSessionValue('newsession','role') == ('viewer')) {
             header('Location: index.php?route=adminPostViewers');
-        }else{
+        } else {
             header('Location: index.php?route=adminPostList');
-        }    }
+        }
+    }
 }

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\DAO;
 
 use App\Model\Comment;
@@ -26,9 +25,8 @@ class CommentManager extends DAO
     public function update(Comment $comment): bool
     {
         $result = $this->createQuery(
-            'UPDATE comment SET id = ?, user_id = ? ,postId = ?, username = ?,  content = ? , is_valid = ? WHERE id = ?',
-            array_merge($this->buildValues($comment), [$comment->getCommentId()])
-        );
+            'UPDATE comment SET id = ?, user_id = ? ,postId = ?, username = ?,  content = ? , is_valid = ?
+                  WHERE id = ?', array_merge($this->buildValues($comment), [$comment->getCommentId()]));
         return 1<= $result->rowCount();
     }
 
@@ -52,7 +50,12 @@ class CommentManager extends DAO
      */
     public function findCommentsByPostId($postId): array
     {
-        $result = $this->createQuery('SELECT * FROM comment WHERE comment.postId = ? ORDER BY modifiedOn DESC  ', $postId);
+        $result = $this->createQuery(
+            'SELECT * 
+                  FROM comment
+                  WHERE comment.postId = ?
+                  ORDER BY modifiedOn DESC', $postId
+        );
         return $result->fetchAll();
     }
 
@@ -77,9 +80,7 @@ class CommentManager extends DAO
     public function deleteAdminPostcomments($commentId): bool
     {
         $result = $this->createQuery(
-            'DELETE FROM comment WHERE id = ?',
-            [$commentId],
-        );
+            'DELETE FROM comment WHERE id = ?', [$commentId]);
         return 1<= $result->rowCount();
     }
 

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controller;
 
 use App\DAO\UserManager;
@@ -12,10 +11,11 @@ class UserController extends Controller
 {
     private UserManager $userManager;
     private Input $input;
-
+    private Session $session;
     public function __construct(Environment $twig, Input $input)
     {
         $this->userManager = new UserManager();
+        $this->session = new Session();
         $this->input = new Input();
         parent::__construct($twig, $input);
     }
@@ -32,15 +32,14 @@ class UserController extends Controller
 
         if ($this->input->post('username') === '' ||
             $this->input->post('password') === '' ||
-            $this->input->post('email') === '')
-        {
+            $this->input->post('email') === '') {
             $errorField = 'Vous devez remplir tous les champs';
         }
 
-        if (!empty($this->input->post('username'))
-            && !empty($this->input->post('password'))
-            && !empty($this->input->post('email')))
-        {
+        if (!empty($this->input->post('username')) &&
+            !empty($this->input->post('password')) &&
+            !empty($this->input->post('email'))) {
+
             $user = new User();
             $username = $this->input->post('username');
             $password = $this->input->post('password');
@@ -96,7 +95,6 @@ class UserController extends Controller
         if ($this->input->post('username') === '' || $this->input->post('password') === '') {
             $errorField = 'Vous devez remplir tous les champs';
         }
-
         $username = $this->input->post('username');
         $existingUser = $this->userManager->checkIfUserExist($username);
 
