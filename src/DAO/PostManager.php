@@ -1,5 +1,4 @@
 <?php
-
 namespace App\DAO;
 
 use App\Model\Post;
@@ -41,7 +40,6 @@ class PostManager extends DAO
         if (false === $object = $result->fetchObject()) {
             return null;
         }
-
         return $this->buildObject($object);
     }
 
@@ -70,7 +68,6 @@ class PostManager extends DAO
             'UPDATE post SET  author = ?, title = ?, user_id = ?, content = ? WHERE id = ?',
             array_merge($this->buildValues($post), [$post->getPostId()])
         );
-
         return 1<= $result->rowCount();
     }
 
@@ -84,7 +81,6 @@ class PostManager extends DAO
             'INSERT INTO post (author,title,user_id,content)VALUES(?,?,?,?) ',
             $result= array_merge($this->buildValues($post))
         );
-
         return $result;
     }
 
@@ -98,7 +94,6 @@ class PostManager extends DAO
             'DELETE FROM post WHERE id = ?',
             [$postId],
         );
-
         return 1<= $result->rowCount();
     }
 

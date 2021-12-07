@@ -1,5 +1,4 @@
 <?php
-
 namespace App;
 
 class Session
@@ -85,9 +84,20 @@ class Session
     public static function set($key, $value)
     {
         if ($key == true && $value == true) {
+            $_SESSION['token'] = md5(bin2hex(openssl_random_pseudo_bytes(6)));
             $_SESSION[$key] = $value;
         }
     }
+
+    public static function getToken($key, $secondKey = false)
+    {
+        if ($secondKey == true) {
+            if (isset($_SESSION[$key][$secondKey]['token'])) {
+                return $_SESSION[$key][$secondKey]['token'];
+            }
+        }
+    }
+
     public static function setSession($value): array
     {
         if ($value == true) {
@@ -111,5 +121,6 @@ class Session
     public static function destroySession()
     {
         unset($_SESSION['newsession']);
+        unset($_SESSION['token']);
     }
 }

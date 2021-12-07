@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Model;
 
 class Post
@@ -107,7 +106,7 @@ class Post
     }
 
     /**
-     * @return int
+     * @return string
      */
     public function getAuthor(): string
     {
@@ -115,7 +114,7 @@ class Post
     }
 
     /**
-     * @param int $author
+     * @param string $author
      * @return Post
      */
     public function setAuthor(string $author): Post

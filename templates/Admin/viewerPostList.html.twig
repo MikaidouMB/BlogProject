@@ -26,24 +26,25 @@
                 </tr>
                 </thead>
                 <tbody>
+
                 {% for post in posts %}
-                <td>{{ post.title }}</td>
-                <td>{{ post.author }}</td>
-                <td>{{ post.content|length > 300 ? post.content|slice(0,200) ~ '...'}}
-                    <a href="index.php?route=editAdminPost&id={{ post.postId }}" tabindex="0" class="btn bg-blue-ui white read">Lire plus</a>
-                </td>
-                <td class="col-md-3">
-                    <div class="btn-group" role="group" aria-label="Basic example">
-                        <a href="index.php?route=editAdminPost&id={{ post.postId }}"
-                           class="btn btn-warning btn-lg active" role="button" aria-pressed="true">Modifier</a>
-                        <a href="index.php?route=deleteAdminPost&id={{ post.postId }}"
-                           onclick="return confirm('Voulez-vous effacer l\'article n°{{ post.title }} ?')"
-                           class="btn btn-danger btn-lg active" role="button" aria-pressed="true">Supprimer</a>
-                    </div>
-                </td>
-                </tbody>
+                        <td>{{ post.title }}</td>
+                        <td>{{ post.author }}</td>
+                        <td>{{ post.content|length > 300 ? post.content|slice(0,200) ~ '...'}}
+                            <a href="index.php?route=editAdminPost&id={{ post.postId }}" tabindex="0" class="btn bg-blue-ui white read">Lire plus</a>
+                        </td>
+                        <td class="col-md-3">
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <a href="index.php?route=editAdminPost&id={{ post.postId }}"
+                                   class="btn btn-warning btn-lg active" role="button" aria-pressed="true">Modifier</a>
+                                <a href="index.php?route=deleteAdminPost&id={{ post.postId }}"
+                                   onclick="return confirm('Voulez-vous effacer l\'article n°{{ post.title }} ?')"
+                                   class="btn btn-danger btn-lg active" role="button" aria-pressed="true">Supprimer</a>
+                            </div>
+                        </td>
                 {% endfor %}
-                <tbody>
+                </tbody>
+
             </table>
         </div>
     </div>
