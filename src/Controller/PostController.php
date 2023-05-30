@@ -107,7 +107,7 @@ class PostController extends Controller
             $post->setAuthor($sessionUsername);
             $post->setTitle($title);
             $post->setContent($content);
-
+    //        var_dump($post);die();
             $this->postManager->create($post);
             Session::addMsgCreatePost();
             header('Location: index.php?route=posts');

@@ -19,9 +19,7 @@
  * FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-namespace PHPMailer\PHPMailer;
-
-use Exception;
+namespace App\PHPMailer;
 
 /**
  * PHPMailer - PHP email creation and transport class.
@@ -69,21 +67,21 @@ class PHPMailer
      *
      * @var int|null
      */
-    public ?int $Priority;
+    public $Priority;
 
     /**
      * The character set of the message.
      *
      * @var string
      */
-    public string $CharSet = self::CHARSET_ISO88591;
+    public $CharSet = self::CHARSET_ISO88591;
 
     /**
      * The MIME Content-type of the message.
      *
      * @var string
      */
-    public string $ContentType = self::CONTENT_TYPE_PLAINTEXT;
+    public $ContentType = self::CONTENT_TYPE_PLAINTEXT;
 
     /**
      * The message encoding.
@@ -91,28 +89,28 @@ class PHPMailer
      *
      * @var string
      */
-    public string $Encoding = self::ENCODING_8BIT;
+    public $Encoding = self::ENCODING_8BIT;
 
     /**
      * Holds the most recent mailer error message.
      *
      * @var string
      */
-    public string $ErrorInfo = '';
+    public $ErrorInfo = '';
 
     /**
      * The From email address for the message.
      *
      * @var string
      */
-    public string $From = '';
+    public $From = '';
 
     /**
      * The From name of the message.
      *
      * @var string
      */
-    public string $FromName = '';
+    public $FromName = '';
 
     /**
      * The envelope sender of the message.
@@ -122,14 +120,14 @@ class PHPMailer
      *
      * @var string
      */
-    public string $Sender = '';
+    public $Sender = '';
 
     /**
      * The Subject of the message.
      *
      * @var string
      */
-    public string $Subject = '';
+    public $Subject = '';
 
     /**
      * An HTML or plain text message body.
@@ -166,7 +164,7 @@ class PHPMailer
      *
      * @var string[]
      */
-    protected static array $IcalMethods = [
+    protected static $IcalMethods = [
         self::ICAL_METHOD_REQUEST,
         self::ICAL_METHOD_PUBLISH,
         self::ICAL_METHOD_REPLY,
@@ -182,21 +180,21 @@ class PHPMailer
      *
      * @var string
      */
-    protected string $MIMEBody = '';
+    protected $MIMEBody = '';
 
     /**
      * The complete compiled MIME message headers.
      *
      * @var string
      */
-    protected string $MIMEHeader = '';
+    protected $MIMEHeader = '';
 
     /**
      * Extra headers that createHeader() doesn't fold in.
      *
      * @var string
      */
-    protected string $mailHeader = '';
+    protected $mailHeader = '';
 
     /**
      * Word-wrap the message body to this number of chars.
@@ -206,7 +204,7 @@ class PHPMailer
      *
      * @var int
      */
-    public int $WordWrap = 0;
+    public $WordWrap = 0;
 
     /**
      * Which method to use to send mail.
@@ -214,14 +212,14 @@ class PHPMailer
      *
      * @var string
      */
-    public string $Mailer = 'mail';
+    public $Mailer = 'mail';
 
     /**
      * The path to the sendmail program.
      *
      * @var string
      */
-    public string $Sendmail = '/usr/sbin/sendmail';
+    public $Sendmail = '/usr/sbin/sendmail';
 
     /**
      * Whether mail() uses a fully sendmail-compatible MTA.
@@ -229,14 +227,14 @@ class PHPMailer
      *
      * @var bool
      */
-    public bool $UseSendmailOptions = true;
+    public $UseSendmailOptions = true;
 
     /**
      * The email address that a reading confirmation should be sent to, also known as read receipt.
      *
      * @var string
      */
-    public string $ConfirmReadingTo = '';
+    public $ConfirmReadingTo = '';
 
     /**
      * The hostname to use in the Message-ID header and as default HELO string.
@@ -248,7 +246,7 @@ class PHPMailer
      *
      * @var string
      */
-    public string $Hostname = '';
+    public $Hostname = '';
 
     /**
      * An ID to be used in the Message-ID header.
@@ -819,7 +817,6 @@ class PHPMailer
      * @var int
      */
     const STD_LINE_LENGTH = 76;
-    public string $body;
 
     /**
      * Constructor.
@@ -931,7 +928,7 @@ class PHPMailer
                 "\t",
                     //Trim trailing space
                 trim(
-                    //Indent for readability, except for trailing break
+                //Indent for readability, except for trailing break
                     str_replace(
                         "\n",
                         "\n                   \t                  ",
@@ -1289,7 +1286,7 @@ class PHPMailer
         if (
             (false === $pos)
             || ((!$this->has8bitChars(substr($address, ++$pos)) || !static::idnSupported())
-            && !static::validateAddress($address))
+                && !static::validateAddress($address))
         ) {
             $error_message = sprintf(
                 '%s (From): %s',
@@ -2077,11 +2074,11 @@ class PHPMailer
         foreach ($hosts as $hostentry) {
             $hostinfo = [];
             if (
-                !preg_match(
-                    '/^(?:(ssl|tls):\/\/)?(.+?)(?::(\d+))?$/',
-                    trim($hostentry),
-                    $hostinfo
-                )
+            !preg_match(
+                '/^(?:(ssl|tls):\/\/)?(.+?)(?::(\d+))?$/',
+                trim($hostentry),
+                $hostinfo
+            )
             ) {
                 $this->edebug($this->lang('invalid_hostentry') . ' ' . trim($hostentry));
                 //Not a valid host entry
@@ -4250,13 +4247,13 @@ class PHPMailer
                         $directory .= '/';
                     }
                     if (
-                        $this->addEmbeddedImage(
-                            $basedir . $directory . $filename,
-                            $cid,
-                            $filename,
-                            static::ENCODING_BASE64,
-                            static::_mime_types((string) static::mb_pathinfo($filename, PATHINFO_EXTENSION))
-                        )
+                    $this->addEmbeddedImage(
+                        $basedir . $directory . $filename,
+                        $cid,
+                        $filename,
+                        static::ENCODING_BASE64,
+                        static::_mime_types((string) static::mb_pathinfo($filename, PATHINFO_EXTENSION))
+                    )
                     ) {
                         $message = preg_replace(
                             '/' . $images[1][$imgindex] . '=["\']' . preg_quote($url, '/') . '["\']/Ui',

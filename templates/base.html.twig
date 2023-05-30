@@ -6,25 +6,25 @@
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <meta name="description" content="">
             <meta name="author" content="">
-
+            
             <title>{% block title %}Blog{% endblock %}</title>
-
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
             <!-- Bootstrap Core CSS -->
-            <link href="../public/css/bootstrap.min.css" rel="stylesheet">
+            <link href="css/bootstrap.min.css" rel="stylesheet">
             <!-- Theme CSS -->
-            <link href="../public/css/freelancer.min.css" rel="stylesheet">
+            <link href="css/freelancer.min.css" rel="stylesheet">
 
             <script
                     src="https://code.jquery.com/jquery-3.2.1.js"
                     integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
                     crossorigin="anonymous">
             </script>
-            <script src="https://kit.fontawesome.com/cedb22606b.js" crossorigin="anonymous"></script>
+        
             <!-- Custom Fonts copier le CDN -->
-            <link href="../public/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+            <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css">
             <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
             <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
-            <link rel="stylesheet" href="../public/css/style.css">
+            <link rel="stylesheet" href="css/style.css">
         </head>
         <nav id="mainNav" class="navbar navbar-default navbar-fixed-top navbar-custom" style="opacity: 0.5">
                 <!-- Brand and toggle get grouped for better mobile display -->
@@ -46,6 +46,9 @@
                             <li class="page-scroll">
                                 <a class="nav-link" href="index.php?route=posts">Articles</a>
                             </li>
+                            <li class="page-scroll">
+                                <a class="nav-link" href="index.php?route=addPost">Ajouter un article</a>
+                            </li>
                         {% else %}
                             <li class="page-scroll">
                                 <a class="nav-link" href="index.php?route=signUp">S'inscrire</a>
@@ -56,6 +59,7 @@
                             <li class="page-scroll">
                                 <a class="nav-link" href="index.php?route=posts">Articles</a>
                             </li>
+
                         {% endif %}
                     </ul>
                 </div>
@@ -63,8 +67,8 @@
         {% block body %}
         {% endblock %}
     <!-- Bootstrap Core JavaScript -->
-    <script src="../public/js/bootstrap.min.js"></script>
-    <script src="../public/js/style.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/style.js"></script>
     <!-- Plugin JavaScript -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.4.1/js/mdb.min.js"></script>
 </html>
