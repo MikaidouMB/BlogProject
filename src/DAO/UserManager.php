@@ -36,7 +36,7 @@ class UserManager extends DAO
      */
     public function register(User $user)
     {
-        $this->createQuery(
+      $query = $this->createQuery(
             'INSERT INTO user(id, username, password,email, role, is_valid)VALUES(?,?,?,?,?,?)',
             $result = array_merge($this->buildValues($user))
         );
