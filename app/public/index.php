@@ -12,7 +12,7 @@ require '../vendor/autoload.php';
 
 /*$dotenv = new Dotenv();
 $dotenv->load(__DIR__.'/../.env');*/
-     $loader = new FilesystemLoader(__DIR__.'/../templates');
+     $loader = new Twig\Loader\FilesystemLoader('/home/ubuntu/BlogProject/app/templates');
      $twig = new Environment($loader, ['debug' => true]);
      $twig->addExtension(new DebugExtension());
      $input = new Input();
