@@ -10,8 +10,8 @@ use App\Session;
 
 require '../vendor/autoload.php';
 
-$dotenv = new Dotenv();
-$dotenv->load(__DIR__.'/../.env');
+/*$dotenv = new Dotenv();
+$dotenv->load(__DIR__.'/../.env');*/
      $loader = new FilesystemLoader(__DIR__.'/../templates');
      $twig = new Environment($loader, ['debug' => true]);
      $twig->addExtension(new DebugExtension());
