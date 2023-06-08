@@ -8,7 +8,7 @@ use Twig\Extension\DebugExtension;
 use Twig\Loader\FilesystemLoader;
 use App\Session;
 
-require '../vendor/autoload.php';
+require 'vendor/autoload.php';
 
 $dotenv = new Dotenv();
 $dotenv->load(__DIR__.'/../.env');
