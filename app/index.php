@@ -13,7 +13,7 @@ require 'vendor/autoload.php';
 /*$dotenv = new Dotenv();
 $dotenv->load(__DIR__.'/../.env');*/
 
-     $loader = new FilesystemLoader('/home/mikaidou/projets OC/MM_P5_creez-votre-premier-blog-en-php_2021-12-09T195931/P5_mbo_mikaidou/P5_02_blog/app/templates');
+     $loader = new FilesystemLoader(__DIR__.'/templates');
      $twig = new Environment($loader, ['debug' => true]);
      $twig->addExtension(new DebugExtension());
      $input = new Input();
